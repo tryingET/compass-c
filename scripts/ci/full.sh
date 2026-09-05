@@ -12,7 +12,8 @@ cd "$repo_root"
 say "==> fast"
 "$script_dir/fast.sh"
 
-log_dir="$(mktemp -d "${TMPDIR:-/tmp}/tpl-project-full.XXXXXX")"
+: "${TMPDIR:?TMPDIR must be set for repository validation}"
+log_dir="$(mktemp -d "$TMPDIR/compass-c-full.XXXXXX")"
 cleanup() {
   rm -rf "$log_dir"
 }
@@ -26,9 +27,11 @@ run_task_scope_snapshots() {
 
 run_rocs() {
   if [ -x "./scripts/rocs.sh" ] && [ -f "./ontology/manifest.yaml" ]; then
-    ./scripts/rocs.sh version
-    ./scripts/rocs.sh build --repo . --resolve-refs --clean
-    ./scripts/rocs.sh validate --repo . --resolve-refs
+    workspace_root="${ROCS_WORKSPACE_ROOT:-$HOME/ai-society}"
+    workspace_ref_mode="${ROCS_WORKSPACE_REF_MODE:-loose}"
+    ROCS_WORKSPACE_ROOT="$workspace_root" ROCS_WORKSPACE_REF_MODE="$workspace_ref_mode" ./scripts/rocs.sh version
+    ROCS_WORKSPACE_ROOT="$workspace_root" ROCS_WORKSPACE_REF_MODE="$workspace_ref_mode" ./scripts/rocs.sh build --repo . --resolve-refs --clean
+    ROCS_WORKSPACE_ROOT="$workspace_root" ROCS_WORKSPACE_REF_MODE="$workspace_ref_mode" ./scripts/rocs.sh validate --repo . --resolve-refs
   fi
 }
 
