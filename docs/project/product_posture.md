@@ -1,5 +1,14 @@
 ---
 summary: "Current versus target product maturity for COMPASS-C."
+as_of: "2026-09-05"
+last_validated: "2026-09-05"
+last_validated_commit: "d638d024ed8b0a1f087432a3b860e02061cc771d"
+evidence_paths:
+  - "README.md"
+  - "src/compass_c"
+  - "tests"
+  - "skills/compass"
+  - "scripts/build_skill.py"
 read_when:
   - "When assessing maturity, rollout, or proof gaps"
 type: "reference"
