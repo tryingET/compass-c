@@ -1,0 +1,22 @@
+{
+  "version": "0.3.0",
+  "status": "provisional",
+  "repository": "tryingET/compass-c",
+  "package": "compass-c",
+  "skill": "compass",
+  "template": {
+    "repository": "tryingET/softwareco",
+    "commit": "433e8b8e01f49b11b54d102f46055f29d41f297f",
+    "subdirectory": "copier/tpl-project-repo",
+    "profile": "python"
+  },
+  "license_source": {
+    "repository": "tryingET/pi-extensions",
+    "path": "LICENSE"
+  },
+  "source_conversation": "https://chatgpt.com/share/6a9bcb2a-90dc-83eb-a629-34cae8f02623",
+  "publication_status": "not_yet_published",
+  "host_installation": "not_performed",
+  "mcp_integration": "not_run",
+  "behavioral_evaluation": "development_cases_only"
+}

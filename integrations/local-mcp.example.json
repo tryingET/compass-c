@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "compass": {
+      "command": "/absolute/path/to/venv/bin/python",
+      "args": ["/absolute/path/to/compass-c/integrations/mcp_server.py"],
+      "env": {"COMPASS_DB": "/absolute/path/to/private-workspace/decisions.sqlite3"}
+    }
+  }
+}

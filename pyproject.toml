@@ -1,0 +1,55 @@
+[project]
+name = "compass-c"
+version = "0.3.0"
+description = "Computational decision support with bounded, revisable evidence records"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "tryingET" }]
+dependencies = []
+keywords = ["decision-support", "metacognition", "agent-skill", "sqlite"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.urls]
+Homepage = "https://github.com/tryingET/compass-c"
+Repository = "https://github.com/tryingET/compass-c"
+Issues = "https://github.com/tryingET/compass-c/issues"
+
+[project.scripts]
+compass-c = "compass_c.cli:main"
+compass = "compass_c.cli:main"
+
+[project.optional-dependencies]
+mcp = ["mcp>=2,<3"]
+dev = [
+    "build>=1.2",
+    "pytest>=8.0",
+    "pyyaml>=6,<7",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/compass_c"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = ["tools/rocs-cli"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

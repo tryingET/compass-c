@@ -1,0 +1,30 @@
+# Location: owned
+# Language: python
+
+# Core + organization context snapshots
+docs/_core/** @core-owner
+docs/org_context/** @org-owners
+
+# Project delivery + governance
+docs/project/** @tryingET
+docs/system4d/** @tryingET
+docs/decisions/** @tryingET
+docs/learnings/** @tryingET
+policy/** @tryingET
+governance/** @tryingET
+ontology/** @tryingET
+
+# Product code and distributions
+src/** @tryingET
+tests/** @tryingET
+skills/** @tryingET
+integrations/** @tryingET
+scripts/** @tryingET
+
+# Root control-plane files
+AGENTS.md @tryingET
+CODEOWNERS @tryingET
+Justfile @tryingET
+README.md @tryingET
+pyproject.toml @tryingET
+next_session_prompt.md @tryingET

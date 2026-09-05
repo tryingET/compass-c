@@ -1,0 +1,8 @@
+{
+  "name": "compass",
+  "version": "0.3.0",
+  "description": "Advisory decision comparisons and bounded computational checks.",
+  "skills": "./skills/",
+  "repository": "https://github.com/tryingET/compass-c",
+  "license": "SEE LICENSE"
+}

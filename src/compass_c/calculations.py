@@ -1,0 +1,234 @@
+"""Bounded deterministic calculations; all conclusions conditional on inputs."""
+
+from __future__ import annotations
+
+import cmath
+import math
+
+from .core import CompassError, integer, number, strings
+
+
+def fields(p, required, optional=()):
+    if type(p) is not dict or any(type(k) is not str for k in p):
+        raise CompassError("INVALID_INPUT", "parameters must be a plain JSON object")
+    missing = set(required) - set(p)
+    extra = set(p) - set(required) - set(optional)
+    if missing or extra:
+        raise CompassError(
+            "INVALID_INPUT", f"Missing: {sorted(missing)}; unexpected: {sorted(extra)}"
+        )
+
+
+def calculate(kind: str, p: dict) -> dict:
+    if type(kind) is not str:
+        raise CompassError("INVALID_INPUT", "kind must be a string")
+    limitations = "Conditional arithmetic, not empirical validation or action authorization."
+    if kind == "compare":
+        fields(p, ["actions", "scenarios", "payoffs"], ["probabilities"])
+        actions = strings(p["actions"], "actions", maximum=64)
+        scenarios = strings(p["scenarios"], "scenarios", maximum=128)
+        if (
+            not actions
+            or not scenarios
+            or len(set(actions)) != len(actions)
+            or len(set(scenarios)) != len(scenarios)
+        ):
+            raise CompassError("INVALID_INPUT", "Provide nonempty unique action and scenario names")
+        matrix = p["payoffs"]
+        if type(matrix) is not list or len(matrix) != len(actions):
+            raise CompassError("INVALID_INPUT", "One payoff row per action required")
+        parsed = []
+        for row in matrix:
+            if type(row) is not list or len(row) != len(scenarios):
+                raise CompassError("INVALID_INPUT", "One payoff per scenario required in each row")
+            parsed.append([number(x, "payoff") for x in row])
+        probs = p.get("probabilities")
+        if probs is not None:
+            if type(probs) is not list or len(probs) != len(scenarios):
+                raise CompassError("INVALID_INPUT", "One probability per scenario required")
+            probs = [number(x, "probability", 0, 1) for x in probs]
+            if not math.isclose(sum(probs), 1.0, abs_tol=1e-10, rel_tol=0):
+                raise CompassError("INVALID_INPUT", "Probabilities must sum to one")
+        best = [max(row[j] for row in parsed) for j in range(len(scenarios))]
+        rows = []
+        for action, row in zip(actions, parsed, strict=True):
+            rows.append(
+                {
+                    "action": action,
+                    "worst_case": min(row),
+                    "max_regret": max(b - v for b, v in zip(best, row, strict=True)),
+                    "expected": sum(q * v for q, v in zip(probs, row, strict=True))
+                    if probs is not None
+                    else None,
+                }
+            )
+        selectors = {
+            "maximin": [
+                r["action"] for r in rows if r["worst_case"] == max(v["worst_case"] for v in rows)
+            ],
+            "minimax_regret": [
+                r["action"] for r in rows if r["max_regret"] == min(v["max_regret"] for v in rows)
+            ],
+        }
+        if probs is not None:
+            selectors["expected_value"] = [
+                r["action"] for r in rows if r["expected"] == max(v["expected"] for v in rows)
+            ]
+        result = {"rows": rows, "criterion_winners": selectors, "criterion_chosen_by_tool": False}
+        limitations += (
+            " Assumes comparable payoffs and already-admissible actions; hard constraints "
+            "and omitted scenarios are not evaluated."
+        )
+    elif kind == "committee":
+        fields(p, ["members", "accuracy", "correlation"])
+        n = integer(p["members"], "members", 1, 101)
+        if n % 2 != 1:
+            raise CompassError("INVALID_INPUT", "members must be odd")
+        q = number(p["accuracy"], "accuracy", 0, 1)
+        rho = number(p["correlation"], "correlation", 0, 1)
+        independent = sum(
+            math.comb(n, k) * q**k * (1 - q) ** (n - k) for k in range(n // 2 + 1, n + 1)
+        )
+        all_right = rho * q + (1 - rho) * q**n
+        all_wrong = rho * (1 - q) + (1 - rho) * (1 - q) ** n
+        result = {
+            "majority_accuracy": rho * q + (1 - rho) * independent,
+            "accuracy_given_unanimity": all_right / (all_right + all_wrong),
+            "variance_equivalent_count": n / (1 + (n - 1) * rho),
+        }
+        limitations += (
+            " Uses a common-shock/independent mixture; correlation alone does not determine "
+            "other joint models. At endpoint accuracy, correlation is a mixture weight rather "
+            "than an identifiable correlation."
+        )
+    elif kind == "bundle":
+        fields(p, ["test_accuracy", "test_cost", "gain", "loss"])
+        q = number(p["test_accuracy"], "test_accuracy", 0.5, 1)
+        c = number(p["test_cost"], "test_cost", 0, 1e9)
+        gain = number(p["gain"], "gain", 0, 1e9)
+        loss = number(p["loss"], "loss", 0, 1e9)
+        pair_accuracy = q * q + (1 - q) ** 2
+        no_test = max(0.0, 0.5 * (gain - loss))
+        # Uniform independent bits with utility depending on parity; independent
+        # symmetric test errors. Each observed parity has probability one half.
+        plus = max(0.0, pair_accuracy * gain - (1 - pair_accuracy) * loss)
+        minus = max(0.0, (1 - pair_accuracy) * gain - pair_accuracy * loss)
+        pair = 0.5 * (plus + minus) - 2 * c
+        result = {
+            "no_test_value": no_test,
+            "single_test_value": no_test - c,
+            "pair_value": pair,
+            "pair_improvement_over_no_test": pair - no_test,
+            "best_value_including_abstention": max(no_test, pair),
+            "parity_accuracy": pair_accuracy,
+        }
+        limitations += (
+            " This is the specific binary parity example, not a general value-of-information "
+            "solver."
+        )
+    elif kind == "feedback":
+        fields(p, ["a", "gain", "delay"])
+        a = number(p["a"], "a", -100, 100)
+        k = number(p["gain"], "gain", -100, 100)
+        d = integer(p["delay"], "delay", 0, 1)
+        if d == 0:
+            roots = [complex(a - k)]
+        else:
+            disc = cmath.sqrt(a * a - 4 * k)
+            roots = [(a + disc) / 2, (a - disc) / 2]
+        radius = max(abs(r) for r in roots)
+        verdict = (
+            "stable"
+            if radius < 1 - 1e-10
+            else "unstable"
+            if radius > 1 + 1e-10
+            else "boundary_requires_analysis"
+        )
+        result = {
+            "equation": "x[t+1] = a*x[t] - gain*x[t-delay]",
+            "roots": [{"real": z.real, "imag": z.imag} for z in roots],
+            "spectral_radius": radius,
+            "margin": 1 - radius,
+            "linear_asymptotic_stability": verdict,
+        }
+        limitations += (
+            " Constant linear coefficients and fixed delays 0 or 1 only; no social-system, "
+            "safety, or switching guarantee."
+        )
+    elif kind == "recovery":
+        fields(p, ["capacity", "committed", "proposed", "reserve"])
+        values = {k: number(p[k], k, 0, 1e12) for k in p}
+        margin = values["capacity"] - values["committed"] - values["proposed"] - values["reserve"]
+        result = {
+            "remaining_after_proposal": values["capacity"]
+            - values["committed"]
+            - values["proposed"],
+            "reserve_margin": margin,
+            "capacity_condition_met": margin >= 0,
+            "reservation_enforced": False,
+        }
+        limitations += (
+            " One fungible resource; reservation, simultaneous incidents, authority, and "
+            "physical recovery are not enforced."
+        )
+    elif kind == "tail":
+        fields(p, ["immediate", "recurring", "starts_at", "discount"], ["horizon"])
+        immediate = number(p["immediate"], "immediate")
+        recurring = number(p["recurring"], "recurring")
+        start = integer(p["starts_at"], "starts_at", 1, 100000)
+        discount = number(p["discount"], "discount", 0, 1)
+        horizon = p.get("horizon")
+        if horizon is None:
+            if discount == 1:
+                raise CompassError("INVALID_INPUT", "Infinite horizon requires discount < 1")
+            tail = recurring * discount**start / (1 - discount)
+        else:
+            integer(horizon, "horizon", 0, 100000)
+            terms = max(0, horizon - start + 1)
+            if not terms:
+                tail = 0.0
+            elif discount == 1:
+                tail = recurring * terms
+            elif discount == 0:
+                tail = 0.0
+            else:
+                geometric = -math.expm1(terms * math.log(discount)) / (1 - discount)
+                tail = recurring * discount**start * geometric
+        result = {"present_value": immediate + tail, "tail_value": tail, "horizon": horizon}
+        limitations += (
+            " Exogenous recurring effect and selected discounting; neither establishes an "
+            "institutional mechanism nor legitimate ethical weights."
+        )
+    elif kind == "brier":
+        fields(p, ["probabilities", "outcomes"])
+        ps, ys = p["probabilities"], p["outcomes"]
+        if (
+            type(ps) is not list
+            or type(ys) is not list
+            or not 1 <= len(ps) <= 10000
+            or len(ps) != len(ys)
+        ):
+            raise CompassError(
+                "INVALID_INPUT", "Provide matching nonempty lists of at most 10000 events"
+            )
+        ps = [number(x, "probability", 0, 1) for x in ps]
+        ys = [integer(x, "outcome", 0, 1) for x in ys]
+        result = {
+            "brier_score": sum((p - y) ** 2 for p, y in zip(ps, ys, strict=True)) / len(ps),
+            "events": len(ps),
+        }
+        limitations += (
+            " Requires resolved binary outcomes; does not measure alignment or establish "
+            "calibration under shift."
+        )
+    else:
+        raise CompassError(
+            "UNKNOWN_CALCULATION",
+            "Choose compare, committee, bundle, feedback, recovery, tail, or brier",
+        )
+    return {
+        "calculation": kind,
+        "result": result,
+        "limitations": limitations,
+        "action_permission": "not_granted",
+    }

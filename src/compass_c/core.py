@@ -1,0 +1,407 @@
+"""Local COMPASS-C decision notebook.
+
+The notebook is advisory only. It never grants action permission. Construction and
+reads are side-effect free; only a validated ``start`` operation may initialize a
+new SQLite database.
+"""
+
+from __future__ import annotations
+
+import json
+import math
+import sqlite3
+import uuid
+from collections.abc import Iterator
+from contextlib import contextmanager
+from datetime import UTC, datetime
+from pathlib import Path
+from typing import Any
+
+VERSION = "0.3.0"
+SCHEMA_VERSION = "1"
+KINDS = {
+    "assumption",
+    "evidence",
+    "alternative",
+    "test",
+    "effect",
+    "forecast",
+    "decision",
+    "outcome",
+    "limitation",
+}
+STATUSES = {"assumed", "observed", "computed", "inferred", "proposed"}
+STAKES = {"low", "medium", "high"}
+
+
+class CompassError(ValueError):
+    """Stable, machine-readable COMPASS-C failure."""
+
+    def __init__(self, code: str, message: str):
+        super().__init__(message)
+        self.code = code
+
+
+def text(value: Any, field: str, *, limit: int = 12_000, empty: bool = False) -> str:
+    if type(value) is not str or (not empty and not value.strip()) or len(value) > limit:
+        requirement = (
+            f"{field} must be a nonempty string of at most {limit} characters"
+            if not empty
+            else f"invalid {field}"
+        )
+        raise CompassError("INVALID_INPUT", requirement)
+    return value
+
+
+def integer(value: Any, field: str, minimum: int = 0, maximum: int = 1_000_000) -> int:
+    if type(value) is not int or not minimum <= value <= maximum:
+        raise CompassError("INVALID_INPUT", f"{field} must be an integer in [{minimum}, {maximum}]")
+    return value
+
+
+def number(value: Any, field: str, minimum: float = -1e12, maximum: float = 1e12) -> float:
+    if type(value) not in (int, float) or not minimum <= value <= maximum:
+        raise CompassError("INVALID_INPUT", f"{field} must be finite and in [{minimum}, {maximum}]")
+    parsed = float(value)
+    if not math.isfinite(parsed):
+        raise CompassError("INVALID_INPUT", f"{field} must be finite and in [{minimum}, {maximum}]")
+    return parsed
+
+
+def strings(value: Any, field: str, *, maximum: int = 64) -> list[str]:
+    if type(value) is not list or len(value) > maximum:
+        raise CompassError("INVALID_INPUT", f"{field} must be a list of at most {maximum} strings")
+    return [text(item, field, limit=2_000) for item in value]
+
+
+def identifier(value: Any, field: str) -> str:
+    parsed = text(value, field, limit=32)
+    if len(parsed) != 32 or any(character not in "0123456789abcdef" for character in parsed):
+        raise CompassError("INVALID_INPUT", f"{field} must be a generated 32-character identifier")
+    return parsed
+
+
+def utc() -> str:
+    return datetime.now(UTC).isoformat()
+
+
+class Notebook:
+    """One workspace-owned SQLite notebook with optimistic revision checks."""
+
+    def __init__(self, path: str | Path):
+        self.path = Path(path).expanduser().absolute()
+
+    @contextmanager
+    def _existing_connection(self, *, writable: bool) -> Iterator[sqlite3.Connection]:
+        if not self.path.is_file():
+            raise CompassError("STORAGE_NOT_FOUND", "COMPASS-C notebook does not exist")
+        mode = "rw" if writable else "ro"
+        try:
+            database = sqlite3.connect(f"{self.path.as_uri()}?mode={mode}", uri=True, timeout=10)
+        except sqlite3.Error as exc:
+            raise CompassError(
+                "INVALID_STORAGE", "Path is not a usable COMPASS-C notebook"
+            ) from exc
+        database.row_factory = sqlite3.Row
+        database.execute("PRAGMA foreign_keys=ON")
+        try:
+            self._verify_schema(database)
+            with database:
+                yield database
+        finally:
+            database.close()
+
+    @contextmanager
+    def _start_connection(self) -> Iterator[sqlite3.Connection]:
+        if self.path.exists():
+            with self._existing_connection(writable=True) as database:
+                yield database
+            return
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        database = sqlite3.connect(self.path, timeout=10)
+        database.row_factory = sqlite3.Row
+        database.execute("PRAGMA foreign_keys=ON")
+        try:
+            with database:
+                self._initialize_schema(database)
+                yield database
+        except Exception:
+            database.close()
+            if self.path.exists() and self.path.stat().st_size == 0:
+                self.path.unlink()
+            raise
+        finally:
+            database.close()
+
+    @staticmethod
+    def _initialize_schema(database: sqlite3.Connection) -> None:
+        database.executescript(
+            """
+            CREATE TABLE compass_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
+            INSERT INTO compass_meta VALUES ('schema_version', '1');
+            CREATE TABLE decisions (
+                id TEXT PRIMARY KEY, objective TEXT NOT NULL, stakes TEXT NOT NULL,
+                constraints_json TEXT NOT NULL, revision INTEGER NOT NULL,
+                created_at TEXT NOT NULL
+            );
+            CREATE TABLE notes (
+                id TEXT PRIMARY KEY,
+                decision_id TEXT NOT NULL REFERENCES decisions(id),
+                kind TEXT NOT NULL, content TEXT NOT NULL, status TEXT NOT NULL,
+                source TEXT NOT NULL, dependencies_json TEXT NOT NULL,
+                stale INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL
+            );
+            CREATE TABLE invalidations (
+                id TEXT PRIMARY KEY,
+                decision_id TEXT NOT NULL REFERENCES decisions(id),
+                root_id TEXT NOT NULL, reason TEXT NOT NULL, affected_json TEXT NOT NULL,
+                revision INTEGER NOT NULL, created_at TEXT NOT NULL
+            );
+            CREATE INDEX notes_by_decision ON notes(decision_id);
+            """
+        )
+
+    @staticmethod
+    def _verify_schema(database: sqlite3.Connection) -> None:
+        try:
+            row = database.execute(
+                "SELECT value FROM compass_meta WHERE key='schema_version'"
+            ).fetchone()
+        except sqlite3.Error as exc:
+            raise CompassError(
+                "INVALID_STORAGE", "SQLite file is not a COMPASS-C notebook"
+            ) from exc
+        if row is None or row["value"] != SCHEMA_VERSION:
+            raise CompassError("UNSUPPORTED_SCHEMA", "Unsupported COMPASS-C notebook schema")
+
+    @staticmethod
+    def _decision(database: sqlite3.Connection, decision_id: str) -> sqlite3.Row:
+        identifier(decision_id, "decision_id")
+        row = database.execute("SELECT * FROM decisions WHERE id=?", (decision_id,)).fetchone()
+        if row is None:
+            raise CompassError("NOT_FOUND", "Decision not found")
+        return row
+
+    @staticmethod
+    def _revision(row: sqlite3.Row, expected: int) -> None:
+        integer(expected, "expected_revision", 1)
+        if row["revision"] != expected:
+            raise CompassError(
+                "REVISION_CONFLICT",
+                f"Read the decision again; current revision is {row['revision']}",
+            )
+
+    def start(
+        self,
+        objective: str,
+        stakes: str = "medium",
+        constraints: list[str] | None = None,
+    ) -> dict[str, Any]:
+        text(objective, "objective")
+        text(stakes, "stakes", limit=20)
+        if stakes not in STAKES:
+            raise CompassError("INVALID_INPUT", "stakes must be low, medium, or high")
+        parsed_constraints = strings([] if constraints is None else constraints, "constraints")
+        decision_id = uuid.uuid4().hex
+        with self._start_connection() as database:
+            database.execute(
+                "INSERT INTO decisions VALUES (?, ?, ?, ?, 1, ?)",
+                (decision_id, objective, stakes, json.dumps(parsed_constraints), utc()),
+            )
+        return {
+            "decision_id": decision_id,
+            "revision": 1,
+            "scope": "analysis_only",
+            "action_permission": "not_granted",
+            "next": "Record actual evidence and at least two alternatives; do not invent facts.",
+        }
+
+    def record(
+        self,
+        decision_id: str,
+        expected_revision: int,
+        kind: str,
+        content: str,
+        status: str = "proposed",
+        source: str = "",
+        depends_on: list[str] | None = None,
+    ) -> dict[str, Any]:
+        text(kind, "kind", limit=30)
+        text(status, "status", limit=30)
+        text(content, "content")
+        text(source, "source", limit=4_000, empty=True)
+        if kind not in KINDS or status not in STATUSES:
+            raise CompassError("INVALID_INPUT", "Unknown note kind or evidence status")
+        if status in {"observed", "computed"} and not source.strip():
+            raise CompassError("SOURCE_REQUIRED", "Observed/computed notes need provenance")
+        dependencies = strings([] if depends_on is None else depends_on, "depends_on")
+        for dependency in dependencies:
+            identifier(dependency, "dependency")
+        if len(dependencies) != len(set(dependencies)):
+            raise CompassError("INVALID_INPUT", "Duplicate dependencies")
+        note_id = uuid.uuid4().hex
+        with self._existing_connection(writable=True) as database:
+            database.execute("BEGIN IMMEDIATE")
+            row = self._decision(database, decision_id)
+            self._revision(row, expected_revision)
+            count = database.execute(
+                "SELECT COUNT(*) FROM notes WHERE decision_id=?", (decision_id,)
+            ).fetchone()[0]
+            if count >= 2_000:
+                raise CompassError("CAPACITY", "Decision note limit reached")
+            for dependency in dependencies:
+                found = database.execute(
+                    "SELECT decision_id, stale FROM notes WHERE id=?", (dependency,)
+                ).fetchone()
+                if found is None or found["decision_id"] != decision_id:
+                    raise CompassError("INVALID_DEPENDENCY", "Dependency belongs elsewhere")
+                if found["stale"]:
+                    raise CompassError("STALE_DEPENDENCY", "Cannot build on invalidated evidence")
+            database.execute(
+                "INSERT INTO notes VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)",
+                (
+                    note_id,
+                    decision_id,
+                    kind,
+                    content,
+                    status,
+                    source,
+                    json.dumps(dependencies),
+                    utc(),
+                ),
+            )
+            database.execute("UPDATE decisions SET revision=revision+1 WHERE id=?", (decision_id,))
+        return {
+            "decision_id": decision_id,
+            "note_id": note_id,
+            "revision": expected_revision + 1,
+            "action_permission": "not_granted",
+            "source_verified": False,
+        }
+
+    def get(self, decision_id: str) -> dict[str, Any]:
+        with self._existing_connection(writable=False) as database:
+            database.execute("BEGIN")
+            row = dict(self._decision(database, decision_id))
+            notes = [
+                dict(note)
+                for note in database.execute(
+                    "SELECT * FROM notes WHERE decision_id=? ORDER BY rowid", (decision_id,)
+                )
+            ]
+            invalidations = [
+                dict(item)
+                for item in database.execute(
+                    "SELECT * FROM invalidations WHERE decision_id=? ORDER BY rowid",
+                    (decision_id,),
+                )
+            ]
+        row["decision_id"] = row.pop("id")
+        row["constraints"] = json.loads(row.pop("constraints_json"))
+        for note in notes:
+            note["depends_on"] = json.loads(note.pop("dependencies_json"))
+            note["stale"] = bool(note["stale"])
+        for invalidation in invalidations:
+            invalidation["affected_notes"] = json.loads(invalidation.pop("affected_json"))
+        row.update(
+            notes=notes,
+            invalidations=invalidations,
+            scope="analysis_only",
+            action_permission="not_granted",
+        )
+        return row
+
+    def invalidate(
+        self,
+        decision_id: str,
+        expected_revision: int,
+        note_id: str,
+        reason: str,
+    ) -> dict[str, Any]:
+        identifier(note_id, "note_id")
+        text(reason, "reason")
+        with self._existing_connection(writable=True) as database:
+            database.execute("BEGIN IMMEDIATE")
+            row = self._decision(database, decision_id)
+            self._revision(row, expected_revision)
+            notes = [
+                dict(note)
+                for note in database.execute(
+                    "SELECT * FROM notes WHERE decision_id=?", (decision_id,)
+                )
+            ]
+            if note_id not in {note["id"] for note in notes}:
+                raise CompassError("NOT_FOUND", "Note not found in this decision")
+            affected = {note_id} | {note["id"] for note in notes if note["kind"] == "decision"}
+            changed = True
+            while changed:
+                before = len(affected)
+                for note in notes:
+                    if affected.intersection(json.loads(note["dependencies_json"])):
+                        affected.add(note["id"])
+                changed = len(affected) > before
+            database.executemany(
+                "UPDATE notes SET stale=1 WHERE id=?",
+                [(affected_id,) for affected_id in sorted(affected)],
+            )
+            database.execute("UPDATE decisions SET revision=revision+1 WHERE id=?", (decision_id,))
+            database.execute(
+                "INSERT INTO invalidations VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (
+                    uuid.uuid4().hex,
+                    decision_id,
+                    note_id,
+                    reason,
+                    json.dumps(sorted(affected)),
+                    expected_revision + 1,
+                    utc(),
+                ),
+            )
+        return {
+            "decision_id": decision_id,
+            "revision": expected_revision + 1,
+            "invalidated": sorted(affected),
+            "action_permission": "not_granted",
+        }
+
+    def review(self, decision_id: str) -> dict[str, Any]:
+        decision = self.get(decision_id)
+        current = [note for note in decision["notes"] if not note["stale"]]
+        counts = {kind: sum(note["kind"] == kind for note in current) for kind in sorted(KINDS)}
+        missing: list[str] = []
+        if counts["evidence"] == 0:
+            missing.append("Record decision-relevant evidence with uncertainty and provenance.")
+        if counts["alternative"] < 2:
+            missing.append("Compare at least two alternatives, including delay or inaction.")
+        if counts["test"] == 0:
+            missing.append("Specify a check that could change the conclusion.")
+        if counts["limitation"] == 0:
+            missing.append("State the operating envelope and remaining uncertainty.")
+        if counts["decision"] == 0:
+            missing.append("Record a conditional recommendation; this cannot authorize execution.")
+        if decision["stakes"] == "high":
+            if not decision["constraints"]:
+                missing.append("Specify constraints and the actual authority for any action.")
+            if counts["effect"] == 0:
+                missing.append("Trace higher-order effects, reflexivity, and recovery feasibility.")
+        stale = [note["id"] for note in decision["notes"] if note["stale"]]
+        ungrounded = [
+            note["id"]
+            for note in current
+            if note["kind"] == "evidence" and note["status"] in {"assumed", "proposed"}
+        ]
+        if ungrounded:
+            missing.append("Some evidence entries are only assumptions or proposals; support them.")
+        return {
+            "decision_id": decision_id,
+            "revision": decision["revision"],
+            "current_counts": counts,
+            "status": "needs_work" if missing else "record_complete_not_verified",
+            "next_checks": missing,
+            "stale_notes": stale,
+            "action_permission": "not_granted",
+            "source_verified": False,
+            "limits": (
+                "Structural checks only; note presence does not establish truth or authority."
+            ),
+        }
