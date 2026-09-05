@@ -1,0 +1,2 @@
+# Delay newly published packages to reduce fresh-release supply-chain exposure.
+exclude-newer = "7 days"
