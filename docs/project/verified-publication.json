@@ -1,0 +1,13 @@
+{
+  "schema": "compass-c.publication-receipt.v1",
+  "repository": "tryingET/compass-c",
+  "url": "https://github.com/tryingET/compass-c",
+  "visibility": "public",
+  "default_branch": "main",
+  "verified_commit": "218d9f3df0cae6073f126b5d571452b2ad024be5",
+  "verification": {
+    "github_api_ref_match": true,
+    "git_ls_remote_match": true
+  },
+  "verified_at": "2026-09-05T08:46:10Z"
+}

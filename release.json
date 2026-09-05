@@ -15,7 +15,8 @@
     "path": "LICENSE"
   },
   "source_conversation": "https://chatgpt.com/share/6a9bcb2a-90dc-83eb-a629-34cae8f02623",
-  "publication_status": "not_yet_published",
+  "publication_status": "initial_publication_verified",
+  "verified_public_commit": "218d9f3df0cae6073f126b5d571452b2ad024be5",
   "host_installation": "not_performed",
   "mcp_integration": "not_run",
   "behavioral_evaluation": "development_cases_only"
