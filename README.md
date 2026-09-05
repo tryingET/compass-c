@@ -33,6 +33,7 @@ host.
 |---|---|
 | `src/compass_c/` | Canonical notebook, calculations, and CLI implementation |
 | `skills/compass/` | Portable skill, conditional references, generated scripts, and development cases |
+| `.pi/skills/compass-c-maintainer/` | Repo-local maintenance skill candidate, KES improvement intake, and development routing cases; not shipped in portable skill archives |
 | `scripts/build_skill.py` | Regenerates standalone skill scripts from the canonical package |
 | `scripts/build_archives.py` | Produces deterministic toolkit, skill, and skills-only plugin archives |
 | `install_skill.py` | No-overwrite install and remotely verified replacement workflow |
@@ -75,6 +76,14 @@ just build
 
 `just ci` verifies generated-file drift, lint, tests, skill structure, template policy, and
 archive reproducibility. It does not prove improved reasoning behavior or production readiness.
+
+The repo-local maintainer skill adopts `agent-skill-engineer` with explicit handoffs,
+not a copied universal workflow. `scripts/validate_skill.py` checks both packages.
+Pi project-skill discovery depends on trusting/loading this checkout; committing
+files does not prove discovery, actual use, or behavioral improvement. KES signals
+are reviewed improvement inputs, not permission for automatic self-modification.
+See the existing [vision](docs/project/vision.md) for the standalone v1-v4 horizons
+and [product posture](docs/project/product_posture.md) for current proof gaps.
 
 ## Skill installation
 
