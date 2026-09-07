@@ -31,11 +31,20 @@ def outputs() -> dict[Path, str]:
                 "from core import VERSION, CompassError, Notebook  # noqa: E402"
             ),
         )
+        .replace(
+            "from .evaluation import evaluate", "from evaluation import evaluate  # noqa: E402"
+        )
     )
     return {
         TARGET / "core.py": core,
         TARGET / "calculations.py": GENERATED + calculations,
         TARGET / "compass.py": GENERATED + cli,
+        TARGET / "evaluation.py": GENERATED
+        + (
+            (SOURCE / "evaluation.py")
+            .read_text(encoding="utf-8")
+            .replace("from .core import", "from core import")
+        ),
     }
 
 

@@ -18,10 +18,15 @@ permission to spend, deploy, send, delete, or otherwise act outside the user's a
 
 ## Status
 
-Version **0.3.0** is a provisional release. Local software and packaging checks are executable.
-The included 24-case skill corpus is author-visible development material, not a completed A/B
-behavioral evaluation. Cross-client discovery, live MCP round-trips, and ChatGPT account
-installation are not established by repository tests.
+Version **0.4.0** adds inspectable decision briefs, exact probability sensitivity,
+history-preserving evidence revision, explicit schema upgrades, and paired evaluation reports.
+The core is **standalone and standard-library only**. Agent Kernel and other development
+systems are not required to install or use it. MCP is an optional, separately installed extra.
+
+Executable acceptance tests cover the library, fresh-process CLI, portable skill, and
+local MCP SDK client/server path. The included 24-case skill corpus remains author-visible
+development material. Vendor-host discovery, account installation, and improved decision
+quality still require direct host evidence; local tests cannot establish those outcomes.
 
 `LICENSE` exactly matches `tryingET/pi-extensions`, including its provider rider. It is **not
 standard MIT**. Review the license before distributing or installing the skill in a restricted
@@ -31,21 +36,20 @@ host.
 
 | Path | Purpose |
 |---|---|
-| `src/compass_c/` | Canonical notebook, calculations, and CLI implementation |
+| `src/compass_c/` | Canonical notebook, calculations, paired evaluation, CLI and optional MCP implementation |
 | `skills/compass/` | Portable skill, conditional references, generated scripts, and development cases |
 | `.pi/skills/compass-c-maintainer/` | Repo-local maintenance skill candidate, KES improvement intake, and development routing cases; not shipped in portable skill archives |
 | `scripts/build_skill.py` | Regenerates standalone skill scripts from the canonical package |
 | `scripts/build_archives.py` | Produces deterministic toolkit, skill, and skills-only plugin archives |
 | `install_skill.py` | No-overwrite install and remotely verified replacement workflow |
-| `integrations/mcp_server.py` | Optional, provisional local stdio MCP adapter |
+| `integrations/mcp_server.py` | Compatibility wrapper for the installed `compass-c-mcp` stdio adapter |
 
 ## Quick start
 
 ```bash
-uv sync --extra dev
-just test
+python -m pip install .
 
-uv run compass-c calculate bundle --parameters \
+compass-c calculate bundle --parameters \
   '{"test_accuracy":0.95,"test_cost":3,"gain":100,"loss":400}'
 ```
 
@@ -55,27 +59,52 @@ arithmetic, not empirical validation.
 Create and inspect a local decision record:
 
 ```bash
-uv run compass-c --db .compass/decisions.sqlite3 start \
+compass-c --db .compass/decisions.sqlite3 start \
   --objective "Choose between a pilot and a full launch" \
   --stakes high \
   --constraints '["No deployment without owner approval"]'
 
-uv run compass-c --db .compass/decisions.sqlite3 get <decision-id>
+compass-c --db .compass/decisions.sqlite3 list
+compass-c --db .compass/decisions.sqlite3 brief <decision-id>
 ```
 
 Construction, calculations, and reads do not create storage. Only a validated `start` command
 may initialize a new notebook.
 
+Use `record` to retain sourced evidence, alternatives, checks, limitations, a
+conditional decision, and explicit `reversal_condition` notes. `brief` groups the
+current material, preserves its provenance, and separates stale conclusions.
+`revise` appends corrected evidence with a reason and invalidates affected conclusions
+without overwriting history. Existing schema-1 records stay readable; `migrate`
+explicitly upgrades them before the first revision operation.
+
+Find the point where a conditional choice changes:
+
+```bash
+compass-c calculate sensitivity --parameters \
+  '{"actions":["pilot","delay"],"scenarios":["success","failure"],"payoffs":[[10,-10],[0,0]],"probability_start":[0,1],"probability_end":[1,0]}'
+```
+
+This synthetic model switches from delay to pilot at probability `1/2`, with a tie
+at the boundary. Exact fraction coordinates preserve even very narrow intervals;
+no probabilities or decision criteria are chosen for you.
+
+See [the standalone workflow](docs/project/usage.md) for the complete record lifecycle
+and [evaluation](docs/project/evaluation.md) for reporting paired host observations.
+
 ## Validation and packaging
 
 ```bash
+uv sync --extra dev
 just check
+just test
 just ci
 just build
 ```
 
 `just ci` verifies generated-file drift, lint, tests, skill structure, template policy, and
-archive reproducibility. It does not prove improved reasoning behavior or production readiness.
+archive reproducibility. The optional MCP test suite executes when the MCP extra is installed;
+CI also runs it against an isolated built wheel. These checks do not prove improved reasoning.
 
 The repo-local maintainer skill adopts `agent-skill-engineer` with explicit handoffs,
 not a copied universal workflow. `scripts/validate_skill.py` checks both packages.
@@ -111,12 +140,14 @@ See [installation and publication boundaries](docs/project/installation.md).
 ## Optional MCP adapter
 
 ```bash
-uv sync --extra mcp
-uv run python scripts/configure_mcp.py --db "$PWD/.compass/decisions.sqlite3"
+python -m pip install '.[mcp]'
+python scripts/configure_mcp.py --db "$PWD/.compass/decisions.sqlite3"
 ```
 
-The command prints configuration; it does not edit host settings. The adapter remains
-provisional until tested against the target MCP client and SDK version.
+The command prints configuration; it does not edit host settings. The installed
+`compass-c-mcp` entry point uses the pinned MCP SDK 2.1.1. Local stdio round-trips
+are executable acceptance tests; each vendor host still needs its own discovery
+and fresh-session verification. Keep the adapter local; shared hosting is out of scope.
 
 ## Provenance
 

@@ -1,5 +1,5 @@
 {
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "provisional",
   "repository": "tryingET/compass-c",
   "package": "compass-c",
@@ -15,9 +15,9 @@
     "path": "LICENSE"
   },
   "source_conversation": "https://chatgpt.com/share/6a9bcb2a-90dc-83eb-a629-34cae8f02623",
-  "publication_status": "initial_publication_verified",
-  "verified_public_commit": "218d9f3df0cae6073f126b5d571452b2ad024be5",
+  "publication_status": "candidate_not_released",
+  "prior_verified_public_commit": "218d9f3df0cae6073f126b5d571452b2ad024be5",
   "host_installation": "not_performed",
-  "mcp_integration": "not_run",
-  "behavioral_evaluation": "development_cases_only"
+  "mcp_integration": "local_sdk_roundtrip_tested_vendor_hosts_unverified",
+  "behavioral_evaluation": "paired_reporting_available_no_host_results"
 }

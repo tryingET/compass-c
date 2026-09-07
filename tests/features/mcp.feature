@@ -35,4 +35,11 @@ Feature: Supported local MCP decision workflow
     Given an explicit Python interpreter and notebook path
     When the local configuration helper runs
     Then the configuration invokes the installed compass_c.mcp_server module
+    And it preserves the virtual environment interpreter path
     And no host settings or notebook files are written
+
+  Scenario: Reject malformed revision types before writing
+    Given a decision has revision one
+    When a client supplies true, 1.0, or "1" as the expected revision
+    Then the request is rejected without converting the value to an integer
+    And the decision and its revision are unchanged

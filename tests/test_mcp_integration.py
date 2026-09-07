@@ -86,6 +86,7 @@ def test_mcp_configuration_invokes_installed_module_without_writing(tmp_path: Pa
     assert process.returncode == 0, process.stderr
     config = json.loads(process.stdout)["mcpServers"]["compass"]
     assert config["args"] == ["-m", "compass_c.mcp_server"]
+    assert config["command"] == str(Path(PYTHON).absolute())
     assert Path(config["command"]).is_file()
     assert config["env"] == {"COMPASS_DB": str(path)}
     assert not path.parent.exists()
@@ -218,6 +219,32 @@ def test_sdk_recovers_and_revises_a_decision_without_losing_history(tmp_path: Pa
             assert len(history["revisions"]) == 1
             assert len(history["notes"]) == 3
             assert any(note["id"] == prior_id and note["stale"] for note in history["notes"])
+
+    anyio.run(scenario)
+
+
+@sdk
+def test_sdk_rejects_revision_type_coercion_without_mutation(tmp_path: Path) -> None:
+    import anyio
+
+    async def scenario() -> None:
+        async with session(tmp_path / "decisions.sqlite3", tmp_path) as client:
+            started = await call(client, "compass_start", objective="Preserve revision integrity")
+            decision_id = started["data"]["decision_id"]
+            for invalid_revision in (True, 1.0, "1"):
+                response = await client.call_tool(
+                    "compass_record",
+                    {
+                        "decision_id": decision_id,
+                        "expected_revision": invalid_revision,
+                        "kind": "assumption",
+                        "content": "This malformed write must never be accepted.",
+                    },
+                )
+                assert response.is_error or response.structured_content["ok"] is False
+            record = (await call(client, "compass_get", decision_id=decision_id))["data"]
+            assert record["revision"] == 1
+            assert record["notes"] == []
 
     anyio.run(scenario)
 

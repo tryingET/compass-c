@@ -151,9 +151,9 @@ def install(
     permission = permission_record(permission_file)
     if replace and permission is None:
         raise ValueError("Managed replacement requires a rights-holder permission record")
+    publication = verify_published(SOURCE, repository, commit) if repository and commit else None
     if dry_run:
         return destination
-    publication = verify_published(SOURCE, repository, commit) if repository and commit else None
     root.parent.mkdir(parents=True, exist_ok=True)
     lock = root.parent / f".{root.name}-compass-install.lock"
     descriptor = os.open(lock, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)

@@ -14,6 +14,7 @@ use `{"ok": false, "error": {"code": ..., "message": ...}}` and exit code 2.
 | Kind | Required JSON fields | Limits and interpretation |
 |---|---|---|
 | compare | actions, scenarios, payoffs | Payoff matrix is actions × scenarios; maximize payoffs. Computes worst cases and max regret. Optional probabilities (sum 1) add expected values. It does not choose the normative criterion, evaluate hard constraints, or verify that actions are admissible. |
+| sensitivity | actions, scenarios, payoffs, probability_start, probability_end | Fixed comparable payoffs along the supplied probability path p(t)=(1−t)start+t·end, 0≤t≤1. Reports expected-value winner intervals, actual preference boundaries and ties. Exact fraction coordinates preserve intervals narrower than floating-point display resolution. Does not estimate likelihoods or select a criterion. |
 | committee | members, accuracy, correlation | Odd committee size 1–101; common-shock/independent mixture. Does not evaluate real experts or general ensembles. |
 | bundle | test_accuracy, test_cost, gain, loss | Two independent uniform binary facts; success depends on their parity. Independent symmetric test noise, accuracy 0.5–1. It illustrates complementarity, not arbitrary research design. |
 | feedback | a, gain, delay | Constant linear recurrence x[t+1]=a*x[t]−gain*x[t−delay], delay 0 or 1. Characteristic-root stability; no arbitrary delays or nonlinear plants. |
@@ -32,3 +33,18 @@ python <skill-dir>/scripts/compass.py calculate recovery --parameters '{"capacit
 The parity pair has value 20.25 under those assumptions; the feedback model has
 spectral radius sqrt(0.5); the resource example has zero remaining reserve margin.
 These are conditional checks, not empirical observations.
+
+## Sensitivity and reversal thresholds
+
+```bash
+python <skill-dir>/scripts/compass.py calculate sensitivity --parameters '{"actions":["pilot","delay"],"scenarios":["success","failure"],"payoffs":[[10,-10],[0,0]],"probability_start":[0,1],"probability_end":[1,0]}'
+```
+
+In this synthetic model, delay wins below t=1/2, the actions tie at t=1/2,
+and pilot wins above it. Interval winners apply to the open interior; endpoints
+and breakpoints list their ties separately. The fraction strings (`t_exact`,
+`start_exact`, `end_exact`) preserve exact decimal-input boundaries; numeric
+coordinates are convenient approximations. This threshold is conditional on
+fixed payoffs, admissible actions and the specified probability path. A different
+model can change it. Link a saved computed note to these explicit parameters and
+result when recording a numerical reversal condition.

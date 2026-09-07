@@ -11,7 +11,9 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("compass_archive_builder", ROOT / "scripts/build_archives.py")
+SPEC = importlib.util.spec_from_file_location(
+    "compass_archive_builder", ROOT / "scripts/build_archives.py"
+)
 assert SPEC is not None and SPEC.loader is not None
 builder = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(builder)
@@ -42,6 +44,7 @@ def checkout(tmp_path: Path) -> Path:
         "LICENSE",
         "pyproject.toml",
         "scripts/build_archives.py",
+        "scripts/rocs.sh",
         "src/compass_c/core.py",
         "skills/compass/SKILL.md",
         "skills/compass/scripts/compass.py",
@@ -165,3 +168,13 @@ def test_manifest_path_traversal_is_rejected(
     write(root, "MANIFEST_SHA256.txt", "0" * 64 + "  ../private.txt\n")
     with pytest.raises(ValueError, match="(?i)(manifest|path)"):
         build(root, tmp_path / "output", monkeypatch)
+
+
+def test_toolkit_commands_retain_executable_zip_metadata(
+    checkout: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    products = build(checkout, tmp_path / "output", monkeypatch)
+    with zipfile.ZipFile(products[f"COMPASS-C_toolkit_v{builder.VERSION}.zip"]) as archive:
+        for name in ("scripts/rocs.sh", "scripts/build_archives.py"):
+            assert archive.getinfo(f"compass-c/{name}").external_attr >> 16 & 0o111 == 0o111
+        assert archive.getinfo("compass-c/README.md").external_attr >> 16 & 0o111 == 0

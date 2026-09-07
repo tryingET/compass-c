@@ -1,6 +1,6 @@
 [project]
 name = "compass-c"
-version = "0.3.0"
+version = "0.4.0"
 description = "Computational decision support with bounded, revisable evidence records"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -26,9 +26,10 @@ Issues = "https://github.com/tryingET/compass-c/issues"
 [project.scripts]
 compass-c = "compass_c.cli:main"
 compass = "compass_c.cli:main"
+compass-c-mcp = "compass_c.mcp_server:main"
 
 [project.optional-dependencies]
-mcp = ["mcp>=2,<3"]
+mcp = ["mcp==2.1.1"]
 dev = [
     "build>=1.2",
     "pytest>=8.0",

@@ -352,7 +352,7 @@ class InterfaceTests(unittest.TestCase):
                 timeout=10,
             )
             self.assertEqual(p.returncode, 0, p.stderr)
-            self.assertEqual(p.stdout.strip(), "0.3.0")
+            self.assertEqual(p.stdout.strip(), "0.4.0")
 
     def test_install_does_not_overwrite(self):
         with tempfile.TemporaryDirectory() as t:

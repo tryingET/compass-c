@@ -24,9 +24,10 @@ Feature: Inspect when uncertainty changes the expected-value preference
 
   Scenario: Preserve narrow preference intervals and large-payoff differences
     Given bounded payoffs whose winning intervals are very narrow
-    Or large bounded payoffs with small decision-relevant differences
+    And large bounded payoffs with small decision-relevant differences
     When the owner requests sensitivity
     Then no real preference interval or preference difference is discarded
+    And exact rational path coordinates preserve intervals smaller than float precision
 
   Scenario: Do not manufacture a probability model or authority
     Given the owner supplies only one probability endpoint or an invalid model
@@ -34,3 +35,9 @@ Feature: Inspect when uncertainty changes the expected-value preference
     Then the request fails with INVALID_INPUT
     And successful requests always disclose the model assumptions
     And no calculation chooses a criterion or grants action permission
+
+  Scenario: Comparison and sensitivity agree on exact decimal ties
+    Given decimal payoffs whose expected values or maximum regrets are equal
+    When the owner requests comparison and sensitivity on that model
+    Then rounded arithmetic cannot invent a preference
+    And genuinely distinct expected values are still distinguished

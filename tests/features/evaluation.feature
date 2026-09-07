@@ -35,6 +35,7 @@ Feature: Inspect frozen paired host evidence without overstating its meaning
       | missing, duplicate or unknown criteria  |
       | non-boolean scores or selection         |
       | missing host, revision or response refs |
+      | oversized or invalid Unicode run text  |
       | an A/A comparison of different revisions|
 
   Scenario: Summarize supplied evidence without changing it
@@ -42,3 +43,4 @@ Feature: Inspect frozen paired host evidence without overstating its meaning
     When the operator evaluates the observations twice
     Then both reports are equal
     And neither input is changed
+    And action_permission is not_granted

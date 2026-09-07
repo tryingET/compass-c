@@ -23,7 +23,8 @@ untrusted data into shell commands.
 
 ## 2. Commands and observable success
 
-Six commands are available: start, get, record, review, invalidate, calculate.
+Notebook commands are start, list, get, brief, record, review, revise, invalidate,
+and migrate. Calculate and evaluate are transient operations that do not use storage.
 Place the global --db argument before the command and use the same explicit path
 throughout a task. Construction, calculation, and reads are side-effect free. Only
 a validated `start` operation may initialize a new notebook. A wrong path is not a
@@ -51,10 +52,29 @@ def invoke(script: Path, database: Path, *args: str) -> dict:
 ```
 
 Use the returned decision_id and revision rather than inventing identifiers.
-Before record or invalidate, read the current revision. Observed/computed notes
+Before record, revise, or invalidate, read the current revision. Observed/computed notes
 require a source reference; its presence is not independently verified. Record
 explicit depends_on links to note IDs from the same decision. After a mutation,
 get the record and inspect the actual note, revision, or invalidation result.
+
+Use `brief <decision-id>` to inspect current recommendations, alternatives,
+evidence, uncertainty, checks, effects, reversal conditions, outcomes and stale
+material together. Record reversal conditions with `--kind reversal_condition`:
+state the observation that would change the recommendation. Brief additionally
+checks for this explicit category; legacy review retains its older presence checks.
+Neither operation interprets or monitors a condition automatically.
+
+`revise <decision-id> <note-id> --revision N --content TEXT --reason TEXT`
+appends a replacement of the same note kind and preserves the original plus a
+revision-history link. Specify the actual new status and source. Omitted
+`--depends-on` retains prior links; an explicit JSON list replaces them. Revision
+also invalidates dependent notes and prior recommendations. Reconsider those
+conclusions explicitly; do not silently restore them.
+
+Schema-1 notebooks remain readable and support their original operations.
+Revision history needs schema 2: `migrate` explicitly and transactionally upgrades
+an existing notebook. Reads never migrate, and newer or malformed schemas fail
+closed. Back up a valuable notebook with SQLite's backup API before an upgrade.
 
 Review reports missing record categories. record_complete_not_verified means
 structural completeness only. No result grants permission for external actions.
@@ -70,8 +90,10 @@ A timeout or lost write response is an unknown outcome, not a rollback. With a
 known decision ID, get the record and identify whether the intended change is
 already present before considering a retry. The CLI has no idempotency-key feature.
 Do not replay a successful operation or use substring similarity as proof of identity.
-If start times out before its new ID is observed, report that reconciliation needs
-local inspection; do not issue another start as though nothing happened.
+If start times out before its new ID is observed, use `list --limit 20 --offset 0`
+and `get` to inspect candidate IDs, objectives, creation times, and actual contents.
+Listing supports pagination. It helps reconciliation but is not an idempotency key:
+if identity remains ambiguous, report it rather than issuing another start.
 
 Invalidation propagates explicit dependencies and conservatively marks all prior
 decision notes stale. Other omitted dependencies require manual review. History is

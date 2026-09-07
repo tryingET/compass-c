@@ -53,9 +53,21 @@ def test_fresh_process_decision_journey(tmp_path: Path, portable: bool) -> None:
     ]
     for kind, content, status, source in notes:
         state = success(
-            db, "record", did, "--revision", str(revision), "--kind", kind,
-            "--content", content, "--status", status, "--source", source,
-            "--depends-on", json.dumps([evidence_id] if kind == "decision" else []),
+            db,
+            "record",
+            did,
+            "--revision",
+            str(revision),
+            "--kind",
+            kind,
+            "--content",
+            content,
+            "--status",
+            status,
+            "--source",
+            source,
+            "--depends-on",
+            json.dumps([evidence_id] if kind == "decision" else []),
             portable=portable,
         )
         revision = state["revision"]
@@ -75,9 +87,21 @@ def test_fresh_process_decision_journey(tmp_path: Path, portable: bool) -> None:
     assert brief["action_permission"] == "not_granted"
 
     changed = success(
-        db, "revise", did, evidence_id, "--revision", str(revision),
-        "--content", "Pilot conversion is 0.04", "--reason", "Corrected denominator",
-        "--status", "observed", "--source", "synthetic pilot run 2", portable=portable,
+        db,
+        "revise",
+        did,
+        evidence_id,
+        "--revision",
+        str(revision),
+        "--content",
+        "Pilot conversion is 0.04",
+        "--reason",
+        "Corrected denominator",
+        "--status",
+        "observed",
+        "--source",
+        "synthetic pilot run 2",
+        portable=portable,
     )
     assert changed["revision"] == revision + 1
     assert decision_id in changed["invalidated"]
@@ -95,9 +119,11 @@ def test_cli_sensitivity_has_no_storage(tmp_path: Path, portable: bool) -> None:
     # Use an existing working directory independently of the nonexistent DB parent.
     db.parent.mkdir()
     params = {
-        "actions": ["pilot", "delay"], "scenarios": ["success", "failure"],
+        "actions": ["pilot", "delay"],
+        "scenarios": ["success", "failure"],
         "payoffs": [[10, -10], [0, 0]],
-        "probability_start": [0, 1], "probability_end": [1, 0],
+        "probability_start": [0, 1],
+        "probability_end": [1, 0],
     }
     output = success(
         db, "calculate", "sensitivity", "--parameters", json.dumps(params), portable=portable
@@ -124,7 +150,7 @@ def test_cli_evaluate_missing_file_is_bounded(tmp_path: Path) -> None:
     assert not db.exists()
 
 
-@pytest.mark.parametrize("payload", [b"\xff", b"{\"x\": 1, \"x\": 2}", b"[" * 1500])
+@pytest.mark.parametrize("payload", [b"\xff", b'{"x": 1, "x": 2}', b"[" * 1500])
 def test_cli_evaluate_invalid_input_has_no_traceback(tmp_path: Path, payload: bytes) -> None:
     corpus = tmp_path / "corpus.json"
     corpus.write_bytes(payload)

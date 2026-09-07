@@ -7,6 +7,19 @@ type: "procedure"
 
 # Publication and installation are separate states
 
+## Standalone package
+
+Install the toolkit from a checkout with `python -m pip install .`, or install a
+verified built wheel. The core library and CLI use only Python's standard library.
+Agent Kernel, ROCS, Pi and other development coordination tools are not runtime
+requirements. A portable skill installation also works independently of those systems.
+
+MCP is opt-in: `python -m pip install '.[mcp]'` adds the pinned SDK. Keep the
+virtual environment's own interpreter path in client configuration; resolving its
+symlink to the base Python loses the environment's installed packages.
+
+## Publication sequence
+
 Use this sequence:
 
 1. render the Softwareco project template;
@@ -78,6 +91,14 @@ skills-only plugin archive, but archive creation is not account installation.
 
 ## MCP
 
-`integrations/mcp_server.py` is optional and provisional. `scripts/configure_mcp.py` prints a
-machine-specific local configuration; it does not modify a host. Do not claim MCP connectivity
-until the target client completes a live round-trip against the selected SDK version.
+`compass-c-mcp` and `python -m compass_c.mcp_server` run the optional local stdio
+adapter from the installed package. `integrations/mcp_server.py` is a compatibility
+wrapper. `scripts/configure_mcp.py` prints a machine-specific configuration; it
+does not modify a host or require a persistent checkout path at runtime.
+
+`tests/test_mcp_integration.py` uses the actual pinned SDK 2.1.1 client and server:
+initialize, discover ten tools, calculate, persist, reconnect, revise, inspect and
+fail cleanly. CI repeats these scenarios against an isolated built wheel. This
+establishes the local SDK path; vendor-host installation and discovery still need
+a fresh-session canary against that actual client. The adapter is not a shared,
+authenticated or multi-tenant service.

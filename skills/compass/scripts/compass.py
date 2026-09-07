@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sqlite3
 import sys
@@ -15,6 +16,7 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from calculations import calculate  # noqa: E402
 from core import VERSION, CompassError, Notebook  # noqa: E402
+from evaluation import evaluate  # noqa: E402
 
 
 class JsonArgumentParser(argparse.ArgumentParser):
@@ -24,9 +26,9 @@ class JsonArgumentParser(argparse.ArgumentParser):
         raise CompassError("INVALID_ARGUMENTS", message)
 
 
-def parse_json(raw: str) -> Any:
-    if len(raw) > 100_000:
-        raise CompassError("INPUT_TOO_LARGE", "JSON input exceeds 100000 characters")
+def parse_json(raw: str, *, limit: int = 100_000) -> Any:
+    if len(raw) > limit:
+        raise CompassError("INPUT_TOO_LARGE", f"JSON input exceeds {limit} characters")
 
     def no_duplicates(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
         result: dict[str, Any] = {}
@@ -39,10 +41,33 @@ def parse_json(raw: str) -> Any:
     def no_constants(_value: str) -> None:
         raise CompassError("INVALID_JSON", "Non-finite JSON numbers are not allowed")
 
+    def finite_float(value: str) -> float:
+        number = float(value)
+        if not math.isfinite(number):
+            raise CompassError("INVALID_JSON", "Non-finite JSON numbers are not allowed")
+        return number
+
     try:
-        return json.loads(raw, object_pairs_hook=no_duplicates, parse_constant=no_constants)
-    except (json.JSONDecodeError, RecursionError) as exc:
+        return json.loads(
+            raw,
+            object_pairs_hook=no_duplicates,
+            parse_constant=no_constants,
+            parse_float=finite_float,
+        )
+    except CompassError:
+        raise
+    except (ValueError, RecursionError) as exc:
         raise CompassError("INVALID_JSON", "Invalid JSON input") from exc
+
+
+def read_json(path: str) -> Any:
+    """Read a bounded UTF-8 input file without exposing paths or file contents in errors."""
+    try:
+        with Path(path).open("r", encoding="utf-8") as source:
+            raw = source.read(1_000_001)
+    except (OSError, UnicodeError, ValueError) as exc:
+        raise CompassError("INPUT_FILE_ERROR", "Cannot read a UTF-8 JSON input file") from exc
+    return parse_json(raw, limit=1_000_000)
 
 
 def parser() -> JsonArgumentParser:
@@ -57,14 +82,21 @@ def parser() -> JsonArgumentParser:
     )
     commands = root.add_subparsers(dest="command", required=True, parser_class=JsonArgumentParser)
 
-    start = commands.add_parser("start")
+    start = commands.add_parser("start", help="create a task-owned decision notebook entry")
     start.add_argument("--objective", required=True)
     start.add_argument("--stakes", choices=["low", "medium", "high"], default="medium")
     start.add_argument("--constraints", default="[]", help="JSON list")
 
-    for name in ("get", "review"):
+    for name in ("get", "review", "brief"):
         command = commands.add_parser(name)
         command.add_argument("decision_id")
+
+    listing = commands.add_parser(
+        "list", help="discover decisions and reconcile a lost start response"
+    )
+    listing.add_argument("--limit", type=int, default=20)
+    listing.add_argument("--offset", type=int, default=0)
+    commands.add_parser("migrate", help="explicitly upgrade an existing notebook schema")
 
     record = commands.add_parser("record")
     record.add_argument("decision_id")
@@ -81,17 +113,48 @@ def parser() -> JsonArgumentParser:
     invalidate.add_argument("--revision", required=True, type=int)
     invalidate.add_argument("--reason", required=True)
 
+    revise = commands.add_parser(
+        "revise", help="replace a note and invalidate dependent conclusions"
+    )
+    revise.add_argument("decision_id")
+    revise.add_argument("note_id")
+    revise.add_argument("--revision", required=True, type=int)
+    revise.add_argument("--content", required=True)
+    revise.add_argument("--reason", required=True)
+    revise.add_argument("--status", default="proposed")
+    revise.add_argument("--source", default="")
+    revise.add_argument(
+        "--depends-on", default=None, help="JSON note IDs; omission retains prior links"
+    )
+
     calculation = commands.add_parser("calculate")
     calculation.add_argument(
-        "kind", choices=["compare", "committee", "bundle", "feedback", "recovery", "tail", "brier"]
+        "kind",
+        choices=[
+            "compare",
+            "sensitivity",
+            "committee",
+            "bundle",
+            "feedback",
+            "recovery",
+            "tail",
+            "brier",
+        ],
     )
     calculation.add_argument("--parameters", required=True, help="JSON object")
+    evaluation = commands.add_parser(
+        "evaluate", help="report frozen paired host evaluation results"
+    )
+    evaluation.add_argument("--corpus", required=True, help="frozen corpus JSON file")
+    evaluation.add_argument("--results", required=True, help="paired observations JSON file")
     return root
 
 
 def execute(arguments: argparse.Namespace) -> dict[str, Any]:
     if arguments.command == "calculate":
         return calculate(arguments.kind, parse_json(arguments.parameters))
+    if arguments.command == "evaluate":
+        return evaluate(read_json(arguments.corpus), read_json(arguments.results))
 
     notebook = Notebook(arguments.db)
     if arguments.command == "start":
@@ -102,6 +165,23 @@ def execute(arguments: argparse.Namespace) -> dict[str, Any]:
         return notebook.get(arguments.decision_id)
     if arguments.command == "review":
         return notebook.review(arguments.decision_id)
+    if arguments.command == "brief":
+        return notebook.brief(arguments.decision_id)
+    if arguments.command == "list":
+        return notebook.list(arguments.limit, arguments.offset)
+    if arguments.command == "migrate":
+        return notebook.migrate()
+    if arguments.command == "revise":
+        return notebook.revise(
+            arguments.decision_id,
+            arguments.revision,
+            arguments.note_id,
+            arguments.content,
+            arguments.reason,
+            arguments.status,
+            arguments.source,
+            parse_json(arguments.depends_on) if arguments.depends_on is not None else None,
+        )
     if arguments.command == "record":
         return notebook.record(
             arguments.decision_id,

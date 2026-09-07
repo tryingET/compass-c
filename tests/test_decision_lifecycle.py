@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 import sqlite3
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -45,8 +44,17 @@ def legacy(tmp_path: Path) -> Notebook:
         )
         db.execute(
             "INSERT INTO notes VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (NID, DID, "evidence", "Exact legacy source", "observed", "local:old", "[]", 0,
-             "2026-01-01"),
+            (
+                NID,
+                DID,
+                "evidence",
+                "Exact legacy source",
+                "observed",
+                "local:old",
+                "[]",
+                0,
+                "2026-01-01",
+            ),
         )
     return Notebook(path)
 
@@ -65,14 +73,26 @@ def add(book: Notebook, did: str, kind: str, content: str, **kwargs: object) -> 
 def test_brief_preserves_sections_provenance_and_bytes(decision: tuple[Notebook, str]) -> None:
     book, did = decision
     fields = {
-        "evidence": "evidence", "alternative": "alternatives", "decision": "recommendations",
-        "assumption": "uncertainty", "forecast": "uncertainty", "limitation": "uncertainty",
-        "test": "checks", "effect": "effects", "reversal_condition": "reversal_conditions",
+        "evidence": "evidence",
+        "alternative": "alternatives",
+        "decision": "recommendations",
+        "assumption": "uncertainty",
+        "forecast": "uncertainty",
+        "limitation": "uncertainty",
+        "test": "checks",
+        "effect": "effects",
+        "reversal_condition": "reversal_conditions",
         "outcome": "outcomes",
     }
     for kind in fields:
-        add(book, did, kind, f"  Exact {kind}\nsource-preserving text  ",
-            status="observed", source="file:///local/original#p2")
+        add(
+            book,
+            did,
+            kind,
+            f"  Exact {kind}\nsource-preserving text  ",
+            status="observed",
+            source="file:///local/original#p2",
+        )
     add(book, did, "alternative", "Wait and gather more evidence")
     snapshot = book.get(did)
     before = book.path.read_bytes()
@@ -104,7 +124,9 @@ def test_brief_keeps_stale_material_out_of_recommendations(decision: tuple[Noteb
     assert any("reversal" in gap.lower() for gap in brief["review"]["next_checks"])
 
 
-def test_revision_appends_history_and_invalidates_transitively(decision: tuple[Notebook, str]) -> None:
+def test_revision_appends_history_and_invalidates_transitively(
+    decision: tuple[Notebook, str],
+) -> None:
     book, did = decision
     root = add(book, did, "evidence", "Old finding", status="observed", source="local:v1")
     derived = add(book, did, "assumption", "Derived", depends_on=[root])
@@ -112,8 +134,15 @@ def test_revision_appends_history_and_invalidates_transitively(decision: tuple[N
     rec = add(book, did, "decision", "Unlinked conditional recommendation")
     untouched = add(book, did, "alternative", "Independent alternative")
     before = book.get(did)
-    result = book.revise(did, before["revision"], root, "New finding", "Evidence updated",
-                         status="observed", source="local:v2")
+    result = book.revise(
+        did,
+        before["revision"],
+        root,
+        "New finding",
+        "Evidence updated",
+        status="observed",
+        source="local:v2",
+    )
     after = book.get(did)
     notes = {note["id"]: note for note in after["notes"]}
     assert result["revision"] == after["revision"] == before["revision"] + 1
@@ -176,7 +205,9 @@ def test_failed_revision_is_atomic(decision: tuple[Notebook, str], failure: str)
     assert book.path.read_bytes() == before
 
 
-def test_legacy_reads_do_not_migrate_and_explicit_upgrade_preserves_history(legacy: Notebook) -> None:
+def test_legacy_reads_do_not_migrate_and_explicit_upgrade_preserves_history(
+    legacy: Notebook,
+) -> None:
     before = legacy.path.read_bytes()
     original = legacy.get(DID)
     assert legacy.brief(DID)["evidence"][0]["content"] == "Exact legacy source"
@@ -199,9 +230,13 @@ def test_legacy_reads_do_not_migrate_and_explicit_upgrade_preserves_history(lega
 
 
 @pytest.mark.parametrize("operation", ["get", "brief", "list", "migrate"])
-@pytest.mark.parametrize("damage", ["newer", "missing_table", "bad_json", "bad_revision"])
+@pytest.mark.parametrize(
+    "damage", ["newer", "missing_table", "bad_json", "deep_json", "bad_revision"]
+)
 def test_unusable_notebooks_are_refused_without_mutation(
-    legacy: Notebook, operation: str, damage: str,
+    legacy: Notebook,
+    operation: str,
+    damage: str,
 ) -> None:
     with sqlite3.connect(legacy.path) as db:
         if damage == "newer":
@@ -210,6 +245,10 @@ def test_unusable_notebooks_are_refused_without_mutation(
             db.execute("DROP TABLE notes")
         elif damage == "bad_json":
             db.execute("UPDATE decisions SET constraints_json='not JSON'")
+        elif damage == "deep_json":
+            db.execute(
+                "UPDATE decisions SET constraints_json=?", ("[" * 20_000 + "0" + "]" * 20_000,)
+            )
         else:
             db.execute("UPDATE decisions SET revision=-1")
     before = legacy.path.read_bytes()
@@ -221,15 +260,20 @@ def test_unusable_notebooks_are_refused_without_mutation(
 
 def test_migration_failure_rolls_back_schema_and_metadata(legacy: Notebook) -> None:
     with sqlite3.connect(legacy.path) as db:
-        db.execute("CREATE TRIGGER refuse_upgrade BEFORE UPDATE ON compass_meta "
-                   "BEGIN SELECT RAISE(ABORT, 'upgrade blocked'); END")
+        db.execute(
+            "CREATE TRIGGER refuse_upgrade BEFORE UPDATE ON compass_meta "
+            "BEGIN SELECT RAISE(ABORT, 'upgrade blocked'); END"
+        )
     before = legacy.path.read_bytes()
     with pytest.raises(CompassError):
         legacy.migrate()
     assert legacy.path.read_bytes() == before
     with sqlite3.connect(legacy.path) as db:
         assert db.execute("SELECT value FROM compass_meta").fetchone()[0] == "1"
-        assert db.execute("SELECT name FROM sqlite_master WHERE name='note_revisions'").fetchone() is None
+        assert (
+            db.execute("SELECT name FROM sqlite_master WHERE name='note_revisions'").fetchone()
+            is None
+        )
 
 
 def test_concurrent_initial_starts_keep_every_decision(tmp_path: Path) -> None:
@@ -295,3 +339,157 @@ def test_new_operations_do_not_create_missing_storage(tmp_path: Path, operation:
         getattr(Notebook(path), operation)(*([DID] if operation == "brief" else []))
     assert error.value.code == "STORAGE_NOT_FOUND"
     assert not path.parent.exists()
+
+
+def test_corrupt_dependency_history_cannot_be_extended(decision: tuple[Notebook, str]) -> None:
+    book, did = decision
+    note_id = add(book, did, "assumption", "Original")
+    with sqlite3.connect(book.path) as db:
+        db.execute("UPDATE notes SET dependencies_json='invalid' WHERE id=?", (note_id,))
+    before = book.path.read_bytes()
+    with pytest.raises(CompassError) as error:
+        book.record(did, 2, "evidence", "More reasoning")
+    assert error.value.code == "INVALID_STORAGE"
+    assert book.path.read_bytes() == before
+
+
+def test_replacement_write_failure_rolls_back_every_change(decision: tuple[Notebook, str]) -> None:
+    book, did = decision
+    note_id = add(book, did, "assumption", "Original")
+    with sqlite3.connect(book.path) as db:
+        db.execute(
+            "CREATE TRIGGER reject_history BEFORE INSERT ON note_revisions "
+            "BEGIN SELECT RAISE(ABORT, 'history failed'); END"
+        )
+    before = book.path.read_bytes()
+    snapshot = book.get(did)
+    with pytest.raises(CompassError):
+        book.revise(did, 2, note_id, "Replacement", "New observation")
+    assert book.get(did) == snapshot
+    assert book.path.read_bytes() == before
+
+
+def test_stale_reasoning_can_be_rebuilt_only_on_current_dependencies(
+    decision: tuple[Notebook, str],
+) -> None:
+    book, did = decision
+    evidence = add(book, did, "evidence", "Old observation")
+    reasoning = add(book, did, "decision", "Old recommendation", depends_on=[evidence])
+    changed = book.revise(did, 3, evidence, "New observation", "Correction")
+    with pytest.raises(CompassError) as error:
+        book.revise(did, 4, reasoning, "Updated recommendation", "Reconsideration")
+    assert error.value.code == "STALE_DEPENDENCY"
+    rebuilt = book.revise(
+        did,
+        4,
+        reasoning,
+        "Updated recommendation",
+        "Reconsideration",
+        depends_on=[changed["note_id"]],
+    )
+    assert book.brief(did)["recommendations"][0]["id"] == rebuilt["note_id"]
+    assert len(book.get(did)["revisions"]) == 2
+
+
+def test_revised_notes_cannot_silently_branch_history(decision: tuple[Notebook, str]) -> None:
+    book, did = decision
+    note_id = add(book, did, "assumption", "Original")
+    book.revise(did, 2, note_id, "Replacement", "Correction")
+    snapshot = book.get(did)
+    with pytest.raises(CompassError) as error:
+        book.revise(did, 3, note_id, "Another replacement", "Branch")
+    assert error.value.code == "NOTE_SUPERSEDED"
+    assert book.get(did) == snapshot
+
+
+def test_legacy_migration_preserves_existing_invalidations(legacy: Notebook) -> None:
+    legacy.invalidate(DID, 2, NID, "Source withdrawn before upgrade")
+    original = legacy.get(DID)
+    legacy.migrate()
+    assert legacy.get(DID) == original
+    assert original["invalidations"][0]["reason"] == "Source withdrawn before upgrade"
+
+
+def test_schema_with_wrong_column_types_is_not_adopted(legacy: Notebook) -> None:
+    with sqlite3.connect(legacy.path) as db:
+        db.execute("DROP TABLE notes")
+        db.execute(
+            "CREATE TABLE notes (id TEXT PRIMARY KEY, decision_id TEXT NOT NULL, "
+            "kind TEXT NOT NULL, content TEXT NOT NULL, status TEXT NOT NULL, "
+            "source TEXT NOT NULL, dependencies_json TEXT NOT NULL, "
+            "stale TEXT NOT NULL, created_at TEXT NOT NULL)"
+        )
+    before = legacy.path.read_bytes()
+    with pytest.raises(CompassError) as error:
+        legacy.migrate()
+    assert error.value.code == "INVALID_STORAGE"
+    assert legacy.path.read_bytes() == before
+
+
+@pytest.mark.parametrize("field", ["objective", "constraint"])
+def test_surrogate_text_is_rejected_before_initializing_storage(tmp_path: Path, field: str) -> None:
+    path = tmp_path / "missing" / "notebook.sqlite3"
+    objective = "Invalid \ud800" if field == "objective" else "Valid objective"
+    constraints = ["Invalid \udfff"] if field == "constraint" else []
+    with pytest.raises(CompassError) as error:
+        Notebook(path).start(objective, constraints=constraints)
+    assert error.value.code == "INVALID_INPUT"
+    assert not path.parent.exists()
+
+
+def test_unicode_text_survives_exactly_and_surrogate_updates_are_rejected(
+    decision: tuple[Notebook, str],
+) -> None:
+    book, did = decision
+    note_id = add(book, did, "evidence", "日本語 🌌 café e\u0301", source="local:日本語")
+    before = book.get(did)
+    assert before["notes"][0]["content"] == "日本語 🌌 café e\u0301"
+    with pytest.raises(CompassError) as error:
+        book.revise(did, 2, note_id, "broken \ud800", "Correction")
+    assert error.value.code == "INVALID_INPUT"
+    assert book.get(did) == before
+
+
+def test_deeply_nested_stored_dependencies_are_refused(decision: tuple[Notebook, str]) -> None:
+    book, did = decision
+    add(book, did, "assumption", "Original")
+    with sqlite3.connect(book.path) as db:
+        db.execute("UPDATE notes SET dependencies_json=?", ("[" * 20_000 + "0" + "]" * 20_000,))
+    before = book.path.read_bytes()
+    with pytest.raises(CompassError) as error:
+        book.get(did)
+    assert error.value.code == "INVALID_STORAGE"
+    assert book.path.read_bytes() == before
+
+
+@pytest.mark.parametrize("damage", ["duplicate", "revision", "reason", "backwards"])
+def test_revision_history_must_match_a_unique_forward_replacement_and_invalidation(
+    decision: tuple[Notebook, str],
+    damage: str,
+) -> None:
+    book, did = decision
+    original = add(book, did, "assumption", "Original")
+    replacement = book.revise(did, 2, original, "Replacement", "Correction")["note_id"]
+    with sqlite3.connect(book.path) as db:
+        if damage == "duplicate":
+            db.execute(
+                "INSERT INTO note_revisions SELECT ?, decision_id, supersedes, note_id, "
+                "reason, revision, created_at FROM note_revisions",
+                ("f" * 32,),
+            )
+        elif damage == "revision":
+            db.execute("UPDATE note_revisions SET revision=2")
+        elif damage == "reason":
+            db.execute("UPDATE note_revisions SET reason='Unmatched explanation'")
+        else:
+            db.execute("UPDATE notes SET stale=1")
+            db.execute("UPDATE note_revisions SET supersedes=note_id, note_id=supersedes")
+            db.execute("UPDATE invalidations SET root_id=(SELECT supersedes FROM note_revisions)")
+            db.execute(
+                "UPDATE invalidations SET affected_json=?", (f'["{original}", "{replacement}"]',)
+            )
+    before = book.path.read_bytes()
+    with pytest.raises(CompassError) as error:
+        book.get(did)
+    assert error.value.code == "INVALID_STORAGE"
+    assert book.path.read_bytes() == before

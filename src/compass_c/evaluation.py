@@ -1,0 +1,338 @@
+"""Summarize supplied, frozen paired evaluations without running or grading hosts.
+
+Corpus fingerprints use UTF-8 JSON with sorted keys, compact separators and
+``ensure_ascii=False``. Scores are binary judgments supplied by the caller; a
+report neither authenticates their provenance nor establishes behavioral benefit.
+"""
+
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import math
+from collections import defaultdict
+from typing import Any
+
+from .core import CompassError
+
+_KINDS = {"positive", "negative", "overlap", "pressure"}
+_DEVELOPMENT_STATUS = "author_visible_development_not_behavioral_results"
+
+
+def _invalid(message: str) -> None:
+    raise CompassError("INVALID_INPUT", message)
+
+
+def _object(value: Any, field: str) -> dict:
+    if type(value) is not dict:
+        _invalid(f"{field} must be an object")
+    return value
+
+
+def _string(value: Any, field: str) -> str:
+    if type(value) is not str or not value.strip() or len(value) > 12_000:
+        _invalid(f"{field} must be a nonempty string of at most 12000 characters")
+    try:
+        value.encode("utf-8")
+    except UnicodeEncodeError as exc:
+        raise CompassError("INVALID_INPUT", f"{field} must contain valid UTF-8 text") from exc
+    return value
+
+
+def _boolean(value: Any, field: str) -> bool:
+    if type(value) is not bool:
+        _invalid(f"{field} must be a boolean")
+    return value
+
+
+def _version(value: Any, field: str) -> None:
+    if type(value) is not int or value != 1:
+        _invalid(f"{field} must be integer 1")
+
+
+def _corpus(corpus: dict) -> tuple[dict[str, dict], str, str]:
+    _object(corpus, "corpus")
+    _version(corpus.get("schema_version"), "corpus.schema_version")
+    status = corpus.get("status")
+    if status == "frozen_development_only":
+        visibility = "author_visible_development"
+        _string(corpus.get("authorship"), "corpus.authorship")
+    elif status == "frozen_independent_holdout":
+        visibility = "independent_holdout_declared"
+        _string(corpus.get("authorship"), "corpus.authorship")
+        if "evidence_status" in corpus:
+            _invalid("holdout status cannot override another evidence_status")
+    elif status is None and corpus.get("evidence_status") == _DEVELOPMENT_STATUS:
+        visibility = "author_visible_development"
+    else:
+        _invalid("corpus must declare frozen development or independent holdout status")
+
+    rows = corpus.get("cases")
+    if type(rows) is not list or not rows or len(rows) > 10_000:
+        _invalid("corpus.cases must contain 1..10000 cases")
+    cases = {}
+    for row in rows:
+        _object(row, "corpus case")
+        case_id = _string(row.get("id"), "case.id")
+        if case_id in cases:
+            _invalid(f"duplicate corpus case: {case_id}")
+        _string(row.get("prompt"), f"{case_id}.prompt")
+        kind = row.get("kind")
+        if type(kind) is not str or kind not in _KINDS:
+            _invalid(f"unknown case kind: {case_id}")
+        if status is not None:
+            expected_split = "holdout" if status == "frozen_independent_holdout" else "development"
+            if row.get("split") != expected_split:
+                _invalid(f"{case_id}.split must be {expected_split}")
+        if "expected_compass" in row:
+            _boolean(row["expected_compass"], f"{case_id}.expected_compass")
+            forbidden = row.get("forbidden_primary_skill")
+            if forbidden is not None:
+                _string(forbidden, f"{case_id}.forbidden_primary_skill")
+            if "expected_skill" in row:
+                _invalid(f"{case_id} must declare one routing contract")
+        elif "expected_skill" not in row:
+            _invalid(f"{case_id}.expected_skill or expected_compass is required")
+        elif row["expected_skill"] is not None:
+            _string(row.get("expected_skill"), f"{case_id}.expected_skill")
+        rubric = _object(row.get("expected_output"), f"{case_id}.expected_output")
+        _version(rubric.get("rubric_version"), f"{case_id}.rubric_version")
+        criteria = rubric.get("criteria")
+        if type(criteria) is not list or not 2 <= len(criteria) <= 8:
+            _invalid(f"{case_id}.criteria must contain 2..8 criteria")
+        criterion_ids = set()
+        for criterion in criteria:
+            _object(criterion, f"{case_id} criterion")
+            criterion_id = _string(criterion.get("id"), f"{case_id}.criterion.id")
+            if criterion_id in criterion_ids:
+                _invalid(f"duplicate criterion: {case_id}/{criterion_id}")
+            criterion_ids.add(criterion_id)
+            _string(criterion.get("description"), f"{case_id}/{criterion_id}.description")
+            if criterion.get("required") is not True:
+                _invalid(f"{case_id}/{criterion_id}.required must be true")
+        cases[case_id] = row
+    try:
+        encoded = json.dumps(
+            corpus, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
+        ).encode("utf-8")
+    except (TypeError, ValueError, UnicodeError, RecursionError) as exc:
+        raise CompassError("INVALID_INPUT", "corpus must contain valid JSON values") from exc
+    return cases, visibility, hashlib.sha256(encoded).hexdigest()
+
+
+def _arm(arm: Any, label: str, cases: dict[str, dict]) -> dict[str, dict]:
+    _object(arm, label)
+    _string(arm.get("revision"), f"{label}.revision")
+    rows = arm.get("results")
+    if type(rows) is not list:
+        _invalid(f"{label}.results must be a list")
+    results = {}
+    for row in rows:
+        _object(row, f"{label} result")
+        case_id = _string(row.get("case_id"), f"{label}.case_id")
+        if case_id not in cases:
+            _invalid(f"unknown {label} case: {case_id}")
+        if case_id in results:
+            _invalid(f"duplicate {label} case: {case_id}")
+        _boolean(row.get("compass_selected"), f"{label}/{case_id}.compass_selected")
+        if "primary_skill" not in row:
+            _invalid(f"{label}/{case_id}.primary_skill is required (null is allowed)")
+        if row["primary_skill"] is not None:
+            _string(row["primary_skill"], f"{label}/{case_id}.primary_skill")
+        if row["primary_skill"] == "compass" and not row["compass_selected"]:
+            _invalid(f"{label}/{case_id}: primary COMPASS must also be selected")
+        _string(row.get("response_ref"), f"{label}/{case_id}.response_ref")
+        scores = _object(row.get("scores"), f"{label}/{case_id}.scores")
+        expected = {item["id"] for item in cases[case_id]["expected_output"]["criteria"]}
+        if scores.keys() != expected:
+            _invalid(f"{label}/{case_id}.scores must match the frozen criterion IDs exactly")
+        for criterion_id, score in scores.items():
+            _boolean(score, f"{label}/{case_id}/{criterion_id}")
+        results[case_id] = row
+    if results.keys() != cases.keys():
+        _invalid(f"{label}.results must contain every frozen corpus case exactly once")
+    return results
+
+
+def _routing_passed(case: dict, result: dict) -> bool | None:
+    if "expected_skill" in case:
+        if case["expected_skill"] is None:
+            return None
+        return result["primary_skill"] == case["expected_skill"]
+    forbidden = case.get("forbidden_primary_skill")
+    return result["compass_selected"] == case["expected_compass"] and (
+        forbidden is None or result["primary_skill"] != forbidden
+    )
+
+
+def _paired(pairs: list[tuple[bool, bool]]) -> dict:
+    """Exact conditional sign test, taking one binary observation per case."""
+    total = len(pairs)
+    baseline = sum(left for left, _ in pairs)
+    candidate = sum(right for _, right in pairs)
+    improved = sum(not left and right for left, right in pairs)
+    regressed = sum(left and not right for left, right in pairs)
+    discordant = improved + regressed
+    tail_count = sum(math.comb(discordant, k) for k in range(min(improved, regressed) + 1))
+    two_sided_p = min(1.0, (2 * tail_count) / (1 << discordant))
+    delta = (candidate - baseline) / total if total else None
+    variance = max(0.0, (discordant - total * delta**2) / (total - 1)) if total > 1 else None
+    return {
+        "pairs": total,
+        "baseline_passed": baseline,
+        "candidate_passed": candidate,
+        "baseline_rate": baseline / total if total else None,
+        "candidate_rate": candidate / total if total else None,
+        "delta": delta,
+        "improved": improved,
+        "regressed": regressed,
+        "both_passed": sum(left and right for left, right in pairs),
+        "both_failed": sum(not left and not right for left, right in pairs),
+        "discordance_rate": discordant / total if total else None,
+        "paired_delta_standard_error": (
+            math.sqrt(variance / total) if variance is not None else None
+        ),
+        "exact_sign_test": {
+            "discordant_pairs": discordant,
+            "two_sided_p": two_sided_p if total else None,
+        },
+    }
+
+
+def evaluate(corpus: dict, runs: dict) -> dict:
+    """Validate and summarize a complete paired A/A or A/B scored observation set.
+
+    ``runs`` schema version 1 requires ``comparison``, ``evidence_kind``
+    (``host_observation`` or ``synthetic_fixture``), ``corpus_sha256``, shared
+    ``host`` fields (``name``, ``model``, ``configuration``), and ``grader``.
+    ``baseline`` and ``candidate`` each contain a nonempty ``revision`` and one
+    ``results`` row per corpus case. Each row supplies ``case_id``, boolean
+    ``compass_selected``, nullable ``primary_skill``, boolean ``scores`` keyed
+    by every frozen criterion ID, and a nonempty ``response_ref``.
+
+    A/A requires equal revision identifiers; A/B requires distinct identifiers.
+    A corpus ``expected_skill: null`` leaves routing unscored; its cases still
+    contribute rubric outcomes. Routing rates exclude these unspecified owners.
+    This pure function performs no I/O and raises ``CompassError`` for invalid
+    inputs. Supplied provenance and declarations of independence are unverified.
+    """
+    cases, visibility, digest = _corpus(corpus)
+    _object(runs, "runs")
+    _version(runs.get("schema_version"), "runs.schema_version")
+    comparison = runs.get("comparison")
+    if comparison not in ("A/A", "A/B"):
+        _invalid("comparison must be A/A or A/B")
+    evidence_kind = runs.get("evidence_kind")
+    if evidence_kind not in ("host_observation", "synthetic_fixture"):
+        _invalid("evidence_kind must be host_observation or synthetic_fixture")
+    if runs.get("corpus_sha256") != digest:
+        _invalid("corpus_sha256 does not match the frozen corpus")
+    host = _object(runs.get("host"), "host")
+    for field in ("name", "model", "configuration"):
+        _string(host.get(field), f"host.{field}")
+    grader = _string(runs.get("grader"), "grader")
+    baseline = _arm(runs.get("baseline"), "baseline", cases)
+    candidate = _arm(runs.get("candidate"), "candidate", cases)
+    same_revision = runs["baseline"]["revision"] == runs["candidate"]["revision"]
+    if (comparison == "A/A") != same_revision:
+        _invalid("A/A requires equal revisions; A/B requires distinct revisions")
+
+    metrics: dict[str, list[tuple[bool, bool]]] = defaultdict(list)
+    criteria: dict[str, list[tuple[bool, bool]]] = defaultdict(list)
+    kinds: dict[str, dict[str, list[tuple[bool, bool]]]] = defaultdict(lambda: defaultdict(list))
+    case_reports = []
+    regressions = []
+    for case_id, case in cases.items():
+        arms = []
+        for result in (baseline[case_id], candidate[case_id]):
+            rubric_passed = all(result["scores"].values())
+            routing_passed = _routing_passed(case, result)
+            arms.append(
+                {
+                    **{
+                        key: copy.deepcopy(result[key])
+                        for key in (
+                            "case_id",
+                            "compass_selected",
+                            "primary_skill",
+                            "scores",
+                            "response_ref",
+                        )
+                    },
+                    "rubric_passed": rubric_passed,
+                    "routing_passed": routing_passed,
+                    "case_passed": rubric_passed and routing_passed is not False,
+                }
+            )
+        left, right = arms
+        for metric, field in (
+            ("case_success", "case_passed"),
+            ("rubric", "rubric_passed"),
+            ("routing", "routing_passed"),
+        ):
+            pair = (left[field], right[field])
+            metric_pairs = metrics[metric]
+            kind_pairs = kinds[case["kind"]][metric]
+            if None not in pair:
+                metric_pairs.append(pair)
+                kind_pairs.append(pair)
+        criterion_regressions = []
+        for item in case["expected_output"]["criteria"]:
+            criterion_id = item["id"]
+            pair = (left["scores"][criterion_id], right["scores"][criterion_id])
+            criteria[criterion_id].append(pair)
+            if pair == (True, False):
+                criterion_regressions.append(criterion_id)
+        routing_regression = left["routing_passed"] is True and right["routing_passed"] is False
+        if criterion_regressions or routing_regression:
+            regressions.append(
+                {
+                    "case_id": case_id,
+                    "criteria": criterion_regressions,
+                    "routing": routing_regression,
+                }
+            )
+        case_reports.append(
+            {"case_id": case_id, "kind": case["kind"], "baseline": left, "candidate": right}
+        )
+
+    return {
+        "schema_version": 1,
+        "comparison": comparison,
+        "permission_granted": False,
+        "action_permission": "not_granted",
+        "evidence": {
+            "kind": evidence_kind,
+            "corpus_visibility": visibility,
+            "provenance_verified": False,
+            "behavioral_improvement_established": False,
+            "limitations": [
+                "Scores, host execution and provenance are supplied, not independently verified.",
+                "Synthetic fixtures are not evidence of host behavior.",
+                "Author-visible cases cannot establish independent holdout performance.",
+                "Paired summaries alone do not establish causal improvement or release readiness.",
+                "The sign-test null assumes equally likely directions among discordant case pairs.",
+                "Statistical interpretation assumes independent pairs; criteria may be correlated.",
+                "Criterion and subgroup comparisons have no multiple-testing correction.",
+                "An unspecified expected_skill means rubric-only success and unscored routing.",
+            ],
+        },
+        "provenance": {
+            "corpus_sha256": digest,
+            "corpus_status": corpus.get("status", corpus.get("evidence_status")),
+            "corpus_authorship": corpus.get("authorship"),
+            "host": {field: host[field] for field in ("name", "model", "configuration")},
+            "grader": grader,
+            "baseline_revision": runs["baseline"]["revision"],
+            "candidate_revision": runs["candidate"]["revision"],
+        },
+        **{name: _paired(pairs) for name, pairs in metrics.items()},
+        "criteria": {name: _paired(pairs) for name, pairs in sorted(criteria.items())},
+        "by_kind": {
+            kind: {name: _paired(pairs) for name, pairs in kind_metrics.items()}
+            for kind, kind_metrics in sorted(kinds.items())
+        },
+        "cases": case_reports,
+        "regressions": regressions,
+    }

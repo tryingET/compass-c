@@ -12,7 +12,7 @@ description: >-
   only when requested. Exclude questions about the physical compass instrument.
 compatibility: Markdown guidance; optional Python 3.11+ standard-library CLI. Host discovery is provisional.
 metadata:
-  version: "0.3.0"
+  version: "0.4.0"
   evidence_status: "provisional-behavior; local-tools-tested"
 ---
 

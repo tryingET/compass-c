@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import json
 import math
+from fractions import Fraction
 
 import pytest
 
@@ -29,11 +30,17 @@ def sensitivity(**overrides):
 
 def test_three_preferences_report_exact_breakpoints_and_ties():
     result = sensitivity()
-    assert result["breakpoints"] == [
+    assert [
+        {key: value for key, value in point.items() if key != "t_exact"}
+        for point in result["breakpoints"]
+    ] == [
         {"t": 0.25, "probabilities": [0.75, 0.25], "expected_value_winners": ["early", "steady"]},
         {"t": 0.75, "probabilities": [0.25, 0.75], "expected_value_winners": ["steady", "late"]},
     ]
-    assert result["intervals"] == [
+    assert [
+        {key: value for key, value in interval.items() if not key.endswith("_exact")}
+        for interval in result["intervals"]
+    ] == [
         {"start": 0.0, "end": 0.25, "expected_value_winners": ["early"]},
         {"start": 0.25, "end": 0.75, "expected_value_winners": ["steady"]},
         {"start": 0.75, "end": 1.0, "expected_value_winners": ["late"]},
@@ -44,9 +51,20 @@ def test_three_preferences_report_exact_breakpoints_and_ties():
         {"action": "late", "expected_start": 0.0, "expected_end": 12.0},
     ]
     assert result["endpoints"] == {
-        "start": {"t": 0.0, "probabilities": [1.0, 0.0], "expected_value_winners": ["early"]},
-        "end": {"t": 1.0, "probabilities": [0.0, 1.0], "expected_value_winners": ["late"]},
+        "start": {
+            "t": 0.0,
+            "t_exact": "0",
+            "probabilities": [1.0, 0.0],
+            "expected_value_winners": ["early"],
+        },
+        "end": {
+            "t": 1.0,
+            "t_exact": "1",
+            "probabilities": [0.0, 1.0],
+            "expected_value_winners": ["late"],
+        },
     }
+    assert [point["t_exact"] for point in result["breakpoints"]] == ["1/4", "3/4"]
 
 
 def test_advisory_result_explains_path_and_open_intervals_without_mutating_input():
@@ -72,7 +90,13 @@ def test_identical_lines_keep_all_tied_actions_in_input_order():
     result = sensitivity(actions=["second", "first"], payoffs=[[7, 7], [7, 7]])
     assert result["breakpoints"] == []
     assert result["intervals"] == [
-        {"start": 0.0, "end": 1.0, "expected_value_winners": ["second", "first"]}
+        {
+            "start": 0.0,
+            "end": 1.0,
+            "start_exact": "0",
+            "end_exact": "1",
+            "expected_value_winners": ["second", "first"],
+        }
     ]
     assert result["endpoints"]["start"]["expected_value_winners"] == ["second", "first"]
 
@@ -108,7 +132,15 @@ def test_action_that_only_ties_at_a_breakpoint_is_preserved():
 def test_inferior_actions_crossing_does_not_create_a_preference_breakpoint():
     result = sensitivity(payoffs=[[100, 100], [0, 5], [5, 0]])
     assert result["breakpoints"] == []
-    assert result["intervals"] == [{"start": 0.0, "end": 1.0, "expected_value_winners": ["early"]}]
+    assert result["intervals"] == [
+        {
+            "start": 0.0,
+            "end": 1.0,
+            "start_exact": "0",
+            "end_exact": "1",
+            "expected_value_winners": ["early"],
+        }
+    ]
 
 
 def test_large_payoffs_do_not_erase_small_preference_differences():
@@ -119,7 +151,12 @@ def test_large_payoffs_do_not_erase_small_preference_differences():
     assert result["endpoints"]["start"]["expected_value_winners"] == ["A"]
     assert result["endpoints"]["end"]["expected_value_winners"] == ["B"]
     assert result["breakpoints"] == [
-        {"t": 0.5, "probabilities": [0.5, 0.5], "expected_value_winners": ["A", "B"]}
+        {
+            "t": 0.5,
+            "t_exact": "1/2",
+            "probabilities": [0.5, 0.5],
+            "expected_value_winners": ["A", "B"],
+        }
     ]
 
 
@@ -131,6 +168,41 @@ def test_narrow_winning_interval_is_not_lost_to_grid_sampling_or_tolerance():
     assert center["start"] < 0.5 < center["end"]
     assert center["end"] - center["start"] < 2e-12
     assert center["expected_value_winners"] == ["steady"]
+
+
+def test_exact_coordinates_preserve_winning_interval_smaller_than_float_precision():
+    result = sensitivity(payoffs=[[1, -1], [1e-20, 1e-20], [-1, 1]])
+    assert len(result["breakpoints"]) == 2
+    assert len(result["intervals"]) == 3
+    center = result["intervals"][1]
+    start = Fraction(center["start_exact"])
+    end = Fraction(center["end_exact"])
+    assert start < Fraction(1, 2) < end
+    assert end - start == Fraction(1, 10**20)
+    assert center["expected_value_winners"] == ["steady"]
+    assert center["start"] == center["end"] == 0.5
+    assert [Fraction(point["t_exact"]) for point in result["breakpoints"]] == [start, end]
+
+
+def test_inferior_crossing_below_identically_tied_winners_is_not_a_breakpoint():
+    result = sensitivity(
+        actions=["best A", "best B", "low A", "low B"],
+        payoffs=[[10, 10], [10, 10], [1, 0], [0, 1]],
+    )
+    assert result["breakpoints"] == []
+    assert result["intervals"][0]["expected_value_winners"] == ["best A", "best B"]
+
+
+def test_maximum_supported_dimensions_are_accepted():
+    result = sensitivity(
+        actions=[f"action {i}" for i in range(64)],
+        scenarios=[f"scenario {i}" for i in range(128)],
+        payoffs=[[i] * 128 for i in range(64)],
+        probability_start=[1 / 128] * 128,
+        probability_end=[1 / 128] * 128,
+    )
+    assert result["breakpoints"] == []
+    assert result["intervals"][0]["expected_value_winners"] == ["action 63"]
 
 
 def test_single_action_single_scenario_and_negative_payoff():
@@ -184,6 +256,43 @@ def test_multiscenario_intervals_agree_with_independent_expected_value_calculati
             if value == max(values)
         ]
         assert part["expected_value_winners"] == expected
+
+
+def test_compare_preserves_decimal_expected_value_ties_consistent_with_sensitivity():
+    model = {"actions": ["A", "B"], "scenarios": ["X", "Y"], "payoffs": [[0.1, 0.2], [0.3, 0]]}
+    comparison = calculate("compare", {**model, "probabilities": [0.5, 0.5]})["result"]
+    assert comparison["criterion_winners"]["expected_value"] == ["A", "B"]
+    assert [row["expected"] for row in comparison["rows"]] == [0.15, 0.15]
+    path = sensitivity(**model, probability_start=[0.5, 0.5], probability_end=[0.5, 0.5])
+    assert path["endpoints"]["start"]["expected_value_winners"] == ["A", "B"]
+
+
+def test_compare_preserves_decimal_maximum_regret_ties():
+    result = calculate(
+        "compare",
+        {
+            "actions": ["A", "B"],
+            "scenarios": ["X", "Y"],
+            "payoffs": [[0.1, 0.4], [0.3, 0.2]],
+        },
+    )["result"]
+    assert result["criterion_winners"]["minimax_regret"] == ["A", "B"]
+    assert [row["max_regret"] for row in result["rows"]] == [0.2, 0.2]
+    assert "expected_value" not in result["criterion_winners"]
+
+
+def test_compare_does_not_erase_a_real_preference_when_rendered_expected_values_round_equal():
+    result = calculate(
+        "compare",
+        {
+            "actions": ["A", "B"],
+            "scenarios": ["X", "Y"],
+            "payoffs": [[1, 0], [1, 1e-20]],
+            "probabilities": [0.5, 0.5],
+        },
+    )["result"]
+    assert result["criterion_winners"]["expected_value"] == ["B"]
+    assert [row["expected"] for row in result["rows"]] == [0.5, 0.5]
 
 
 @pytest.mark.parametrize("field", ["probability_start", "probability_end"])

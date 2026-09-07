@@ -5,6 +5,9 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -35,8 +38,7 @@ def synthetic_runs(corpus: dict) -> dict:
                 "compass_selected": case.get("expected_compass", primary == "compass"),
                 "primary_skill": primary,
                 "scores": {
-                    criterion["id"]: True
-                    for criterion in case["expected_output"]["criteria"]
+                    criterion["id"]: True for criterion in case["expected_output"]["criteria"]
                 },
                 "response_ref": f"synthetic-fixture:{case['id']}",
             }
@@ -70,6 +72,7 @@ def test_complete_paired_report_retains_provenance_and_boundaries(corpus: dict) 
     assert report["evidence"]["corpus_visibility"] == "author_visible_development"
     assert report["evidence"]["behavioral_improvement_established"] is False
     assert report["permission_granted"] is False
+    assert report["action_permission"] == "not_granted"
     assert report["provenance"]["corpus_sha256"] == fingerprint(corpus)
     assert report["provenance"]["host"] == runs["host"]
     assert report["provenance"]["grader"] == runs["grader"]
@@ -127,6 +130,7 @@ def test_routing_failures_and_hidden_criterion_regressions_are_named(corpus: dic
     runs["candidate"]["results"][0]["scores"][criterion] = False
     runs["candidate"]["results"][8]["compass_selected"] = True
     runs["candidate"]["results"][12]["primary_skill"] = "compass"
+    runs["candidate"]["results"][12]["compass_selected"] = True
     report = evaluate(corpus, runs)
     assert report["routing"]["candidate_passed"] == 22
     assert report["case_success"]["candidate_passed"] == 21
@@ -151,9 +155,13 @@ def test_repo_maintainer_corpus_preserves_owner_routing() -> None:
     corpus = json.loads(path.read_text(encoding="utf-8"))
     runs = synthetic_runs(corpus)
     runs["candidate"]["results"][0]["primary_skill"] = "compass"
+    runs["candidate"]["results"][0]["compass_selected"] = True
     report = evaluate(corpus, runs)
     assert report["evidence"]["corpus_visibility"] == "author_visible_development"
     assert report["routing"]["regressed"] == 1
+    assert report["routing"]["pairs"] == 7
+    assert report["by_kind"]["negative"]["routing"]["candidate_rate"] is None
+    assert report["by_kind"]["negative"]["routing"]["exact_sign_test"]["two_sided_p"] is None
     assert report["case_success"]["pairs"] == 8
 
 
@@ -239,3 +247,77 @@ def test_malformed_documents_have_stable_errors(corpus, runs) -> None:
     with pytest.raises(CompassError) as caught:
         evaluate(corpus, runs)
     assert caught.value.code == "INVALID_INPUT"
+
+
+@pytest.mark.parametrize(
+    "invalid_text",
+    ["\ud800", "\udcff", "x" * 12_001],
+    ids=["high-surrogate", "low-surrogate", "oversized"],
+)
+@pytest.mark.parametrize(
+    "path",
+    [
+        ("host", "name"),
+        ("host", "model"),
+        ("host", "configuration"),
+        ("grader",),
+        ("baseline", "revision"),
+        ("candidate", "revision"),
+        ("candidate", "results", 0, "response_ref"),
+        ("candidate", "results", 0, "primary_skill"),
+    ],
+)
+def test_run_text_is_bounded_and_utf8_serializable(corpus: dict, path, invalid_text: str) -> None:
+    runs = synthetic_runs(corpus)
+    target = runs
+    for key in path[:-1]:
+        target = target[key]
+    target[path[-1]] = invalid_text
+    with pytest.raises(CompassError) as caught:
+        evaluate(corpus, runs)
+    assert caught.value.code == "INVALID_INPUT"
+
+
+def test_cli_rejects_lone_surrogate_without_a_traceback(corpus: dict, tmp_path: Path) -> None:
+    runs = synthetic_runs(corpus)
+    runs["grader"] = "\ud800"
+    corpus_path = tmp_path / "corpus.json"
+    results_path = tmp_path / "results.json"
+    corpus_path.write_text(json.dumps(corpus), encoding="utf-8")
+    results_path.write_text(json.dumps(runs), encoding="utf-8")
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "compass_c",
+            "evaluate",
+            "--corpus",
+            str(corpus_path),
+            "--results",
+            str(results_path),
+        ],
+        cwd=tmp_path,
+        env={**os.environ, "PYTHONIOENCODING": "utf-8:strict"},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode == 2, completed.stderr
+    assert completed.stderr == ""
+    assert json.loads(completed.stdout)["error"]["code"] == "INVALID_INPUT"
+
+
+def test_impossible_routing_is_rejected_even_without_a_forbidden_owner(corpus: dict) -> None:
+    corpus["cases"][8]["forbidden_primary_skill"] = None
+    runs = synthetic_runs(corpus)
+    runs["candidate"]["results"][8]["primary_skill"] = "compass"
+    with pytest.raises(CompassError) as caught:
+        evaluate(corpus, runs)
+    assert caught.value.code == "INVALID_INPUT"
+
+
+def test_compass_can_be_selected_as_a_secondary_skill(corpus: dict) -> None:
+    runs = synthetic_runs(corpus)
+    runs["candidate"]["results"][0]["primary_skill"] = "documents"
+    report = evaluate(corpus, runs)
+    assert report["routing"]["candidate_passed"] == 24

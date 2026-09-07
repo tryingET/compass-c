@@ -22,6 +22,12 @@ Feature: Distribute only explicitly declared COMPASS-C source files
     Then the same declared sources produce byte-identical archives
     And the added local notes are excluded
 
+  Scenario: Retain runnable toolkit commands after extraction
+    Given the toolkit includes Python helpers and shell validation wrappers
+    When I build an archive
+    Then its Unix file metadata keeps those commands executable
+    And ordinary source documents remain non-executable
+
   Scenario: Refuse an undeclared or unsafe source tree
     Given neither a repository index nor a valid distribution manifest is available
     Or a distribution manifest attempts path traversal
