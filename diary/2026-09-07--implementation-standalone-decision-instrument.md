@@ -56,3 +56,25 @@ AK source was inspected through the authenticated GitHub connection. Its declare
 approved binary and canonical live database are absent here. No replacement database,
 task state, scope snapshot, or work-items projection was invented. Reconcile actual
 AK task/direction state through the owner's approved runtime when it is available.
+
+## Final repository gates
+
+`TMPDIR=<scratch-temp> ./scripts/ci/full.sh` passed its complete fast phase:
+formatting, lint, generated drift, both skill validators, 306 tests/17 subtests,
+and the committed document-freshness policy. The full command remained blocked
+by the missing approved AK command and the ROCS launcher's `/proc/self/exe`
+environment requirement. Running the unchanged vendored ROCS entry point directly
+resolved the launcher problem but exposed external ontology prerequisites.
+
+The public core ontology was cloned at exact v0.2.0, commit
+`76f31bc5d42a77bc2c0fd24c8b30708f907fbd44`. Company ontology
+`tryingET/softwareco-ontology` returned 404 through the connected account and
+could not be cloned. Direct ROCS build and validation therefore remained blocked
+on `<repo:softwareco/ontology@main>`. No ownership, policy, or validation gate was
+weakened to obtain a passing result.
+
+Wheel and source distribution were built offline from a clean declared-source
+snapshot using the installed Hatchling backend. The three deterministic archives
+were generated and checked. The final worktree is committed; remote publication,
+organization-governance checks, and actual host usefulness evidence remain distinct
+unfinished external steps.

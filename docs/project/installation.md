@@ -20,6 +20,12 @@ symlink to the base Python loses the environment's installed packages.
 
 ## Publication sequence
 
+Archives include declared source only: tracked Git-index paths in a checkout,
+or the existing `MANIFEST_SHA256.txt` path list in an extracted toolkit. Stage
+intended new source files before building an archive. Workspace notes, caches,
+keys, notebook state, receipts and symlinks are excluded. The manifest is a build
+allowlist and checksum inventory, not a signature or proof of publication.
+
 Use this sequence:
 
 1. render the Softwareco project template;
