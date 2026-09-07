@@ -23,21 +23,28 @@ book = Notebook(".compass/decisions.sqlite3")
 started = book.start("Choose a pilot or delay", constraints=["Owner approval before launch"])
 decision_id, revision = started["decision_id"], started["revision"]
 
+
 def note(kind, content, **kwargs):
     global revision
     result = book.record(decision_id, revision, kind, content, **kwargs)
     revision = result["revision"]
     return result["note_id"]
 
-evidence = note("evidence", "Synthetic conversion is 0.12",
-                status="observed", source="synthetic pilot run 1")
+
+evidence = note(
+    "evidence", "Synthetic conversion is 0.12", status="observed", source="synthetic pilot run 1"
+)
 note("alternative", "Run a bounded pilot")
 note("alternative", "Delay and gather more evidence")
 note("test", "Replicate the pilot with a fresh cohort")
 note("limitation", "Small synthetic cohort; no population claim", status="assumed")
 note("reversal_condition", "Reconsider if conversion falls below 0.08")
-note("decision", "Prefer a bounded pilot while conversion exceeds 0.08",
-     status="inferred", depends_on=[evidence])
+note(
+    "decision",
+    "Prefer a bounded pilot while conversion exceeds 0.08",
+    status="inferred",
+    depends_on=[evidence],
+)
 
 brief = book.brief(decision_id)
 assert brief["review"]["status"] == "record_complete_not_verified"
@@ -54,9 +61,13 @@ conditions. Multiple current recommendations remain visible as disagreement.
 
 ```python
 changed = book.revise(
-    decision_id, revision, evidence,
-    "Synthetic conversion is 0.04", "Corrected the denominator",
-    status="observed", source="synthetic pilot run 2",
+    decision_id,
+    revision,
+    evidence,
+    "Synthetic conversion is 0.04",
+    "Corrected the denominator",
+    status="observed",
+    source="synthetic pilot run 2",
 )
 revision = changed["revision"]
 assert evidence in changed["invalidated"]
