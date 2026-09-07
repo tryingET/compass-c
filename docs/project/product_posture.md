@@ -2,7 +2,7 @@
 summary: "Current versus target product maturity for COMPASS-C."
 as_of: "2026-09-07"
 last_validated: "2026-09-07"
-last_validated_commit: "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae"
+last_validated_commit: "1bb2382dd324fa3b3bc315605313bc642f5cbe8c"
 evidence_paths:
   - "README.md"
   - "src/compass_c"
@@ -18,6 +18,9 @@ evidence_paths:
   - "uv.lock"
   - ".github/workflows/ci.yml"
   - ".pi/skills/compass-c-maintainer"
+  - "docs/project/verified-publication.json"
+  - "diary/2026-09-07--publication-v0.4.0-readback.md"
+  - "release.json"
 read_when:
   - "When assessing maturity, rollout, or proof gaps"
 type: "reference"
@@ -44,14 +47,20 @@ local decisions; measured host usefulness and vendor-client adoption remain unpr
 
 ## Observed validation
 
-At the implementation baseline above, the local Python 3.12 suite passed **306 tests
+For the implementation recorded in the evidence baseline above, the local Python 3.12 suite passed **306 tests
 and 17 subtests**. It includes seven BDD feature files and executable acceptance
 coverage for fresh-process package/portable journeys, compatibility, malformed input,
 concurrency, exact arithmetic, paired reports, installation and archive boundaries.
 The actual SDK suite passed eight scenarios against an isolated built wheel.
 The core wheel also executed with no dependencies installed and no MCP present.
-Formatting, lint and generated skill/plugin checks passed. These statements describe
-observed local checks; GitHub CI configuration is not evidence that remote CI ran.
+Formatting, lint and generated skill/plugin checks passed.
+
+GitHub Actions [run 34170286584](https://github.com/tryingET/compass-c/actions/runs/34170286584)
+completed successfully for published source commit
+`d839c97b9bc169672c2f25935e770017a0bb5990`. All four jobs passed: core verification
+and isolated MCP wheel sessions on Python 3.11 and 3.13. The dated publication
+receipt records that observed run; it does not establish organization-governance
+approval or measured host usefulness.
 
 BDD scenarios and actual RED checkpoints preceded GREEN implementation. The session
 diary records the sequence and independent review findings. The repository retains
@@ -70,6 +79,9 @@ measured-usefulness criterion, and v2-v4 remain ambitions rather than release pr
 Live AK tasks, direction, evidence and decisions retain their existing owner. The
 approved AK runtime and live database were unavailable in this environment; no task
 projection or scope snapshot was fabricated. This document is a maturity projection,
-not an execution queue. The earlier publication receipt remains evidence of its
-original release; the current GitHub integration rejected writes with HTTP 403, so
-v0.4.0 is committed locally and not claimed as remotely published or released.
+not an execution queue. Source publication of v0.4.0 on `main` is verified by GitHub
+API and git transport readback, as recorded in the
+[dated receipt](verified-publication.json) and
+[publication diary](../../diary/2026-09-07--publication-v0.4.0-readback.md).
+No release tag, package-registry release, account installation or controlled host
+evaluation is claimed.
