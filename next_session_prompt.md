@@ -40,10 +40,10 @@ Do not ask for permission to start.
 - Legacy `governance/task-scopes/AK-*.json` files are compatibility-only; do not treat them as primary authored truth.
 
 ## SESSION PREFLIGHT (FILL BEFORE EXECUTION)
-- Objective (one sentence): Publish and verify the locally completed v0.4.0 standalone decision instrument, then collect the external v1 evidence through its owners.
+- Objective (one sentence): Collect the remaining external v1 evidence for the published v0.4.0 standalone decision instrument through its owners.
 - Constraints (hard limits): Keep zero core runtime dependencies and the advisory boundary; do not invent host results, AK state, or publication receipts.
 - Assumptions (max 3): `docs/project/vision.md` remains durable direction; v2-v4 are outcome ambitions; no vendor-host installation is implied by local tests.
-- Blockers (none or list): GitHub integration rejected writes with HTTP 403; the approved live AK runtime/database are outside this environment.
+- Blockers (none or list): The approved live AK runtime/database and organization ontology prerequisites remain outside this environment; controlled host usefulness and vendor-client evidence remain uncollected.
 
 ## READ-FIRST ALLOWLIST (STARTUP BUDGET)
 1. `AGENTS.md`
@@ -63,13 +63,13 @@ Do not ask for permission to start.
 4. Update source-of-truth artifacts before commit, including task-scope snapshots when they are part of the slice.
 
 ## SESSION CHECKPOINT (UPDATE BEFORE /commit)
-- Slice executed: Standalone v0.4.0 instrument with briefs, sensitivity, revisable evidence, explicit migration, paired reports, verified local MCP and bounded packaging.
-- Outcome: Implemented using committed BDD and actual RED checkpoints before GREEN. See `diary/2026-09-07--implementation-standalone-decision-instrument.md` for observed evidence.
+- Slice executed: Published the verified v0.4.0 implementation and checked the public main ref and remote CI.
+- Outcome: See `diary/2026-09-07--publication-v0.4.0-readback.md` for publication evidence and commit provenance; the implementation diary preserves the original BDD, RED and GREEN observations.
 - Files changed: Query `git diff 56066fc..HEAD --stat`; canonical source, acceptance tests, generated skill/plugin, packaging and product documentation own the changes.
-- Validation commands + results: Re-run `./scripts/ci/full.sh`, the locked optional MCP suite, generated drift checks and clean wheel/archive builds. The diary records observed results rather than live CI status.
+- Validation commands + results: Query the current ref with `git ls-remote origin refs/heads/main` and current CI with `gh run list --repo tryingET/compass-c --branch main --workflow CI`. The publication diary records observed checks; remote CI does not run `./scripts/ci/full.sh` or establish host usefulness.
 - Deferred tasks updated in AK + `governance/work-items.json` exported: Not performed; approved AK runtime/database unavailable. The projection is unchanged.
 - Task-scope snapshots refreshed (if applicable): None authored or fabricated.
-- Next-session starting point: Inspect `git status` and local commits, obtain GitHub write access, publish the verified head, then read back the remote ref and CI. Preserve the external host evidence gates in product posture.
+- Next-session starting point: Inspect `git status`, query the remote ref and CI, then reconcile approved AK task/direction state through its owner before selecting the next slice. Preserve the external governance and host evidence gates in product posture.
 
 ## END-OF-SESSION
 Run `/commit` and ensure this file reflects the real checkpoint for the next operator/agent.
