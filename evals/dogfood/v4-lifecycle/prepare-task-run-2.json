@@ -1,0 +1,24 @@
+{
+  "task": "Use the supplied installed COMPASS-C to prepare a task-owned experiment for this build decision: whether the candidate's inspected finite arithmetic can proceed to integration review or needs further arithmetic review. Preserve the supplied model and experiment inputs unchanged. Save a new decision and its prospective plan, inspect the no-test choice and informative branches, and leave the experiment pending for a separate person to resume. Do not execute the proposed check or record an observation in this phase. Return the decision ID and plan ID plus a concise conditional interpretation of what the plan proposes and what it cannot establish. Minimize unnecessary readbacks by using returned IDs and revisions. Preserve failures and usability friction.",
+  "installed_python": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+  "installed_cli": "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+  "notebook": "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite",
+  "parameters_file": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/parameters.json",
+  "capture_script": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+  "phase": "prepare",
+  "guidance": [
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/SKILL.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/experiment-workflow.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/experiments.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/notebook.md"
+  ],
+  "capture": {
+    "command_shape": "INSTALLED_PYTHON CAPTURE_SCRIPT --phase prepare run --kind KIND --output UNIQUE_FILENAME.json -- EXACT_TARGET_ARGV",
+    "read_shape": "INSTALLED_PYTHON CAPTURE_SCRIPT --phase prepare read ALLOWED_PATH",
+    "kinds": "Use product for notebook/workflow operations, help for --help, and setup for installed package version/location checks.",
+    "package_identity": "Capture the actual installed package version and location. Every product invocation must use the isolated installed Python or entrypoint, with no repository PYTHONPATH.",
+    "outputs": "The capture script retains exact target argv, exit status, stdout/stderr and timestamps; output files are exclusively created within run-2/prepare. Use it for all target subprocesses. It records guidance/input reads separately. Host wrapper details not exposed by tools must be disclosed rather than reconstructed.",
+    "handoff": "Save run-2/prepare/handoff.json containing only decision_id and plan_id. Save a concise final answer and usability/departure notes in the same phase directory. The resumer will receive only the decision ID."
+  },
+  "scope": "Read only this task, the listed normal guidance, the supplied parameters, the capture helper, installed command help, and outputs from your own run. Do not inspect runtime source, tests, the grading protocol, prior dogfood artifacts, repository history, or expected outputs. Write only the new named notebook and run-2/prepare evidence. Do not install, browse, contact anyone, spend, deploy, delegate, or touch another notebook. Save concise justifications and outputs, never private reasoning traces. If an unexpected write outcome occurs, reconcile existing state before retrying."
+}
