@@ -29,7 +29,7 @@ def outputs() -> dict[Path, str]:
             (
                 "sys.path.insert(0, str(Path(__file__).resolve().parent))\n"
                 "from calculations import calculate  # noqa: E402\n"
-                "from core import VERSION, CompassError, Notebook  # noqa: E402"
+                "from core import KINDS, STATUSES, VERSION, CompassError, Notebook  # noqa: E402"
             ),
         )
         .replace(
@@ -39,9 +39,7 @@ def outputs() -> dict[Path, str]:
             "from .evidence import apply_updates, preview_updates",
             "from evidence import apply_updates, preview_updates  # noqa: E402",
         )
-        .replace(
-            "from .core import KINDS, STATUSES", "from core import KINDS, STATUSES  # noqa: E402"
-        )
+        .replace("from .core import KINDS, STATUSES\n", "")
     )
     result = {
         TARGET / f"{module}.py": GENERATED

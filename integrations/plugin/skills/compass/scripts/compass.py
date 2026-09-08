@@ -15,8 +15,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from calculations import calculate  # noqa: E402
-from core import VERSION, CompassError, Notebook  # noqa: E402
-from core import KINDS, STATUSES  # noqa: E402
+from core import KINDS, STATUSES, VERSION, CompassError, Notebook  # noqa: E402
 from evaluation import evaluate  # noqa: E402
 from evidence import apply_updates, preview_updates  # noqa: E402
 
