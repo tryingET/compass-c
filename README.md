@@ -18,8 +18,9 @@ permission to spend, deploy, send, delete, or otherwise act outside the user's a
 
 ## Status
 
-Version **0.4.0** adds inspectable decision briefs, exact probability sensitivity,
-history-preserving evidence revision, explicit schema upgrades, and paired evaluation reports.
+Version **0.5.0** adds coordinated portfolio comparison, bounded experiment planning,
+result-conditioned model updates, and atomic evidence batches to inspectable decision
+briefs, exact sensitivity, compatible records, and paired evaluation reports.
 The core is **standalone and standard-library only**. Agent Kernel and other development
 systems are not required to install or use it. MCP is an optional, separately installed extra.
 
@@ -88,6 +89,16 @@ compass-c calculate sensitivity --parameters \
 This synthetic model switches from delay to pilot at probability `1/2`, with a tie
 at the boundary. Exact fraction coordinates preserve even very narrow intervals;
 no probabilities or decision criteria are chosen for you.
+
+Coordinate a set of decisions with shared constraints and competing preferences using
+[`calculate portfolio`](skills/compass/references/portfolio.md). Compare bounded
+information-gathering options and update a model from an explicit observed result using
+[`calculate experiment` and `calculate update_beliefs`](skills/compass/references/experiments.md).
+Both preserve supplied assumptions and provenance. Portfolio analysis retains disagreement;
+experimental analysis uses the declared expected-value model without executing an experiment.
+
+`update-evidence` previews a sourced replacement batch; adding `--apply` commits the
+whole batch at the supplied revision. A stale revision or invalid member changes nothing.
 
 See [the standalone workflow](docs/project/usage.md) for the complete record lifecycle
 and [evaluation](docs/project/evaluation.md) for reporting paired host observations.

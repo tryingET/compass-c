@@ -136,8 +136,20 @@ def _sensitivity(p):
 def calculate(kind: str, p: dict) -> dict:
     if type(kind) is not str:
         raise CompassError("INVALID_INPUT", "kind must be a string")
+    if kind in {"experiment", "update_beliefs"}:
+        from experiments import propose_experiments, revise_model
+
+        return (propose_experiments if kind == "experiment" else revise_model)(p)
     limitations = "Conditional arithmetic, not empirical validation or action authorization."
-    if kind == "compare":
+    if kind == "portfolio":
+        from portfolio import analyze_portfolio
+
+        result = analyze_portfolio(p)
+        limitations += (
+            " Supplied additive stakeholder and deferral values are not elicited preferences. "
+            "Precedence layers are not a resource schedule; no stakeholder criterion is selected."
+        )
+    elif kind == "compare":
         fields(p, ["actions", "scenarios", "payoffs"], ["probabilities"])
         actions, scenarios, parsed = _comparison_model(p)
         probs = p.get("probabilities")

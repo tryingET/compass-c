@@ -24,7 +24,8 @@ untrusted data into shell commands.
 ## 2. Commands and observable success
 
 Notebook commands are start, list, get, brief, record, review, revise, invalidate,
-and migrate. Calculate and evaluate are transient operations that do not use storage.
+and migrate, plus explicit evidence batches through update-evidence. Calculate and
+evaluate are transient operations that do not use storage.
 Place the global --db argument before the command and use the same explicit path
 throughout a task. Construction, calculation, and reads are side-effect free. Only
 a validated `start` operation may initialize a new notebook. A wrong path is not a
@@ -63,6 +64,17 @@ material together. Record reversal conditions with `--kind reversal_condition`:
 state the observation that would change the recommendation. Brief additionally
 checks for this explicit category; legacy review retains its older presence checks.
 Neither operation interprets or monitors a condition automatically.
+
+For several independent corrected observations, use `update-evidence <decision-id>
+--revision N --updates 'JSON'`. The JSON is a list of objects with `note_id`,
+`content`, `reason`, `status` (`observed` or `computed`), and `source`; `depends_on`
+is optional. The default operation previews affected notes without writing. Add
+`--apply` only for an explicit atomic update. Apply validates the whole batch again
+at the supplied revision, preserves history, and advances the revision once.
+Only evidence, assumption, forecast and outcome notes can be batch-replaced.
+Dependent roots, stale dependencies or any invalid member reject the whole batch;
+there is no implicit rebinding of dependencies between replacement notes. Review
+reversal conditions and reconsider invalidated recommendations explicitly.
 
 `revise <decision-id> <note-id> --revision N --content TEXT --reason TEXT`
 appends a replacement of the same note kind and preserves the original plus a

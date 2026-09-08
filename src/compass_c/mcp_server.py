@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any
 
 from . import VERSION, CompassError, Notebook, calculate
+from .evidence import apply_updates, preview_updates
 
 try:
     from mcp.server.mcpserver import MCPServer
@@ -164,6 +165,33 @@ def compass_migrate() -> dict[str, Any]:
 def compass_calculate(kind: str, parameters: dict[str, Any]) -> dict[str, Any]:
     """Run a bounded conditional calculation without creating notebook state."""
     return result(calculate, kind, parameters)
+
+
+def evidence_result(
+    apply: bool, decision_id: str, expected_revision: int, updates: list[dict[str, Any]]
+) -> dict[str, Any]:
+    def operation() -> dict[str, Any]:
+        path = os.environ.get("COMPASS_DB", str(Path.home() / ".compass" / "decisions.sqlite3"))
+        function = apply_updates if apply else preview_updates
+        return function(Notebook(path), decision_id, expected_revision, updates)
+
+    return result(operation)
+
+
+@mcp.tool(annotations=READ_ONLY)
+def compass_preview_updates(
+    decision_id: str, expected_revision: StrictInt, updates: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Preview a sourced evidence replacement batch and affected conclusions without writing."""
+    return evidence_result(False, decision_id, expected_revision, updates)
+
+
+@mcp.tool(annotations=LOCAL_WRITE)
+def compass_apply_updates(
+    decision_id: str, expected_revision: StrictInt, updates: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """Explicitly apply an atomic evidence batch; history and source claims remain inspectable."""
+    return evidence_result(True, decision_id, expected_revision, updates)
 
 
 def main() -> None:

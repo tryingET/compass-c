@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from calculations import calculate  # noqa: E402
 from core import VERSION, CompassError, Notebook  # noqa: E402
 from evaluation import evaluate  # noqa: E402
+from evidence import apply_updates, preview_updates  # noqa: E402
 
 
 class JsonArgumentParser(argparse.ArgumentParser):
@@ -127,12 +128,25 @@ def parser() -> JsonArgumentParser:
         "--depends-on", default=None, help="JSON note IDs; omission retains prior links"
     )
 
+    updates = commands.add_parser(
+        "update-evidence", help="preview a sourced evidence batch; --apply explicitly commits it"
+    )
+    updates.add_argument("decision_id")
+    updates.add_argument("--revision", required=True, type=int)
+    updates.add_argument("--updates", required=True, help="JSON list of sourced replacements")
+    updates.add_argument(
+        "--apply", action="store_true", help="commit the validated batch atomically"
+    )
+
     calculation = commands.add_parser("calculate")
     calculation.add_argument(
         "kind",
         choices=[
             "compare",
             "sensitivity",
+            "portfolio",
+            "experiment",
+            "update_beliefs",
             "committee",
             "bundle",
             "feedback",
@@ -157,6 +171,11 @@ def execute(arguments: argparse.Namespace) -> dict[str, Any]:
         return evaluate(read_json(arguments.corpus), read_json(arguments.results))
 
     notebook = Notebook(arguments.db)
+    if arguments.command == "update-evidence":
+        operation = apply_updates if arguments.apply else preview_updates
+        return operation(
+            notebook, arguments.decision_id, arguments.revision, parse_json(arguments.updates)
+        )
     if arguments.command == "start":
         return notebook.start(
             arguments.objective, arguments.stakes, parse_json(arguments.constraints)

@@ -20,7 +20,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "0.4.0"
+VERSION = "0.5.0"
 SCHEMA_VERSION = "2"
 KINDS = {
     "assumption",
