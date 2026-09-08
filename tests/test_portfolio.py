@@ -287,3 +287,15 @@ def test_deferral_values_must_be_explicit_not_inferred_from_unused_resources():
     with pytest.raises(CompassError) as error:
         analyze(request)
     assert error.value.code == "INVALID_INPUT"
+
+
+def test_source_references_and_input_snapshot_preserve_provenance_without_shared_mutation():
+    request = model(
+        [decision("foundation", source="owner-estimate:2026-09-08")],
+        source="capacity-plan:2026-09-08",
+    )
+    result = analyze(request)
+    assert result["input_model"] == request
+    assert result["decision_assumptions"][0]["source"] == "owner-estimate:2026-09-08"
+    result["input_model"]["decisions"][0]["values"]["operator"] = 99
+    assert request["decisions"][0]["values"]["operator"] == 1
