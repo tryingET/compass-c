@@ -1,0 +1,6 @@
+{
+  "outcome": "pass",
+  "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-1/resume/07-bounded-check.json",
+  "observed_at": "2026-09-08T01:20:52.602901+00:00",
+  "note": "One completed execution of the frozen installed-three-case-oracle check exited 0, returned outcome pass, and reported all three declared cases passed: informative_two_state, uncertainty_without_decision_value, and tied_prior_and_conditional_preferences. The report identifies installed COMPASS-C 0.6.0 under the isolated Python environment. These author-visible finite cases establish only the inspected bounded arithmetic results."
+}

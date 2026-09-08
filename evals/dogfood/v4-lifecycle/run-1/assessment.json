@@ -1,0 +1,90 @@
+{
+  "schema": "compass-c.v4-lifecycle-assessment.v1",
+  "protocol": "v4-lifecycle.1",
+  "assessed_at": "2026-09-08T01:26:59.941895+00:00",
+  "assessor": "controller agent, distinct from both fresh execution participants",
+  "criteria": [
+    {
+      "id": "installed_artifact",
+      "passed": true,
+      "evidence": "Both setup identity records and every captured product argv use /v0.6-core; the actual oracle records the installed package path."
+    },
+    {
+      "id": "explicit_frozen_plan",
+      "passed": true,
+      "evidence": "Prepared, recovered and final full parameters equal the frozen original JSON; plan_revision2 and dependency anchors retained."
+    },
+    {
+      "id": "cold_resume",
+      "passed": true,
+      "evidence": "Fresh resumer received only decision ID and task paths; discovery/readback recovered the saved protocol without original inputs."
+    },
+    {
+      "id": "actual_observation",
+      "passed": true,
+      "evidence": "One completed oracle process after planning exits0, reports3passing cases and11public calculations; retained observation points to its actual capture."
+    },
+    {
+      "id": "preview_is_read_only",
+      "passed": true,
+      "evidence": "Before/after notebook bytes and sidecar states identical; preview and independent readbacks retain revision2 and pending model."
+    },
+    {
+      "id": "atomic_update_and_history",
+      "passed": true,
+      "evidence": "One apply advances2to3; final readback retains prior, outcome, exact posterior and consumed-plan state; no second apply occurred."
+    },
+    {
+      "id": "useful_conditional_brief",
+      "passed": true,
+      "evidence": "Controller reviewed final-brief.md: conditional integration-review preference, alternative, actual source, illustrative-model limits, reversal and no publication permission are explicit."
+    },
+    {
+      "id": "bounded_effort",
+      "passed": false,
+      "evidence": "11product operations exceed8; 4discovery/resume reads beforepreview exceed2. Compact maximum3838bytes is within12000. No runtime source inspection was reported or appears in captured commands."
+    }
+  ],
+  "aggregate_passed": false,
+  "aggregate_status": "failed",
+  "failed_criterion_ids": [
+    "bounded_effort"
+  ],
+  "metrics": {
+    "captured_target_subprocesses": 24,
+    "target_subprocesses_by_kind": {
+      "help": 6,
+      "setup": 2,
+      "product": 11,
+      "experiment": 1,
+      "verification": 4
+    },
+    "captured_guidance_or_input_reads": 14,
+    "observed_capture_driver_invocations": 38,
+    "additional_failed_wrapper_invocations": 1,
+    "failed_target_subprocesses": 0,
+    "product_operations": 11,
+    "discovery_resume_reads_before_preview": 4,
+    "maximum_default_workflow_response_bytes": 3838,
+    "target_subprocess_elapsed_seconds": 1.0441584960044565,
+    "external_check_processes": 1,
+    "external_check_child_processes": 0,
+    "external_check_public_calculation_calls": 11,
+    "caller_parameters_file_bytes": 2846,
+    "caller_observation_file_bytes": 641
+  },
+  "capture_limit": "Exact target argv and capture-driver exposed argv retained. One failed helper-path wrapper is retained verbatim in resume/usability-notes.md; unavailable host process details are not reconstructed.",
+  "other_observed_friction": [
+    "Generic notebook guidance asks for a get after mutation; lifecycle guide encourages returned revisions.",
+    "Separate full audit readback followed a compact plan write.",
+    "Resumer added pre/postpreview state reads in addition to unchanged-byte proof.",
+    "Generic notebook brief remains needs_work with unpopulated narrative categories.",
+    "Historical observation readback labels replayed:true and applied:false, requiring distinction from the retained successful apply."
+  ],
+  "treatment_integrity": {
+    "wheel_and_all_frozen_inputs_and_skill_bytes_unchanged_through_completion": true,
+    "input_snapshot": "frozen-inputs/",
+    "complete_skill_snapshot": "skill-snapshot/"
+  },
+  "remediation": "Preserve this failed run; narrow guidance correction and a new fresh run under unchanged acceptance thresholds. No comparison against the unrelated91-command task."
+}

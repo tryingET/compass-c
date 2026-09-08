@@ -1,0 +1,6 @@
+interface:
+  display_name: "COMPASS"
+  short_description: "Conditional decisions with evidence and bounded checks"
+  default_prompt: "Use $compass to compare the alternatives, check the decisive assumption, and give a conditional recommendation."
+policy:
+  allow_implicit_invocation: true

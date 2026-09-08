@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "verification",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "from pathlib import Path\nimport json, hashlib\nroot=Path(\"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-1/resume\")\ndef record(name):\n    return json.loads((root/name).read_text())\ndef payload(name):\n    return json.loads(record(name)[\"stdout\"])\nbefore=payload(\"08-before-preview-hashes.json\")\nafter=payload(\"11-after-preview-hashes.json\")\npre=payload(\"09-before-preview-state.json\")[\"data\"]\npost=payload(\"12-after-preview-state.json\")[\"data\"]\napply=payload(\"13-observation-apply.json\")[\"data\"]\nlineage=payload(\"15-full-plan-lineage.json\")[\"data\"]\noriginal=payload(\"06-recovered-full-plan.json\")[\"data\"]\ncheck_record=record(\"07-bounded-check.json\")\ncheck=json.loads(check_record[\"stdout\"])\nobservation=record(\"observation.json\")\nfacts={\n\"preview_database_files_unchanged\": before[\"files\"]==after[\"files\"],\n\"preview_revision_before\":pre[\"revision\"],\n\"preview_revision_after\":post[\"revision\"],\n\"preview_remained_pending\":pre[\"status\"]==post[\"status\"]==\"awaiting_observation\",\n\"preview_posterior_not_persisted\":pre[\"current_model_note_id\"]==post[\"current_model_note_id\"],\n\"apply_revision\":apply[\"revision\"],\n\"apply_applied\":apply[\"applied\"],\n\"apply_replayed\":apply[\"replayed\"],\n\"readback_revision\":lineage[\"revision\"],\n\"readback_status\":lineage[\"status\"],\n\"no_pending_proposal\":lineage[\"summary\"][\"proposed_experiment_ids\"]==[],\n\"single_observation_consumed\":lineage[\"summary\"][\"single_observation_consumed\"],\n\"frozen_parameters_preserved\":original[\"parameters\"]==lineage[\"parameters\"],\n\"retained_observation_matches\":observation==lineage[\"observation\"][\"update\"][\"result\"][\"observation\"],\n\"event_identity_matches\":record(\"event-identity.json\")[\"event_id\"]==lineage[\"observation\"][\"event_id\"]==apply[\"event_id\"],\n\"actual_check_exit_status\":check_record[\"exit_status\"],\n\"actual_check_timed_out\":check_record[\"timed_out\"],\n\"actual_check_outcome\":check[\"outcome\"],\n\"actual_check_case_count\":len(check[\"cases\"]),\n\"actual_check_all_cases_passed\":all(case[\"passed\"] for case in check[\"cases\"]),\n\"actual_check_capture_sha256\":hashlib.sha256((root/\"07-bounded-check.json\").read_bytes()).hexdigest(),\n\"observation_sha256\":hashlib.sha256((root/\"observation.json\").read_bytes()).hexdigest(),\n\"model_lineage\":{\"prior\":lineage[\"model_note_id\"],\"outcome\":apply[\"outcome_note_id\"],\"posterior\":lineage[\"current_model_note_id\"]},\n\"general_brief_status\":payload(\"14-resulting-brief.json\")[\"data\"][\"review\"][\"status\"]\n}\nprint(json.dumps(facts,indent=2))"
+  ],
+  "started_at": "2026-09-08T01:23:18.867218+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"preview_database_files_unchanged\": true,\n  \"preview_revision_before\": 2,\n  \"preview_revision_after\": 2,\n  \"preview_remained_pending\": true,\n  \"preview_posterior_not_persisted\": true,\n  \"apply_revision\": 3,\n  \"apply_applied\": true,\n  \"apply_replayed\": false,\n  \"readback_revision\": 3,\n  \"readback_status\": \"observed\",\n  \"no_pending_proposal\": true,\n  \"single_observation_consumed\": true,\n  \"frozen_parameters_preserved\": true,\n  \"retained_observation_matches\": true,\n  \"event_identity_matches\": true,\n  \"actual_check_exit_status\": 0,\n  \"actual_check_timed_out\": false,\n  \"actual_check_outcome\": \"pass\",\n  \"actual_check_case_count\": 3,\n  \"actual_check_all_cases_passed\": true,\n  \"actual_check_capture_sha256\": \"9ab94d82b5168d053ad8591026d42a7a422d5a90e35a1b3dfa26d9aec7efec6a\",\n  \"observation_sha256\": \"0ab6e85c198e49ceee73099bd81568244a21e2b3a5cebf47ba577d478d83ccad\",\n  \"model_lineage\": {\n    \"prior\": \"ecfaca68a81f46d68571f9dcdd0c9d70\",\n    \"outcome\": \"0300434740d24c0b8c7244a3a6cd7bf7\",\n    \"posterior\": \"be78c746e2b0416cb65824b8df614179\"\n  },\n  \"general_brief_status\": \"needs_work\"\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:23:18.891057+00:00",
+  "elapsed_seconds": 0.023834975001591374,
+  "stdout_utf8_bytes": 1092,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "verification",
+      "--output",
+      "17-evidence-consistency.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "-c",
+      "from pathlib import Path\nimport json, hashlib\nroot=Path(\"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-1/resume\")\ndef record(name):\n    return json.loads((root/name).read_text())\ndef payload(name):\n    return json.loads(record(name)[\"stdout\"])\nbefore=payload(\"08-before-preview-hashes.json\")\nafter=payload(\"11-after-preview-hashes.json\")\npre=payload(\"09-before-preview-state.json\")[\"data\"]\npost=payload(\"12-after-preview-state.json\")[\"data\"]\napply=payload(\"13-observation-apply.json\")[\"data\"]\nlineage=payload(\"15-full-plan-lineage.json\")[\"data\"]\noriginal=payload(\"06-recovered-full-plan.json\")[\"data\"]\ncheck_record=record(\"07-bounded-check.json\")\ncheck=json.loads(check_record[\"stdout\"])\nobservation=record(\"observation.json\")\nfacts={\n\"preview_database_files_unchanged\": before[\"files\"]==after[\"files\"],\n\"preview_revision_before\":pre[\"revision\"],\n\"preview_revision_after\":post[\"revision\"],\n\"preview_remained_pending\":pre[\"status\"]==post[\"status\"]==\"awaiting_observation\",\n\"preview_posterior_not_persisted\":pre[\"current_model_note_id\"]==post[\"current_model_note_id\"],\n\"apply_revision\":apply[\"revision\"],\n\"apply_applied\":apply[\"applied\"],\n\"apply_replayed\":apply[\"replayed\"],\n\"readback_revision\":lineage[\"revision\"],\n\"readback_status\":lineage[\"status\"],\n\"no_pending_proposal\":lineage[\"summary\"][\"proposed_experiment_ids\"]==[],\n\"single_observation_consumed\":lineage[\"summary\"][\"single_observation_consumed\"],\n\"frozen_parameters_preserved\":original[\"parameters\"]==lineage[\"parameters\"],\n\"retained_observation_matches\":observation==lineage[\"observation\"][\"update\"][\"result\"][\"observation\"],\n\"event_identity_matches\":record(\"event-identity.json\")[\"event_id\"]==lineage[\"observation\"][\"event_id\"]==apply[\"event_id\"],\n\"actual_check_exit_status\":check_record[\"exit_status\"],\n\"actual_check_timed_out\":check_record[\"timed_out\"],\n\"actual_check_outcome\":check[\"outcome\"],\n\"actual_check_case_count\":len(check[\"cases\"]),\n\"actual_check_all_cases_passed\":all(case[\"passed\"] for case in check[\"cases\"]),\n\"actual_check_capture_sha256\":hashlib.sha256((root/\"07-bounded-check.json\").read_bytes()).hexdigest(),\n\"observation_sha256\":hashlib.sha256((root/\"observation.json\").read_bytes()).hexdigest(),\n\"model_lineage\":{\"prior\":lineage[\"model_note_id\"],\"outcome\":apply[\"outcome_note_id\"],\"posterior\":lineage[\"current_model_note_id\"]},\n\"general_brief_status\":payload(\"14-resulting-brief.json\")[\"data\"][\"review\"][\"status\"]\n}\nprint(json.dumps(facts,indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

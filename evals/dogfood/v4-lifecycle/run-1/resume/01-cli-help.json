@@ -1,0 +1,41 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "help",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "--help"
+  ],
+  "started_at": "2026-09-08T01:20:10.882873+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "usage: compass-c [-h] [--version] [--db DB]\n                 {start,get,review,brief,list,migrate,record,invalidate,revise,update-evidence,plan-experiment,experiments,experiment,observe-experiment,calculate,evaluate}\n                 ...\n\nCOMPASS-C: local advisory decision records and bounded calculations\n\npositional arguments:\n  {start,get,review,brief,list,migrate,record,invalidate,revise,update-evidence,plan-experiment,experiments,experiment,observe-experiment,calculate,evaluate}\n    start               create a task-owned decision notebook entry\n    list                discover decisions and reconcile a lost start response\n    migrate             explicitly upgrade an existing notebook schema\n    revise              replace a note and invalidate dependent conclusions\n    update-evidence     preview a sourced evidence batch; --apply explicitly\n                        commits it\n    plan-experiment     freeze a bounded experiment against the current\n                        decision revision\n    experiments         discover a decision's saved experiment plans\n    experiment          resume a saved experiment and its next step\n    observe-experiment  preview a sourced observation; --apply explicitly\n                        records it\n    evaluate            report frozen paired host evaluation results\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n  --db DB               workspace-owned SQLite notebook; not a security or\n                        authorization boundary\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:20:10.921265+00:00",
+  "elapsed_seconds": 0.03839532100028009,
+  "stdout_utf8_bytes": 1574,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "help",
+      "--output",
+      "01-cli-help.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+      "--help"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

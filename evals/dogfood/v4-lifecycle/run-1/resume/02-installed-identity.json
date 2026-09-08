@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "setup",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import importlib.metadata as m, json, sys; d=m.distribution(\"compass-c\"); print(json.dumps({\"python\":sys.executable,\"version\":d.version,\"distribution_location\":str(d.locate_file(\"\")),\"entry_points\":[{\"name\":p.name,\"value\":p.value} for p in d.entry_points]},indent=2))"
+  ],
+  "started_at": "2026-09-08T01:20:10.796431+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"python\": \"/workspace/scratch/b6252d122d78/v0.6-core/bin/python\",\n  \"version\": \"0.6.0\",\n  \"distribution_location\": \"/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages\",\n  \"entry_points\": [\n    {\n      \"name\": \"compass\",\n      \"value\": \"compass_c.cli:main\"\n    },\n    {\n      \"name\": \"compass-c\",\n      \"value\": \"compass_c.cli:main\"\n    },\n    {\n      \"name\": \"compass-c-mcp\",\n      \"value\": \"compass_c.mcp_server:main\"\n    }\n  ]\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:20:10.855552+00:00",
+  "elapsed_seconds": 0.05911754400040081,
+  "stdout_utf8_bytes": 455,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "setup",
+      "--output",
+      "02-installed-identity.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "-c",
+      "import importlib.metadata as m, json, sys; d=m.distribution(\"compass-c\"); print(json.dumps({\"python\":sys.executable,\"version\":d.version,\"distribution_location\":str(d.locate_file(\"\")),\"entry_points\":[{\"name\":p.name,\"value\":p.value} for p in d.entry_points]},indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "help",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "start",
+    "--help"
+  ],
+  "started_at": "2026-09-08T01:17:28.418431+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "usage: compass-c start [-h] --objective OBJECTIVE [--stakes {low,medium,high}]\n                       [--constraints CONSTRAINTS]\n\noptions:\n  -h, --help            show this help message and exit\n  --objective OBJECTIVE\n  --stakes {low,medium,high}\n  --constraints CONSTRAINTS\n                        JSON list\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:17:28.455884+00:00",
+  "elapsed_seconds": 0.03744549400107644,
+  "stdout_utf8_bytes": 311,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "help",
+      "--output",
+      "03-start-help.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+      "start",
+      "--help"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "product",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "--db",
+    "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite",
+    "plan-experiment",
+    "dd0ad8861fe04cd68bd1f1d46aa6db33",
+    "--revision",
+    "1",
+    "--parameters-file",
+    "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/parameters.json"
+  ],
+  "started_at": "2026-09-08T01:17:48.072268+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"ok\": true,\n  \"data\": {\n    \"plan_id\": \"bda6ede2928b448b991c92756332c0e5\",\n    \"decision_id\": \"dd0ad8861fe04cd68bd1f1d46aa6db33\",\n    \"revision\": 2,\n    \"plan_revision\": 2,\n    \"model_note_id\": \"ecfaca68a81f46d68571f9dcdd0c9d70\",\n    \"current_model_note_id\": \"ecfaca68a81f46d68571f9dcdd0c9d70\",\n    \"current_model_stale\": false,\n    \"status\": \"awaiting_observation\",\n    \"scope\": \"analysis_only\",\n    \"action_permission\": \"not_granted\",\n    \"source_verified\": false,\n    \"summary\": {\n      \"current_winners\": [\n        \"seek additional arithmetic review\"\n      ],\n      \"recorded_winners\": [\n        \"seek additional arithmetic review\"\n      ],\n      \"proposed_experiment_ids\": [\n        \"installed-three-case-oracle\"\n      ],\n      \"proposal_basis\": \"frozen_prior\",\n      \"proposal_current\": true,\n      \"single_observation_consumed\": false,\n      \"no_test\": {\n        \"expected_value\": 0.0,\n        \"expected_value_exact\": \"0\",\n        \"expected_value_winners\": [\n          \"seek additional arithmetic review\"\n        ]\n      },\n      \"candidates\": [\n        {\n          \"id\": \"installed-three-case-oracle\",\n          \"question\": \"Do all three frozen finite-model checks agree with an independent Fraction oracle against the installed candidate?\",\n          \"protocol\": \"Run /workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/check_installed.py exactly once using the isolated installed Python supplied with the task, PYTHONDONTWRITEBYTECODE=1 and no PYTHONPATH. Use a 30-second parent timeout. The script launches no child process, writes no files, and checks three fixed finite models through the public package API. Stop at its first failure. Retain exact argv, exit status, stdout, stderr and timestamps. Observe pass only if the script exits 0 and its JSON outcome is pass with all three cases present; observe fail for a completed failing check. A timeout or unavailable check remains an unavailable observation and cannot be turned into pass. The retained check output is the observation source; a successful plan or notebook command is not the observation.\",\n          \"cost\": 0.5,\n          \"duration\": 30,\n          \"status\": \"informative_within_bounds\",\n          \"net_information_value\": 3.3,\n          \"net_information_value_exact\": \"33/10\",\n          \"outcomes\": [\n            {\n              \"outcome\": \"pass\",\n              \"probability_exact\": \"31/50\",\n              \"possible\": true,\n              \"expected_value_winners\": [\n                \"accept the bounded installed arithmetic for integration review\"\n              ],\n              \"preference_changed\": true\n            },\n            {\n              \"outcome\": \"fail\",\n              \"probability_exact\": \"19/50\",\n              \"possible\": true,\n              \"expected_value_winners\": [\n                \"seek additional arithmetic review\"\n              ],\n              \"preference_changed\": false\n            }\n          ]\n        }\n      ],\n      \"bounds\": {\n        \"budget\": 1.0,\n        \"max_duration\": 30.0,\n        \"duration_unit\": \"seconds\"\n      },\n      \"value_unit\": \"illustrative development utility points\",\n      \"next_action\": \"Inspect the proposed protocol and its bounds. If the owner obtains an actual result, preview it with a stable event identity before applying it.\",\n      \"source_verified\": false\n    }\n  }\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:17:48.113001+00:00",
+  "elapsed_seconds": 0.0407281959996908,
+  "stdout_utf8_bytes": 3333,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "product",
+      "--output",
+      "06-plan.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+      "--db",
+      "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite",
+      "plan-experiment",
+      "dd0ad8861fe04cd68bd1f1d46aa6db33",
+      "--revision",
+      "1",
+      "--parameters-file",
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/parameters.json"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}
