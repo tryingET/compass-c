@@ -48,3 +48,9 @@ Feature: Coordinate decisions without erasing disagreement or transferring autho
     When the owner compares portfolios
     Then the request fails with INVALID_INPUT
     And the caller's model remains unchanged
+
+  Scenario: Keep the source and model behind a coordinated comparison
+    Given the owner supplies source references for capacities and a decision
+    When the owner compares portfolios
+    Then the result retains those source references and the complete input model
+    And changing the returned model cannot change the caller's original input
