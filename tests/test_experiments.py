@@ -7,9 +7,9 @@ import json
 from fractions import Fraction
 
 import pytest
-from compass_c.experiments import propose_experiments, revise_model
 
 from compass_c import CompassError
+from compass_c.experiments import propose_experiments, revise_model
 
 
 def model(**overrides):
@@ -335,3 +335,21 @@ def test_observation_requires_known_outcome_explicit_source_and_timezone(overrid
     with pytest.raises(CompassError) as error:
         revise_model(parameters)
     assert error.value.code == "INVALID_INPUT"
+
+
+def test_extreme_combined_precision_is_rejected_before_unbounded_integer_rendering():
+    bounded_model = model(
+        actions=["hold"],
+        scenarios=[str(i) for i in range(32)],
+        payoffs=[[0] * 32],
+        probabilities=[1 / 32] * 32,
+    )
+    rare_experiment = experiment(likelihoods=[[(i + 1) * 1e-300, 1] for i in range(32)])
+    for function, parameters in (
+        (propose_experiments, proposal(model=bounded_model, experiments=[rare_experiment])),
+        (revise_model, update(model=bounded_model, experiment=rare_experiment)),
+    ):
+        with pytest.raises(CompassError) as error:
+            function(parameters)
+        assert error.value.code == "INVALID_INPUT"
+        assert "precision" in str(error.value).lower()
