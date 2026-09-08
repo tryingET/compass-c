@@ -36,6 +36,11 @@ TOOLS = {
     "compass_migrate",
     "compass_preview_updates",
     "compass_apply_updates",
+    "compass_plan_experiment",
+    "compass_experiment",
+    "compass_experiments",
+    "compass_preview_observation",
+    "compass_apply_observation",
 }
 READ_ONLY = {
     "compass_get",
@@ -44,6 +49,9 @@ READ_ONLY = {
     "compass_brief",
     "compass_list",
     "compass_preview_updates",
+    "compass_experiment",
+    "compass_experiments",
+    "compass_preview_observation",
 }
 
 
