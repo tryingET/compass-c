@@ -1,0 +1,57 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "product",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "--db",
+    "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite",
+    "start",
+    "--objective",
+    "Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review",
+    "--stakes",
+    "low",
+    "--constraints",
+    "[\"Preserve the supplied model and experiment inputs unchanged.\",\"Prepare only: leave the proposed experiment pending for a separate resumer; do not execute its check or record an observation.\",\"The bounded finite check can support integration review only; it cannot establish general correctness or authorize publication.\"]"
+  ],
+  "started_at": "2026-09-08T01:33:27.889244+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"ok\": true,\n  \"data\": {\n    \"decision_id\": \"6274b21cddee461692b687992ccb8d69\",\n    \"revision\": 1,\n    \"scope\": \"analysis_only\",\n    \"action_permission\": \"not_granted\",\n    \"next\": \"Record actual evidence and at least two alternatives; do not invent facts.\"\n  }\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:33:27.931590+00:00",
+  "elapsed_seconds": 0.042340744999819435,
+  "stdout_utf8_bytes": 267,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "product",
+      "--output",
+      "05-start.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+      "--db",
+      "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite",
+      "start",
+      "--objective",
+      "Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review",
+      "--stakes",
+      "low",
+      "--constraints",
+      "[\"Preserve the supplied model and experiment inputs unchanged.\",\"Prepare only: leave the proposed experiment pending for a separate resumer; do not execute its check or record an observation.\",\"The bounded finite check can support integration review only; it cannot establish general correctness or authorize publication.\"]"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

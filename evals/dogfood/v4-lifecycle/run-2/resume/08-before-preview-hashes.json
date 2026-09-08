@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "verification",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import json, hashlib\nfrom pathlib import Path\np=Path(\"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite\")\nrecords=[]\nfor suffix in (\"\", \"-wal\", \"-shm\", \"-journal\"):\n q=Path(str(p)+suffix)\n exists=q.exists()\n data=q.read_bytes() if exists else None\n records.append({\"path\": str(q), \"exists\": exists, \"bytes\": len(data) if exists else None, \"sha256\": hashlib.sha256(data).hexdigest() if exists else None})\nprint(json.dumps({\"known_revision\": 2, \"revision_source\": \"04-plan-before-full.json\", \"storage\": records}, indent=2))"
+  ],
+  "started_at": "2026-09-08T01:37:46.655533+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"known_revision\": 2,\n  \"revision_source\": \"04-plan-before-full.json\",\n  \"storage\": [\n    {\n      \"path\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite\",\n      \"exists\": true,\n      \"bytes\": 77824,\n      \"sha256\": \"4542fe040785643bb732865c9ab48b457ff627e14d0ba05cba9e5f119c0a8e59\"\n    },\n    {\n      \"path\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite-wal\",\n      \"exists\": false,\n      \"bytes\": null,\n      \"sha256\": null\n    },\n    {\n      \"path\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite-shm\",\n      \"exists\": false,\n      \"bytes\": null,\n      \"sha256\": null\n    },\n    {\n      \"path\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite-journal\",\n      \"exists\": false,\n      \"bytes\": null,\n      \"sha256\": null\n    }\n  ]\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:37:46.680057+00:00",
+  "elapsed_seconds": 0.024515690998669015,
+  "stdout_utf8_bytes": 860,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "verification",
+      "--output",
+      "08-before-preview-hashes.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "-c",
+      "import json, hashlib\nfrom pathlib import Path\np=Path(\"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite\")\nrecords=[]\nfor suffix in (\"\", \"-wal\", \"-shm\", \"-journal\"):\n q=Path(str(p)+suffix)\n exists=q.exists()\n data=q.read_bytes() if exists else None\n records.append({\"path\": str(q), \"exists\": exists, \"bytes\": len(data) if exists else None, \"sha256\": hashlib.sha256(data).hexdigest() if exists else None})\nprint(json.dumps({\"known_revision\": 2, \"revision_source\": \"04-plan-before-full.json\", \"storage\": records}, indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

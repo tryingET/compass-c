@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "experiment",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/check_installed.py"
+  ],
+  "started_at": "2026-09-08T01:37:15.225963+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"protocol\": \"v4-lifecycle.1\",\n  \"started_at\": \"2026-09-08T01:37:15.245109+00:00\",\n  \"cases\": [\n    {\n      \"case\": \"informative_two_state\",\n      \"passed\": true,\n      \"public_calculation_calls\": 3\n    },\n    {\n      \"case\": \"uncertainty_without_decision_value\",\n      \"passed\": true,\n      \"public_calculation_calls\": 4\n    },\n    {\n      \"case\": \"tied_prior_and_conditional_preferences\",\n      \"passed\": true,\n      \"public_calculation_calls\": 4\n    }\n  ],\n  \"outcome\": \"pass\",\n  \"child_processes\": 0,\n  \"writes\": 0,\n  \"limitations\": \"Three author-visible finite cases; not general correctness or authority.\",\n  \"installed_version\": \"0.6.0\",\n  \"installed_package_location\": \"/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages/compass_c/__init__.py\",\n  \"finished_at\": \"2026-09-08T01:37:15.256827+00:00\",\n  \"elapsed_seconds\": 0.011714072999893688\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:37:15.261416+00:00",
+  "elapsed_seconds": 0.03544885299925227,
+  "stdout_utf8_bytes": 873,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "experiment",
+      "--output",
+      "06-bounded-check.json",
+      "--timeout",
+      "30",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/check_installed.py"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

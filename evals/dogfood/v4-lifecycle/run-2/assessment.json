@@ -1,0 +1,97 @@
+{
+  "schema": "compass-c.v4-lifecycle-assessment.v1",
+  "protocol": "v4-lifecycle.1",
+  "attempt": 2,
+  "assessed_at": "2026-09-08T01:42:57.858106+00:00",
+  "assessor": "controller agent, distinct from both fresh execution participants",
+  "criteria": [
+    {
+      "id": "installed_artifact",
+      "passed": true,
+      "evidence": "All8launched product operations use the isolated0.6wheel. One captured nonexistent-path attempt never launched any product; it remains a failed attempt in effort counts."
+    },
+    {
+      "id": "explicit_frozen_plan",
+      "passed": true,
+      "evidence": "Initial plan --full, recovered plan and final full parameters equal the frozen JSON; no separate preparer readback was needed."
+    },
+    {
+      "id": "cold_resume",
+      "passed": true,
+      "evidence": "Fresh resumer received only decision ID/task paths and recovered protocol/model from discovery plus one full plan read."
+    },
+    {
+      "id": "actual_observation",
+      "passed": true,
+      "evidence": "A new single completed oracle run after planning exits0 with3passing cases; source and timestamp match retained actual output. This repeated finite check is not independent reliability evidence."
+    },
+    {
+      "id": "preview_is_read_only",
+      "passed": true,
+      "evidence": "Knownrevision2 and preview current_revision2 agree; database plus journal/WAL/SHM states are identical before/after in the isolated notebook."
+    },
+    {
+      "id": "atomic_update_and_history",
+      "passed": true,
+      "evidence": "One apply advances2to3; final generic brief has exactlyone observed outcome whoseID/source/content match the apply and recorded event. Readback replay fields are a receipt, not another apply call."
+    },
+    {
+      "id": "useful_conditional_brief",
+      "passed": true,
+      "evidence": "Controller reviewed final-brief.md: conditional current preference, alternative, actual source, illustrative posterior, reversal threshold/conditions and limits are explicit; generic needs_work is disclosed."
+    },
+    {
+      "id": "bounded_effort",
+      "passed": false,
+      "evidence": "9product attempts exceed8, including the preserved failed launch;8executed product operations succeeded. Two discovery/resume reads and maximum3838default bytes satisfy their bounds."
+    }
+  ],
+  "aggregate_passed": false,
+  "aggregate_status": "failed",
+  "failed_criterion_ids": [
+    "bounded_effort"
+  ],
+  "metrics": {
+    "captured_target_attempts": 21,
+    "launched_target_subprocesses": 20,
+    "target_attempts_by_kind": {
+      "help": 5,
+      "setup": 3,
+      "product": 9,
+      "experiment": 1,
+      "verification": 3
+    },
+    "captured_guidance_input_reads": 14,
+    "observed_capture_driver_invocations": 35,
+    "additional_failed_wrapper_invocations": 1,
+    "failed_target_launches": 1,
+    "failed_launched_targets": 0,
+    "product_attempts": 9,
+    "successful_product_operations": 8,
+    "discovery_resume_reads_before_preview": 2,
+    "maximum_default_workflow_response_bytes": 3838,
+    "target_attempt_elapsed_seconds": 0.8621544469951914,
+    "external_check_processes": 1,
+    "external_check_child_processes": 0,
+    "external_check_public_calculation_calls": 11,
+    "caller_parameters_file_bytes": 2846,
+    "caller_observation_file_bytes": 410
+  },
+  "treatment_integrity": {
+    "wheel_and_all_frozen_inputs_and_skill_bytes_unchanged_through_completion": true,
+    "input_snapshot": "frozen-inputs/",
+    "complete_skill_reconstruction": "../run-1/skill-snapshot with the two changed references replaced from this run skill-snapshot/; all expected hashes are in manifest.json"
+  },
+  "capture_limit": "One failed helper-path wrapper never reached the helper; exact exposed command/error retained in resume/uncaptured-wrapper-failure.json. Exact targetargv/failures are retained; unexposed host processdetails not reconstructed.",
+  "outcome_receipt_audit": {
+    "one_apply_attempt": true,
+    "one_current_outcome_matches_event": true,
+    "readback_replayed_flag_does_not_mean_second_apply": true
+  },
+  "remaining_friction": [
+    "Repeated long absolute paths caused one product launch failure and one wrapper failure.",
+    "Generic notebook narrative categories remain needs_work despite completed experiment lifecycle.",
+    "Observed-event readback receipt fields require distinction from an execution retry."
+  ],
+  "remediation": "Narrow deterministic capture executable aliases and short driver paths; preserve this failed run and retain unchanged product/runtime/guidance/model/rubric for the next prospective exercise."
+}
