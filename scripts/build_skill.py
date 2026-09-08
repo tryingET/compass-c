@@ -39,6 +39,9 @@ def outputs() -> dict[Path, str]:
             "from .evidence import apply_updates, preview_updates",
             "from evidence import apply_updates, preview_updates  # noqa: E402",
         )
+        .replace(
+            "from .core import KINDS, STATUSES", "from core import KINDS, STATUSES  # noqa: E402"
+        )
     )
     result = {
         TARGET / f"{module}.py": GENERATED

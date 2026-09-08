@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from . import VERSION, CompassError, Notebook, calculate
+from .core import KINDS, STATUSES
 from .evaluation import evaluate
 from .evidence import apply_updates, preview_updates
 
@@ -99,9 +100,10 @@ def parser() -> JsonArgumentParser:
     record = commands.add_parser("record")
     record.add_argument("decision_id")
     record.add_argument("--revision", required=True, type=int)
-    record.add_argument("--kind", required=True)
+    record.add_argument("--kind", required=True, help="note kind: " + ", ".join(sorted(KINDS)))
     record.add_argument("--content", required=True)
-    record.add_argument("--status", default="proposed")
+    status_help = "source status: " + ", ".join(sorted(STATUSES)) + " (default: proposed)"
+    record.add_argument("--status", default="proposed", help=status_help)
     record.add_argument("--source", default="")
     record.add_argument("--depends-on", default="[]", help="JSON list of note IDs")
 
@@ -119,7 +121,7 @@ def parser() -> JsonArgumentParser:
     revise.add_argument("--revision", required=True, type=int)
     revise.add_argument("--content", required=True)
     revise.add_argument("--reason", required=True)
-    revise.add_argument("--status", default="proposed")
+    revise.add_argument("--status", default="proposed", help=status_help)
     revise.add_argument("--source", default="")
     revise.add_argument(
         "--depends-on", default=None, help="JSON note IDs; omission retains prior links"
