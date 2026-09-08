@@ -1,0 +1,62 @@
+{
+  "schema": "compass-c.v4-lifecycle-manifest.v1",
+  "status": "frozen_before_participant_execution",
+  "frozen_at": "2026-09-08T01:16:05.853195+00:00",
+  "protocol": "v4-lifecycle.1",
+  "prospective_protocol_commit": "470c3dc929138bdf62e7678267b1ab7cb94250bf",
+  "source_commit": "9771c9eda32b50cc8f01a2e64d8f256b58f03c96",
+  "wheel": {
+    "path": "/workspace/scratch/b6252d122d78/v0.6-final-distributions/compass_c-0.6.0-py3-none-any.whl",
+    "sha256": "ed31585b6f3326b018874d8dcb47a5dfb6e8186cf0158141a4dd84657d9814ff"
+  },
+  "installed_python": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+  "installed_cli": "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+  "notebook": {
+    "path": "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite",
+    "existed_before": false
+  },
+  "frozen_input_sha256": {
+    "protocol.md": "e22d005ab42d53e6ef11d06b16689fb4c8c66ff0d91119a92dfc6529b776f2be",
+    "parameters.json": "741262c396e582c2c4c1c945a97cff45eda2d785bb3b59d97779623ad3a2a3b9",
+    "check_installed.py": "cfcc15d3b305e0bd635b43762ada31062e83911a39dcd19bf6a107e783b69653",
+    "capture.py": "3a2f58145cd9ed679d104f38b459ee5caa8c203bf559f2528e714aa4bf8bf949",
+    "prepare-task.json": "4f14bf7752d5810e96fbb9a7f3e496c12a5c25f72cf99e8f1e8c2f0792d8fdeb",
+    "resume-task.json": "913ef44844212fac21b556f0d9570847a7b7001162567e6da17897efb434eafc"
+  },
+  "complete_skill_package_sha256": "9eff45f69407118de4e079a7e5c1fff7864b2b88ab53394597bf366978af809c",
+  "skill_fingerprint_definition": "Sorted relative paths and SHA-256 for all tracked canonical skill files; transient runtime caches are not package contents.",
+  "skill_package_file_sha256": {
+    "LICENSE": "b4f66cfae4f39ce29e1da0bc5ab1516af037e9dbc6b7f4eb531534ad50a4fc9a",
+    "SKILL.md": "768ea074b1b4e993b22877b7ccdda91407a57b976e861622bd0dcaa482733b83",
+    "evals/cases.json": "3e532ebd85c5be9bf09566163297918c7c5830fc677eadae69a6483862215153",
+    "openai.yaml": "6ff3e3c761b65db239a622de10578a2b0054609954939eea1464645dd04f8a69",
+    "references/calculators.md": "09424ad41d8fc3ee5c770b9f33882e10812d05982addfa63b1afc423529ad026",
+    "references/decision-checks.md": "71d32559f91a65ea5493069d608e48513db1d99883793a3e4cad9d7bd10f948a",
+    "references/experiment-workflow.md": "a46063c9787aa54e623d417443c2cdbd7354865fc1c3ba190759f52c172b58e7",
+    "references/experiments.md": "83013a77830800567ec031874a8b377926b15b9a15ac95ec44f17572494c5762",
+    "references/notebook.md": "4c18abcb47da4541cc45eee8070dd9251807e6465fe63df38e0e30aa2da165ea",
+    "references/portfolio.md": "cf6101ab98f32941ce8b1c72130acb2467fd4d22afea23c9c96a66bf11e7fe84",
+    "scripts/calculations.py": "a271a61cc872e1705aac14b03cd77017f1efba8274dc52ba5558346770bbff54",
+    "scripts/compass.py": "b5f607b576872c794472716e78190df1bed264d4eae3843009ad5299ec4fd065",
+    "scripts/core.py": "267e57d26bb9784c72536041c04d222a79ab2c8f1cb034b41bc8157c45ffa370",
+    "scripts/evaluation.py": "9450da2513097c5f30fc87a092505486b35d6b09769ac7c79358304a0eff0e43",
+    "scripts/evidence.py": "cd727b83bab0599a10102e4a97d7d407fdc2415e4bb4fdc32fc75b463e7cd0ee",
+    "scripts/experiments.py": "9b3644322cd2a817cd25aa3853c0f8f672e2ba854ee1345e25dc30ea395fd6b4",
+    "scripts/lifecycle.py": "9c288dfc2e1a6e1724455e0d22699aebfacea32762854b3cdf0bef9931c0de6c",
+    "scripts/portfolio.py": "54a3109bf8a56b28c90a1a5ff6d92db59fcfc576bd27f7590c7f571a6063a638"
+  },
+  "participants": {
+    "fresh_context": "two sequential fork_turns=none agents",
+    "model": "inherited parent model; exact identifier not exposed",
+    "provider": "OpenAI Work Mode",
+    "sampling_settings": "not exposed; no override requested",
+    "scope": "restricted by frozen task files"
+  },
+  "dynamic_handoff": "Only decision_id from the preparer is passed separately to the resumer; no model or prior output is passed.",
+  "evidence_limits": [
+    "author-visible local installed-client exercise",
+    "not native vendor discovery",
+    "not a holdout or comparative behavioral superiority study",
+    "illustrative priors and likelihoods, not calibrated reliability estimates"
+  ]
+}

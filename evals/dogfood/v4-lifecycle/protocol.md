@@ -69,7 +69,7 @@ the checks or declare the aggregate verdict.
 | `preview_is_read_only` | Preview yields the proposed revision while database bytes and notebook revision are unchanged. | Before/after hashes and preview response. |
 | `atomic_update_and_history` | Explicit apply advances one revision, retains the prior, records the observation once, and produces a recoverable posterior. | Apply response and subsequent full readback. |
 | `useful_conditional_brief` | The final answer states current preferred action or tie, alternative, observation provenance, a reversal condition, and material model limits without inventing verification or authority. | Final answer and saved model lineage. |
-| `bounded_effort` | The lifecycle uses at most eight product operations, at most two notebook-only readbacks besides final history verification, default workflow responses smaller than 12 KB for the frozen fixture, and no runtime source inspection. | Categorized target-command trace, UTF-8 response sizes, and participant disclosure. |
+| `bounded_effort` | The lifecycle uses at most eight product operations, at most two discovery/resume reads before preview, default workflow responses smaller than 12 KB for the frozen fixture, and no runtime source inspection. | Categorized target-command trace, UTF-8 response sizes, and participant disclosure. |
 
 All eight checks must pass for this exercise to pass. A failed effort check does
 not erase correct arithmetic, and correct arithmetic does not make the workflow
@@ -81,6 +81,10 @@ plan readback is the eighth operation. Help calls and the separate experiment
 execution are retained and counted separately; they do not disappear from the
 reported cost. Returned IDs and revisions should support the next write without
 an extra `get` before and after every operation.
+
+The compact-output bound is 12,000 UTF-8 bytes per default plan, listing, resume,
+or observation response. Explicit `--full` audit data and the generic notebook
+brief are measured separately rather than silently truncated to meet that bound.
 
 ## Side effects, retries, and capture
 
