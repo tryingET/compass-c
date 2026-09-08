@@ -33,17 +33,19 @@ def parameters():
             "provenance": ["Author-visible synthetic fixture; not measured usefulness."],
             "assumptions": ["The two scenarios exhaust the supplied model."],
         },
-        "experiments": [{
-            "id": "smoke",
-            "question": "Does the isolated installation pass?",
-            "protocol": "Run one isolated installation and capture the result.",
-            "outcomes": ["pass", "fail"],
-            "likelihoods": [[0.8, 0.2], [0.2, 0.8]],
-            "cost": 0.5,
-            "duration": 10,
-            "provenance": ["Explicit synthetic likelihoods; no calibration claim."],
-            "assumptions": ["One mutually exclusive outcome."],
-        }],
+        "experiments": [
+            {
+                "id": "smoke",
+                "question": "Does the isolated installation pass?",
+                "protocol": "Run one isolated installation and capture the result.",
+                "outcomes": ["pass", "fail"],
+                "likelihoods": [[0.8, 0.2], [0.2, 0.8]],
+                "cost": 0.5,
+                "duration": 10,
+                "provenance": ["Explicit synthetic likelihoods; no calibration claim."],
+                "assumptions": ["One mutually exclusive outcome."],
+            }
+        ],
         "budget": 1,
         "max_duration": 20,
         "duration_unit": "minutes",
@@ -114,7 +116,10 @@ def test_caller_mutation_cannot_rewrite_frozen_plan(tmp_path):
 def test_preview_and_atomic_apply_retain_posterior_and_invalidate_reasoning(saved):
     book, did, _, plan = saved
     recommendation = book.record(
-        did, 3, "decision", "Defer until the experiment resolves uncertainty",
+        did,
+        3,
+        "decision",
+        "Defer until the experiment resolves uncertainty",
         depends_on=[plan["model_note_id"]],
     )
     before = book.get(did)
@@ -123,11 +128,13 @@ def test_preview_and_atomic_apply_retain_posterior_and_invalidate_reasoning(save
     assert result["applied"] is False
     assert result["replayed"] is False
     assert result["revision"] == 4
-    expected = revise_model({
-        "model": parameters()["model"],
-        "experiment": parameters()["experiments"][0],
-        "observation": observation(),
-    })
+    expected = revise_model(
+        {
+            "model": parameters()["model"],
+            "experiment": parameters()["experiments"][0],
+            "observation": observation(),
+        }
+    )
     assert result["update"] == expected
     assert set(result["invalidated"]) == {plan["model_note_id"], recommendation["note_id"]}
     assert book.get(did) == before
@@ -174,12 +181,49 @@ def test_retry_returns_original_receipt_before_revision_check_without_double_cou
         assert book.path.read_bytes() == before
 
 
+@pytest.mark.parametrize("changed", ["upstream_evidence", "observed_outcome", "posterior_model"])
+def test_revised_observed_plan_preserves_history_without_current_stale_winners(saved, changed):
+    book, did, evidence, plan = saved
+    applied = apply_observation(book, plan["plan_id"], 3, "smoke", "event-1", observation())
+    target = {
+        "upstream_evidence": evidence,
+        "observed_outcome": applied["outcome_note_id"],
+        "posterior_model": applied["model_note_id"],
+    }[changed]
+    book.revise(
+        did,
+        4,
+        target,
+        "Corrected evidence or model",
+        "The earlier basis no longer applies",
+        "observed",
+        "fixture://corrected",
+    )
+    before = book.path.read_bytes()
+    resumed = experiment(Notebook(book.path), plan["plan_id"])
+    assert resumed["status"] == "needs_replan"
+    assert resumed["current_model_stale"] is True
+    assert resumed["summary"]["current_winners"] == []
+    assert resumed["summary"]["proposed_experiment_ids"] == []
+    assert "new plan" in resumed["summary"]["next_action"].lower()
+    assert resumed["current_model"] == applied["update"]["result"]["model"]
+    assert resumed["observation"]["update"] == applied["update"]
+    for concise in (experiments(book, did)["experiments"][0], book.brief(did)["experiments"][0]):
+        assert concise["status"] == "needs_replan"
+        assert concise["current_model_stale"] is True
+        assert concise["summary"]["current_winners"] == []
+    assert book.path.read_bytes() == before
+
+
 @pytest.mark.parametrize("operation", [preview_observation, apply_observation])
-@pytest.mark.parametrize("case,code", [
-    ("different_payload", "OBSERVATION_CONFLICT"),
-    ("different_event", "EXPERIMENT_COMPLETE"),
-    ("different_plan", "OBSERVATION_CONFLICT"),
-])
+@pytest.mark.parametrize(
+    "case,code",
+    [
+        ("different_payload", "OBSERVATION_CONFLICT"),
+        ("different_event", "EXPERIMENT_COMPLETE"),
+        ("different_plan", "OBSERVATION_CONFLICT"),
+    ],
+)
 def test_duplicate_event_and_completed_plan_errors_are_atomic(saved, operation, case, code):
     book, did, _, plan = saved
     apply_observation(book, plan["plan_id"], 3, "smoke", "event-1", observation())
@@ -202,12 +246,16 @@ def test_event_identity_is_scoped_to_decision(saved):
     apply_observation(book, plan["plan_id"], 3, "smoke", "event-1", observation())
     other = book.start("Another decision legitimately uses the same observation")["decision_id"]
     second = plan_experiment(book, other, 1, parameters())
-    assert apply_observation(book, second["plan_id"], 2, "smoke", "event-1", observation())["applied"]
+    assert apply_observation(book, second["plan_id"], 2, "smoke", "event-1", observation())[
+        "applied"
+    ]
 
 
 def test_evidence_revision_requires_replanning(saved):
     book, did, evidence, plan = saved
-    book.revise(did, 3, evidence, "Changed initial state", "New evidence", "observed", "fixture://new")
+    book.revise(
+        did, 3, evidence, "Changed initial state", "New evidence", "observed", "fixture://new"
+    )
     assert experiment(book, plan["plan_id"])["status"] == "needs_replan"
     before = book.path.read_bytes()
     with pytest.raises(CompassError) as error:
@@ -216,14 +264,17 @@ def test_evidence_revision_requires_replanning(saved):
     assert book.path.read_bytes() == before
 
 
-@pytest.mark.parametrize("case,code", [
-    ("revision", "REVISION_CONFLICT"),
-    ("experiment", "INVALID_INPUT"),
-    ("event", "INVALID_INPUT"),
-    ("observation", "INVALID_INPUT"),
-    ("timestamp", "INVALID_INPUT"),
-    ("unknown_field", "INVALID_INPUT"),
-])
+@pytest.mark.parametrize(
+    "case,code",
+    [
+        ("revision", "REVISION_CONFLICT"),
+        ("experiment", "INVALID_INPUT"),
+        ("event", "INVALID_INPUT"),
+        ("observation", "INVALID_INPUT"),
+        ("timestamp", "INVALID_INPUT"),
+        ("unknown_field", "INVALID_INPUT"),
+    ],
+)
 def test_invalid_observation_is_atomic(saved, case, code):
     book, _, _, plan = saved
     rev, candidate, event, observed = 3, "smoke", "event-1", observation()
@@ -256,7 +307,9 @@ def test_impossible_observation_retains_prior_without_partial_rows(tmp_path):
     plan = plan_experiment(book, did, 1, supplied)
     before = book.path.read_bytes()
     with pytest.raises(CompassError) as error:
-        apply_observation(book, plan["plan_id"], 2, "smoke", "event-1", observation(outcome="impossible"))
+        apply_observation(
+            book, plan["plan_id"], 2, "smoke", "event-1", observation(outcome="impossible")
+        )
     assert error.value.code == "IMPOSSIBLE_OBSERVATION"
     assert book.path.read_bytes() == before
     assert experiment(book, plan["plan_id"])["observation"] is None
@@ -287,10 +340,13 @@ def test_observation_refuses_experiment_outside_frozen_bounds(tmp_path):
     assert book.path.read_bytes() == before
 
 
-@pytest.mark.parametrize("dependencies,code", [
-    (["f" * 32], "INVALID_DEPENDENCY"),
-    (["invalid"], "INVALID_INPUT"),
-])
+@pytest.mark.parametrize(
+    "dependencies,code",
+    [
+        (["f" * 32], "INVALID_DEPENDENCY"),
+        (["invalid"], "INVALID_INPUT"),
+    ],
+)
 def test_invalid_plan_dependency_is_atomic(saved, dependencies, code):
     book, did, _, _ = saved
     before = book.path.read_bytes()
@@ -300,12 +356,15 @@ def test_invalid_plan_dependency_is_atomic(saved, dependencies, code):
     assert book.path.read_bytes() == before
 
 
-@pytest.mark.parametrize("column,value", [
-    ("parameters_json", "{"),
-    ("proposal_json", "{}"),
-    ("revision", 999),
-    ("model_note_id", "f" * 32),
-])
+@pytest.mark.parametrize(
+    "column,value",
+    [
+        ("parameters_json", "{"),
+        ("proposal_json", "{}"),
+        ("revision", 999),
+        ("model_note_id", "f" * 32),
+    ],
+)
 def test_malformed_saved_plan_fails_closed(saved, column, value):
     book, _, _, plan = saved
     with sqlite3.connect(book.path) as db:
@@ -321,7 +380,9 @@ def test_contradictory_saved_posterior_fails_closed(saved):
     book, _, _, plan = saved
     apply_observation(book, plan["plan_id"], 3, "smoke", "event-1", observation())
     with sqlite3.connect(book.path) as db:
-        update = json.loads(db.execute("SELECT update_json FROM experiment_observations").fetchone()[0])
+        update = json.loads(
+            db.execute("SELECT update_json FROM experiment_observations").fetchone()[0]
+        )
         update["result"]["model"]["probabilities"] = [1, 0]
         db.execute("UPDATE experiment_observations SET update_json=?", (json.dumps(update),))
     with pytest.raises(CompassError) as error:
@@ -335,7 +396,9 @@ def test_concurrent_identical_event_is_applied_once(saved):
 
     def apply():
         barrier.wait(timeout=10)
-        return apply_observation(Notebook(book.path), plan["plan_id"], 3, "smoke", "event-1", observation())
+        return apply_observation(
+            Notebook(book.path), plan["plan_id"], 3, "smoke", "event-1", observation()
+        )
 
     with ThreadPoolExecutor(max_workers=2) as pool:
         receipts = list(pool.map(lambda _: apply(), range(2)))
