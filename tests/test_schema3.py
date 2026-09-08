@@ -175,6 +175,19 @@ def test_schema2_revision_and_evidence_batches_do_not_require_schema3(tmp_path: 
 
 
 @pytest.mark.parametrize("version", ["1", "2"])
+def test_saved_experiments_require_explicit_legacy_upgrade(tmp_path: Path, version: str) -> None:
+    from compass_c.lifecycle import experiments
+
+    book = legacy_notebook(tmp_path, version)
+    before = book.path.read_bytes()
+    with pytest.raises(CompassError) as error:
+        experiments(book, DID)
+    assert error.value.code == "MIGRATION_REQUIRED"
+    assert book.path.read_bytes() == before
+    assert stored_version(book) == version
+
+
+@pytest.mark.parametrize("version", ["1", "2"])
 def test_explicit_upgrade_to_schema3_preserves_every_historical_field(
     tmp_path: Path, version: str
 ) -> None:
