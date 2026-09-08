@@ -1,0 +1,54 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "setup",
+  "cwd": "/workspace/scratch/b6252d122d78/compass-c",
+  "requested_argv": [
+    "installed-python",
+    "-c",
+    "import importlib.metadata, compass_c; print(importlib.metadata.version(\"compass-c\")); print(compass_c.__file__)"
+  ],
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import importlib.metadata, compass_c; print(importlib.metadata.version(\"compass-c\")); print(compass_c.__file__)"
+  ],
+  "target_resolution": {
+    "alias": "installed-python",
+    "manifest_key": "installed_python",
+    "manifest_sha256": "7dc69bf811ff2b3c7ae61097d345498365f6473d05bfc9277e6a09ee0e6657ca"
+  },
+  "started_at": "2026-09-08T01:52:01.204273+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "0.6.0\n/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages/compass_c/__init__.py\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:52:01.276016+00:00",
+  "elapsed_seconds": 0.07173767399945064,
+  "stdout_utf8_bytes": 99,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "exposed_argv": [
+      "evals/dogfood/v4-lifecycle/capture-run-3.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "setup",
+      "--output",
+      "installed-identity.json",
+      "--",
+      "installed-python",
+      "-c",
+      "import importlib.metadata, compass_c; print(importlib.metadata.version(\"compass-c\")); print(compass_c.__file__)"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

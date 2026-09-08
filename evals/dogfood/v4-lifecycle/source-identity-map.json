@@ -1,0 +1,126 @@
+{
+  "schema": "compass-c.source-tree-identity.v1",
+  "scope": "Local verification and dogfood source commits are paired with GitHub API commits having identical Git trees. Commit metadata changes their IDs. Final main advancement is verified separately.",
+  "commits": [
+    {
+      "local_commit": "36960d92b6d3436371a40a7cf5cfde1f39eb23f2",
+      "github_commit": "14319d420e11037c25ee73467f8c8eff9c1439bb",
+      "verified_shared_tree": "8f36d49a21838a396641ffa9ce960d7dfeb6ab31"
+    },
+    {
+      "local_commit": "9496b88125886186959c7ca7c1470654f969d58f",
+      "github_commit": "a4e2b394cb3b0a549c035d9169322015ed552892",
+      "verified_shared_tree": "d935382c9bd1c0d1c4a8f0889689456eb663f922"
+    },
+    {
+      "local_commit": "21905784f8395d8616941dcca0a36a150362ce88",
+      "github_commit": "67b2be1e6046e943a326839ab4d358afa196d81a",
+      "verified_shared_tree": "745613853585dbd7dd3a9c78bdd72c1357917792"
+    },
+    {
+      "local_commit": "c15c79b20080235a5eb74b8634b262923d24b087",
+      "github_commit": "4b3077af39b666b9959b439a1236d5b1fec97517",
+      "verified_shared_tree": "15f5c2d4877d153f8e97c6fd779d0ae75dd495d0"
+    },
+    {
+      "local_commit": "8f2ce59ce01227546ba40f7139aa3503da3f1270",
+      "github_commit": "d17f78bdeac007c9efe8a4c536cd28efc9e7294c",
+      "verified_shared_tree": "60d3999d695f048646dda410d8302106181a6352"
+    },
+    {
+      "local_commit": "b76599d592b3ed78b0c3e55b8ff95aef52a2a3b5",
+      "github_commit": "55024072ec3a2b73bce53d990d9cf2f50d8cadd4",
+      "verified_shared_tree": "39476196d0c875286bef8480616d348625fb7524"
+    },
+    {
+      "local_commit": "c84814cafc119f932f6d16fafab6e070d963bb48",
+      "github_commit": "07b2288937b4db3e2702aaa03ae6d05ee0b61395",
+      "verified_shared_tree": "9b18b787bbcfc4e8912452dc3376f1a7d6870e05"
+    },
+    {
+      "local_commit": "ce5c81c764af4b35e3e2979054505cda51cf20cb",
+      "github_commit": "0dd5a92d8552df872ebe3a2cd3d7f37c6f85ef77",
+      "verified_shared_tree": "ed4bcc1d650cf82de3c6202cf73269a1a199aecd"
+    },
+    {
+      "local_commit": "470c3dc929138bdf62e7678267b1ab7cb94250bf",
+      "github_commit": "e9cddba01e73509e71c4b7076a499c6a2cfbd3e5",
+      "verified_shared_tree": "35ce57587d35a1c8542b7910ecda89138b497f58"
+    },
+    {
+      "local_commit": "8544d1d6700a646017e3197dec509ca2e0ef54ce",
+      "github_commit": "d67c0ea44da7306ed1f4dd380cd5eaf50fc8f48a",
+      "verified_shared_tree": "75f96d01f11e17167c22e99460dfd43be9221b92"
+    },
+    {
+      "local_commit": "9566b259d772d12ce5b59710dbbee08e0cbe8b18",
+      "github_commit": "dc04e9355aa29eb32275923f76b0c1e2ff19a765",
+      "verified_shared_tree": "23a588e61421ad0ef1cc5450113b36547d4c789e"
+    },
+    {
+      "local_commit": "9259cf26e5026376189ee66cd9418a9a38f63c18",
+      "github_commit": "5d0108f41d1ca8f0d22e5b3f7496fe55f84e9207",
+      "verified_shared_tree": "99b778d8eb8b2c8138bd1352aa3c77e5c3b50409"
+    },
+    {
+      "local_commit": "4922de1f0f4b7cb7801661c9a6bac8185c8181c5",
+      "github_commit": "32ad869750913f2774b461e8f9137256950201da",
+      "verified_shared_tree": "4a42e525c30689df57635d6b28638eeabd8a0cc4"
+    },
+    {
+      "local_commit": "9771c9eda32b50cc8f01a2e64d8f256b58f03c96",
+      "github_commit": "38dee55cc95997ff94469676fbbbaee05a99f640",
+      "verified_shared_tree": "45ecf5f71032ed667ebb64f20c4e85ff810cf221"
+    },
+    {
+      "local_commit": "3272c72e4d3346a5e6474de3b8581f56797ff170",
+      "github_commit": "ffe6235a9f7ca9b919953db599776191d34bc66b",
+      "verified_shared_tree": "c3ca07d0a2e2df491c046bc2c80884db32b6ecb5"
+    },
+    {
+      "local_commit": "cafc10706aea5ae1f17e2b32fb4740c3ec10dca8",
+      "github_commit": "19dbc664b4d2ea320ef44ff69185269bfdfd57dd",
+      "verified_shared_tree": "de7b50368d32943cb49d23480d9cd9a3c188587f"
+    },
+    {
+      "local_commit": "23802e173d9d83784ace214e7d00c4a9965a731f",
+      "github_commit": "cb3c54ba3741a71f5eb270caecda06ddbed7f2a9",
+      "verified_shared_tree": "43dc065556bfb29a184dea1203f7ec37b008a479"
+    },
+    {
+      "local_commit": "4afc68fb1df0f2ab567096d1c19a60a53cd645d1",
+      "github_commit": "280435d0a3583b11152a1451d6713a3d612ecea6",
+      "verified_shared_tree": "7b7fb92bf77d9622961f2eb4afbdf7605840b98a"
+    },
+    {
+      "local_commit": "2d5ddd58f9cd9616ec1c7a4bc48db823824030d0",
+      "github_commit": "c6dd712ac2a6ea521edad5edf706329ea674ff98",
+      "verified_shared_tree": "98f78be3fbce0b30d66c6864f52148f4e0dfb8f2"
+    },
+    {
+      "local_commit": "b3d884411b2f04ba2bd051b11894aab28884e718",
+      "github_commit": "bd535fd1d5c477c038990f296f664ac4c06a7794",
+      "verified_shared_tree": "737514d90d741b7f9c300d1ed3fb5523f8713b84"
+    },
+    {
+      "local_commit": "b655a90ae585e4601068a8d0db4278c401483cc9",
+      "github_commit": "8212187179796dc0dd54593f0b486fc0bae9b6b9",
+      "verified_shared_tree": "96eb72048d9303008a04bbbe4f4d9f36bfe08a81"
+    },
+    {
+      "local_commit": "3e75fc0922afdbd12be96c88e06a8559fda4d588",
+      "github_commit": "7c1701f8168267511c1429805745e9f3e306827e",
+      "verified_shared_tree": "14b6c8a41906768f849f68b92a381ac215a4114a"
+    },
+    {
+      "local_commit": "bf70b18eb6077565a4f1c7a9355444889c70213c",
+      "github_commit": "28aca52d98624e7ebf31266ca59a317b93b43975",
+      "verified_shared_tree": "464c77394a616589033234ef47bc530c1ccb24db"
+    },
+    {
+      "local_commit": "46be008bc1f1353202aff4ba8811b0e41594c220",
+      "github_commit": "412a9874a0fa6a20a31bd8c6ec44eb745a931d8b",
+      "verified_shared_tree": "32b6590638cd8b545cf48112806514546a34ff3b"
+    }
+  ]
+}

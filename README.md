@@ -37,6 +37,11 @@ The study found one additional passing case with guidance and no regressions; it
 sample and grading uncertainty do not establish general improvement. See the
 [vision acceptance map](docs/project/vision-validation.md) for every horizon and its evidence boundary.
 
+The [saved-experiment dogfood](evals/dogfood/v4-lifecycle/README.md) retains cold
+handoffs, actual observed checks, failed effort gates and their corrections.
+The workflow saves its model and protocol, previews an observation, and updates
+the notebook once while preserving the prior and invalidating dependent reasoning.
+
 `LICENSE` exactly matches `tryingET/pi-extensions`, including its provider rider. It is **not
 standard MIT**. Review the license before distributing or installing the skill in a restricted
 host.

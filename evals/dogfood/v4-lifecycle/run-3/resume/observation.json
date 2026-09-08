@@ -1,0 +1,6 @@
+{
+  "outcome": "pass",
+  "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-3/resume/actual-check.json",
+  "observed_at": "2026-09-08T01:52:29.029004+00:00",
+  "note": "The recovered installed-three-case-oracle protocol ran exactly once with the isolated installed Python, PYTHONPATH removed, PYTHONDONTWRITEBYTECODE=1, and a 30-second parent timeout. It exited 0 and returned outcome pass with all three cases present and passed: informative_two_state, uncertainty_without_decision_value, and tied_prior_and_conditional_preferences. This is bounded finite-case evidence, not general correctness."
+}

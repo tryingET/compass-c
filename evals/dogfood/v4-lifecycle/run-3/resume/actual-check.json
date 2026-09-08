@@ -1,0 +1,53 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "experiment",
+  "cwd": "/workspace/scratch/b6252d122d78/compass-c",
+  "requested_argv": [
+    "installed-python",
+    "evals/dogfood/v4-lifecycle/check_installed.py"
+  ],
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "evals/dogfood/v4-lifecycle/check_installed.py"
+  ],
+  "target_resolution": {
+    "alias": "installed-python",
+    "manifest_key": "installed_python",
+    "manifest_sha256": "7dc69bf811ff2b3c7ae61097d345498365f6473d05bfc9277e6a09ee0e6657ca"
+  },
+  "started_at": "2026-09-08T01:52:28.995810+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"protocol\": \"v4-lifecycle.1\",\n  \"started_at\": \"2026-09-08T01:52:29.015934+00:00\",\n  \"cases\": [\n    {\n      \"case\": \"informative_two_state\",\n      \"passed\": true,\n      \"public_calculation_calls\": 3\n    },\n    {\n      \"case\": \"uncertainty_without_decision_value\",\n      \"passed\": true,\n      \"public_calculation_calls\": 4\n    },\n    {\n      \"case\": \"tied_prior_and_conditional_preferences\",\n      \"passed\": true,\n      \"public_calculation_calls\": 4\n    }\n  ],\n  \"outcome\": \"pass\",\n  \"child_processes\": 0,\n  \"writes\": 0,\n  \"limitations\": \"Three author-visible finite cases; not general correctness or authority.\",\n  \"installed_version\": \"0.6.0\",\n  \"installed_package_location\": \"/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages/compass_c/__init__.py\",\n  \"finished_at\": \"2026-09-08T01:52:29.029004+00:00\",\n  \"elapsed_seconds\": 0.013066791001620004\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:52:29.033833+00:00",
+  "elapsed_seconds": 0.0380199570026889,
+  "stdout_utf8_bytes": 873,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "exposed_argv": [
+      "evals/dogfood/v4-lifecycle/capture-run-3.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "experiment",
+      "--output",
+      "actual-check.json",
+      "--timeout",
+      "30",
+      "--",
+      "installed-python",
+      "evals/dogfood/v4-lifecycle/check_installed.py"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

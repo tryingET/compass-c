@@ -1,0 +1,17 @@
+{
+  "product_attempts": 8,
+  "all_product_attempts_succeeded": true,
+  "unchanged_parameters": true,
+  "preview_revision": 2,
+  "apply_revision": 3,
+  "brief_revision": 3,
+  "applied_once": true,
+  "outcome_count": 1,
+  "outcome_link_matches": true,
+  "status": "observed",
+  "pending_proposals": [],
+  "retained_prior_matches": true,
+  "actual_check_exit": 0,
+  "source_verified": false,
+  "permission": "not_granted"
+}

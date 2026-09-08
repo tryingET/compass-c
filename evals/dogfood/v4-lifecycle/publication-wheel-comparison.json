@@ -1,0 +1,10 @@
+{
+  "dogfood_wheel_sha256": "ed31585b6f3326b018874d8dcb47a5dfb6e8186cf0158141a4dd84657d9814ff",
+  "publication_wheel_sha256": "cd376fec3735043b66f5c2985a233efd138904225a5a3dc1a78c592137926216",
+  "changed_archive_entries": [
+    "compass_c-0.6.0.dist-info/METADATA",
+    "compass_c-0.6.0.dist-info/RECORD"
+  ],
+  "runtime_entries_identical": true,
+  "reason": "README now links retained saved-workflow evidence; wheel metadata embeds that README. Dogfood wheel and installation were preserved unchanged."
+}

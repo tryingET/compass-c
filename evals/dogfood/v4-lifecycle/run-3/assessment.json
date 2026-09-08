@@ -1,0 +1,98 @@
+{
+  "schema": "compass-c.v4-lifecycle-assessment.v1",
+  "protocol": "v4-lifecycle.1",
+  "attempt": 3,
+  "assessed_at": "2026-09-08T01:58:26.599717+00:00",
+  "assessor": "Controller agent, distinct from both fresh execution participants; root independently checked product readbacks in root-readback-check.json.",
+  "criteria": [
+    {
+      "id": "installed_artifact",
+      "passed": true,
+      "evidence": "Every actual target executable matches its exact frozen alias mapping. Both identity records and the actual check identify the isolated installed COMPASS-C 0.6.0 artifact."
+    },
+    {
+      "id": "explicit_frozen_plan",
+      "passed": true,
+      "evidence": "The initial full plan write, recovered plan, and final lineage retain parameters equal to the frozen original input, with IDs and frozen revision 2."
+    },
+    {
+      "id": "cold_resume",
+      "passed": true,
+      "evidence": "A fresh resumer received only decision ID and task paths, then discovered the plan and recovered its protocol and model without the original parameters or preparer output."
+    },
+    {
+      "id": "actual_observation",
+      "passed": true,
+      "evidence": "One actual oracle process after planning exited 0 with three passing finite cases. The retained observation contains its actual source and timestamp; no notebook or proposal result substitutes for the check."
+    },
+    {
+      "id": "preview_is_read_only",
+      "passed": true,
+      "evidence": "Known revision and preview current_revision are 2. The isolated database bytes and rollback-journal/WAL/SHM states match exactly before and after preview."
+    },
+    {
+      "id": "atomic_update_and_history",
+      "passed": true,
+      "evidence": "Exactly one explicit apply advanced revision 2 to 3. The final brief has one current outcome matching the event ID, source, and note; full lineage retains the prior and posterior. Readback receipt fields do not indicate a second apply."
+    },
+    {
+      "id": "useful_conditional_brief",
+      "passed": true,
+      "evidence": "Controller review of final-brief.md confirms the current conditional preference, material alternative, actual observation provenance, illustrative model limits, reversal conditions, and explicit limits on authority. The generic narrative notebook status is disclosed."
+    },
+    {
+      "id": "bounded_effort",
+      "passed": true,
+      "evidence": "Eight product attempts, two discovery/resume reads before preview, and a maximum 3,838-byte default workflow response satisfy the unchanged bounds. No failure, retry, or runtime source inspection occurred."
+    }
+  ],
+  "aggregate_passed": true,
+  "aggregate_status": "passed",
+  "failed_criterion_ids": [],
+  "metrics": {
+    "captured_target_attempts": 18,
+    "launched_target_subprocesses": 18,
+    "target_attempts_by_kind": {
+      "help": 4,
+      "setup": 2,
+      "product": 8,
+      "verification": 3,
+      "experiment": 1
+    },
+    "captured_guidance_input_reads": 16,
+    "observed_capture_driver_invocations": 34,
+    "additional_failed_wrapper_invocations": 0,
+    "failed_target_launches": 0,
+    "failed_launched_targets": 0,
+    "product_attempts": 8,
+    "successful_product_operations": 8,
+    "discovery_resume_reads_before_preview": 2,
+    "maximum_default_workflow_response_bytes": 3838,
+    "target_attempt_elapsed_seconds": 0.8389876070104947,
+    "external_check_processes": 1,
+    "external_check_reported_child_processes": 0,
+    "external_check_reported_writes": 0,
+    "external_check_public_calculation_calls": 11,
+    "caller_parameters_file_bytes": 2846,
+    "caller_observation_file_bytes": 633
+  },
+  "treatment_integrity": {
+    "wheel_and_all_frozen_inputs_and_skill_bytes_unchanged_through_completion": true,
+    "input_snapshot_mapping": "frozen-input-locations.json",
+    "complete_skill_reconstruction": "The run-1 skill-snapshot with the two run-2 reference replacements; run-3 skill hashes are byte-identical to run-2.",
+    "all_executable_alias_mappings_match_frozen_manifest": true,
+    "alias_resolution_changes_only_target_argv_zero": true
+  },
+  "capture_limit": "Exact requested/resolved target argv, working directory, exposed capture-driver argv, and outcomes are retained. Outer host process details not exposed by tools are not reconstructed. Check-reported child-process/write counts are labeled as reported, not independent host telemetry.",
+  "outcome_receipt_audit": {
+    "one_apply_attempt": true,
+    "one_current_outcome_matches_event": true,
+    "readback_replayed_flag_does_not_mean_second_apply": true
+  },
+  "remaining_usability_limits": [
+    "Full audit output repeats model and protocol context.",
+    "The generic notebook brief remains needs_work with empty narrative categories; the fresh participant authored the conditional brief from retained data.",
+    "Historical preparation constraints and receipt replay flags require context-sensitive reading."
+  ],
+  "claim_boundary": "This pass covers the fixed local installed lifecycle under corrected guidance and capture ergonomics. Earlier failed runs stay failed. This is not a holdout, a general usefulness claim, or evidence that repeated finite checks are independent."
+}

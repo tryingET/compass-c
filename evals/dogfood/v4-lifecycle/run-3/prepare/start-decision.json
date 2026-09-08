@@ -1,0 +1,75 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "product",
+  "cwd": "/workspace/scratch/b6252d122d78/compass-c",
+  "requested_argv": [
+    "compass-c",
+    "--db",
+    ".compass/v4-lifecycle-run-3.sqlite",
+    "start",
+    "--objective",
+    "Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review",
+    "--stakes",
+    "low",
+    "--constraints",
+    "[\"Preserve the supplied model and experiment inputs unchanged.\", \"Prepare a prospective plan only; leave the experiment pending for a separate resumer.\", \"A favorable finite check supports integration review only and cannot authorize publication or prove general software correctness or product value.\"]"
+  ],
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "--db",
+    ".compass/v4-lifecycle-run-3.sqlite",
+    "start",
+    "--objective",
+    "Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review",
+    "--stakes",
+    "low",
+    "--constraints",
+    "[\"Preserve the supplied model and experiment inputs unchanged.\", \"Prepare a prospective plan only; leave the experiment pending for a separate resumer.\", \"A favorable finite check supports integration review only and cannot authorize publication or prove general software correctness or product value.\"]"
+  ],
+  "target_resolution": {
+    "alias": "compass-c",
+    "manifest_key": "installed_cli",
+    "manifest_sha256": "7dc69bf811ff2b3c7ae61097d345498365f6473d05bfc9277e6a09ee0e6657ca"
+  },
+  "started_at": "2026-09-08T01:49:50.484682+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"ok\": true,\n  \"data\": {\n    \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n    \"revision\": 1,\n    \"scope\": \"analysis_only\",\n    \"action_permission\": \"not_granted\",\n    \"next\": \"Record actual evidence and at least two alternatives; do not invent facts.\"\n  }\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:49:50.526887+00:00",
+  "elapsed_seconds": 0.04217904300094233,
+  "stdout_utf8_bytes": 267,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "exposed_argv": [
+      "evals/dogfood/v4-lifecycle/capture-run-3.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "product",
+      "--output",
+      "start-decision.json",
+      "--",
+      "compass-c",
+      "--db",
+      ".compass/v4-lifecycle-run-3.sqlite",
+      "start",
+      "--objective",
+      "Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review",
+      "--stakes",
+      "low",
+      "--constraints",
+      "[\"Preserve the supplied model and experiment inputs unchanged.\", \"Prepare a prospective plan only; leave the experiment pending for a separate resumer.\", \"A favorable finite check supports integration review only and cannot authorize publication or prove general software correctness or product value.\"]"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

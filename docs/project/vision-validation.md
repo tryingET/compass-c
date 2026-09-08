@@ -29,7 +29,7 @@ evidence. This file defines acceptance boundaries, not an AK task queue.
 | v3 option value and disagreement | Explicit deferral values and distinct stakeholder optima remain visible; no aggregate compromise is invented | `tests/test_portfolio.py`; `evals/dogfood/2026-09-08/portfolio-model.json` and `portfolio-output.json` |
 | v4 decision-changing uncertainty | No-test baseline, perfect/sample information value, costs and each conditional preference branch are inspectable | `tests/test_experiments.py` |
 | v4 bounded experiments and revised models | Finite one-observation proposals respect declared bounds; sourced observations update the model while retaining its prior; impossible observations fail | `tests/test_experiments.py`; prospective `evals/dogfood/2026-09-08/experiment-plan.json`, `experiment-observation.json`, `experiment-revision.json` in the same directory |
-| v4 persisted experimental handoff | A fresh client resumes frozen models and protocols, previews a sourced result without writing, and applies it once with prior/posterior history and dependency invalidation | `tests/test_lifecycle.py`; `tests/test_lifecycle_interfaces.py`; `tests/test_lifecycle_capacity.py`; prospective `evals/dogfood/v4-lifecycle/protocol.md` |
+| v4 persisted experimental handoff | A fresh client resumes frozen models and protocols, previews a sourced result without writing, and applies it once with prior/posterior history and dependency invalidation | `tests/test_lifecycle.py`; `tests/test_lifecycle_interfaces.py`; `tests/test_lifecycle_capacity.py`; frozen protocol and actual assessments under `evals/dogfood/v4-lifecycle/` |
 | Specialist ownership | Selected specialists retain the main task; negative, overlap and pressure cases remain in evaluation | `skills/compass/evals/cases.json`; actual host diagnostic corpus |
 | First consumer is this repository | The tool is used on actual build decisions, observed failures, corrections and installed-client use | `evals/dogfood/2026-09-08/` |
 | Skill and learning adoption | Deterministic requirements belong in code/tests; substantive skill optimization uses the source-owned method; KES promotion or another recipient's adoption needs actual owner evidence | `.pi/skills/compass-c-maintainer/references/improvement.md`; no automatic promotion or wider rollout |
@@ -42,6 +42,16 @@ V3 sequencing currently reports dependency layers under total resource budgets.
 Its option value is caller-supplied deferral value. It does not derive timed
 resource schedules or real-option valuations automatically. Those stronger
 algorithms are not promised by the current finite portfolio contract.
+
+The saved-workflow exercise used fresh preparer/resumer pairs and the same isolated
+0.6.0 wheel. Run 1 retained 11 lifecycle operations and failed its effort gate.
+A narrow guidance correction removed redundant reads. Run 2 retained eight
+successful operations plus a failed executable-path attempt, and still failed.
+An explicit capture-helper alias then removed the repeated path transcription;
+run 3 completed eight operations without failures. Each actual arithmetic check,
+source, posterior, command, and failed assessment remains inspectable. The helper
+change is measurement ergonomics, not a runtime feature or proof of product benefit.
+Repeated checks of the same artifact do not become independent reliability evidence.
 
 The retained build dogfood is real first-consumer use. In the guidance diagnostic,
 four fresh sessions produced 32 actual answers. A/A scored 7/8 to 7/8; A/B scored

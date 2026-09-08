@@ -1,0 +1,61 @@
+{
+  "recorded_at": "2026-09-08T01:17:23.577158+00:00",
+  "source_commit": "9771c9eda32b50cc8f01a2e64d8f256b58f03c96",
+  "source_identity": "local verified commit; published tree counterpart recorded separately",
+  "package_version": "0.6.0",
+  "wheel_sha256": "ed31585b6f3326b018874d8dcb47a5dfb6e8186cf0158141a4dd84657d9814ff",
+  "core_installed_distributions": [
+    {
+      "name": "compass-c",
+      "version": "0.6.0"
+    }
+  ],
+  "full_suite": {
+    "tests": 566,
+    "subtests": 17,
+    "passed": true,
+    "log": "v0.6-full-tests.txt"
+  },
+  "installed_mcp_suite": {
+    "tests": 43,
+    "passed": true,
+    "log": "v0.6-installed-mcp-tests.txt"
+  },
+  "scope": "Local Python3.12 core/portable tests and actual stdio SDK sessions against an isolated wheel; no vendor account discovery or generalized decision-quality inference.",
+  "additional_checks": [
+    "ruff format --check . passed",
+    "ruff check . passed",
+    "build_skill.py --check passed",
+    "validate_skill.py structurally_valid",
+    "build_archives.py --check-plugin passed",
+    "uv lock --check --offline passed"
+  ],
+  "repaired_review_findings": [
+    "Observed posterior becomes historical after corrected upstream evidence, outcome, or model note.",
+    "Consumed plans stop proposing the spent experiment.",
+    "Plans reserve dependency capacity for their observation."
+  ],
+  "published_source_counterpart": {
+    "commit": "38dee55cc95997ff94469676fbbbaee05a99f640",
+    "identity": "GitHub commit recreated with identical tree; main advancement follows full review"
+  },
+  "ontology_build": {
+    "command": "ROCS_BIN=(actual vendored ROCS launcher) ROCS_WORKSPACE_ROOT=(this workspace) ROCS_WORKSPACE_REF_MODE=loose ./scripts/rocs.sh build --repo . --resolve-refs --clean",
+    "exit_status": 1,
+    "error": "local ref not available in workspace: <repo:softwareco/ontology@main>",
+    "scope": "Development governance dependency; standalone core is unaffected."
+  },
+  "independent_final_review": {
+    "tests": 251,
+    "passed": true,
+    "scope": "schema3, v1-v3, observed-model staleness, dependency capacity and consumed plans",
+    "new_defects_found": 0
+  },
+  "final_suite_including_capture_regressions": {
+    "tests": 577,
+    "subtests": 17,
+    "passed": true,
+    "log": "v0.6-final-complete-tests.txt"
+  },
+  "runtime_and_wheel_unchanged_after_initial_verification": true
+}

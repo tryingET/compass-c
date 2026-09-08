@@ -1,0 +1,31 @@
+{
+  "task": "Resume the saved build decision using only its notebook location and the decision ID supplied by the controller. Discover the pending experiment and its full protocol from the notebook. Execute that bounded local check and retain its actual output. If a real declared observation is available, explicitly preview the model update, verify preview did not write, then explicitly apply it once with a stable event identity. Read back the resulting brief and full plan lineage. Give a concise conditional recommendation, material alternative, observation provenance, remaining uncertainty and reversal condition. Do not substitute a successful calculator or notebook command for the actual proposed check. Preserve failures, uncertainty and usability friction.",
+  "decision_id": "Supplied separately by the controller from the preparer's actual returned ID; no model or proposal output is handed over.",
+  "installed_python": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+  "installed_cli": "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+  "notebook": "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-3.sqlite",
+  "capture_script": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-3.py",
+  "phase": "resume",
+  "guidance": [
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/SKILL.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/experiment-workflow.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/experiments.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/notebook.md"
+  ],
+  "capture": {
+    "command_shape": "python evals/dogfood/v4-lifecycle/capture-run-3.py --phase resume run --kind KIND --output UNIQUE_FILENAME.json -- compass-c COMPASS_ARGUMENTS",
+    "read_shape": "python evals/dogfood/v4-lifecycle/capture-run-3.py --phase resume read ALLOWED_PATH",
+    "kinds": "Use product for notebook/workflow operations, help for --help, setup for identity checks, experiment for the recovered bounded check, and verification for byte-hash verification.",
+    "package_identity": "Capture the actual installed package version and location. Every product invocation must use the isolated installed Python or entrypoint, with no repository PYTHONPATH.",
+    "outputs": "The capture script retains exact target argv, exit status, stdout/stderr and timestamps; output files are exclusively created within run-3/resume. Use it for all target subprocesses and allowed guidance reads. Host wrapper details not exposed by tools must be disclosed rather than reconstructed.",
+    "preview": "Retain before/after database hashes and revisions so a no-write preview can be inspected without assuming that a success envelope means no mutation.",
+    "final": "Save a concise final answer as run-3/resume/final-brief.md and usability/departure notes in that phase directory. Save observation.json with the actual result, source, timestamp and concise note before previewing.",
+    "python_command_shape": "python evals/dogfood/v4-lifecycle/capture-run-3.py --phase resume run --kind KIND --output UNIQUE_FILENAME.json -- installed-python PYTHON_ARGUMENTS",
+    "working_directory": "Run capture commands with exec_command workdir set to the supplied repository working_directory. The short relative driver path avoids retyping its absolute workspace prefix.",
+    "executable_aliases": "At target argv position0 only, the exact aliases compass-c and installed-python resolve to the frozen manifest installed_cli and installed_python. The capture helper records both requested and resolved argv and the mapping hash. It does not change other arguments, fix unknown strings, retry commands, or choose outcomes. Use these aliases rather than repeatedly typing installed executable paths.",
+    "path_arguments": "The optional notebook_cli_argument and parameters_file_cli_argument name the same authorized files relative to working_directory. Other arguments remain exactly what you supply. Paths recovered from a protocol may also be expressed relative to this fixed directory when they identify the same file."
+  },
+  "scope": "Read only this task, the listed normal guidance, the capture helper, installed command help, the named notebook through public commands and read-only byte hashing, the local check named in its saved protocol, and your own outputs. Do not read the original parameters file, preparer's outputs, grading protocol, runtime source, tests, prior dogfood artifacts or repository history. Write only the named notebook and run-3/resume evidence. Do not install, browse, contact anyone, spend, deploy, delegate, or touch another notebook. Save concise justifications and outputs, never private reasoning traces. A timeout or unavailable experiment is not a fabricated pass/fail observation. Reconcile an unknown apply outcome using current state and the original event identity, never a new identity invented for a retry.",
+  "working_directory": "/workspace/scratch/b6252d122d78/compass-c",
+  "notebook_cli_argument": ".compass/v4-lifecycle-run-3.sqlite"
+}

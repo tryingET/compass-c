@@ -1,0 +1,8 @@
+{
+  "event_id": "run-3-resume-installed-three-case-oracle-20260908T015229Z",
+  "decision_id": "135fea85caae4b5e94eae5d093a33988",
+  "plan_id": "ab4d416167af4950bd9a2802576f43c9",
+  "experiment_id": "installed-three-case-oracle",
+  "observation_file": "observation.json",
+  "known_revision_before_preview": 2
+}
