@@ -219,7 +219,7 @@ def test_legacy_reads_do_not_migrate_and_explicit_upgrade_preserves_history(
     assert legacy.path.read_bytes() == before
     migration = legacy.migrate()
     assert migration["from_version"] == "1"
-    assert migration["schema_version"] == "2"
+    assert migration["schema_version"] == "3"
     assert migration["migrated"] is True
     assert migration["action_permission"] == "not_granted"
     assert legacy.get(DID) == original

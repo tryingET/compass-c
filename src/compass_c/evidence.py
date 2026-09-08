@@ -12,7 +12,7 @@ import sqlite3
 import uuid
 from typing import Any
 
-from .core import SCHEMA_VERSION, CompassError, Notebook, identifier, integer, strings, text, utc
+from .core import CompassError, Notebook, identifier, integer, strings, text, utc
 
 UPDATE_KINDS = frozenset({"evidence", "assumption", "forecast", "outcome"})
 UPDATE_FIELDS = frozenset({"note_id", "content", "reason", "status", "source"})
@@ -70,7 +70,7 @@ def _prepare(
 ) -> tuple[dict[str, Any], list[set[str]]]:
     snapshot = notebook._snapshot(database, decision_id)
     notebook._revision(snapshot, expected_revision)
-    if notebook._verify_schema(database) != SCHEMA_VERSION:
+    if notebook._verify_schema(database) not in {"2", "3"}:
         raise CompassError("MIGRATION_REQUIRED", "Run migrate explicitly before evidence updates")
     notes = {note["id"]: note for note in snapshot["notes"]}
     if len(notes) + len(updates) > 2_000:
