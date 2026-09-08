@@ -353,3 +353,10 @@ def test_extreme_combined_precision_is_rejected_before_unbounded_integer_renderi
             function(parameters)
         assert error.value.code == "INVALID_INPUT"
         assert "precision" in str(error.value).lower()
+
+
+@pytest.mark.parametrize("exact", [["5e-1", "5e-1"], ["0.5", "0.5"]])
+def test_exact_probability_grammar_rejects_exponents_before_fraction_expansion(exact):
+    with pytest.raises(CompassError) as error:
+        propose_experiments(proposal(model=model(probabilities_exact=exact)))
+    assert error.value.code == "INVALID_INPUT"
