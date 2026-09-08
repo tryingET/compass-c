@@ -360,3 +360,21 @@ def test_exact_probability_grammar_rejects_exponents_before_fraction_expansion(e
     with pytest.raises(CompassError) as error:
         propose_experiments(proposal(model=model(probabilities_exact=exact)))
     assert error.value.code == "INVALID_INPUT"
+
+
+def test_update_rejects_posterior_that_cannot_be_reused_within_model_precision_bounds():
+    parameters = update(
+        model=model(
+            actions=["hold"],
+            scenarios=[str(i) for i in range(4)],
+            payoffs=[[0] * 4],
+            probabilities=[0.25] * 4,
+        ),
+        experiment=experiment(likelihoods=[[(i + 1) * 1e-300, 1] for i in range(4)]),
+    )
+    before = copy.deepcopy(parameters)
+    with pytest.raises(CompassError) as error:
+        revise_model(parameters)
+    assert error.value.code == "INVALID_INPUT"
+    assert "precision" in str(error.value).lower()
+    assert parameters == before
