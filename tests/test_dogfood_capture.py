@@ -52,6 +52,7 @@ def test_exact_alias_uses_frozen_target_and_preserves_all_arguments(capture, ali
     assert requested == original
     assert record["requested_argv"] == requested
     assert record["argv"] == [sys.executable, *requested[1:]]
+    assert record["cwd"] == str(Path.cwd())
     assert json.loads(record["stdout"]) == arguments
     assert record["stderr"] == ""
     assert record["target_resolution"] == {
