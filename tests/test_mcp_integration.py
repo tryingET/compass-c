@@ -34,8 +34,17 @@ TOOLS = {
     "compass_revise",
     "compass_list",
     "compass_migrate",
+    "compass_preview_updates",
+    "compass_apply_updates",
 }
-READ_ONLY = {"compass_get", "compass_review", "compass_calculate", "compass_brief", "compass_list"}
+READ_ONLY = {
+    "compass_get",
+    "compass_review",
+    "compass_calculate",
+    "compass_brief",
+    "compass_list",
+    "compass_preview_updates",
+}
 
 
 @asynccontextmanager

@@ -131,7 +131,9 @@ def test_full_horizon_calculations_are_transient_and_preserve_boundaries(tmp_pat
                     },
                 },
             )
-            assert revised["result"]["updated_model"]["probabilities"] == [0.8, 0.2]
+            assert revised["result"]["model"]["probabilities"] == [0.8, 0.2]
+            assert revised["result"]["prior_model"] == MODEL
+            assert revised["result"]["posterior_winners"] == ["ship"]
             assert revised["action_permission"] == "not_granted"
         assert not db.exists()
 
