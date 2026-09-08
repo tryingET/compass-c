@@ -29,6 +29,13 @@ Feature: A resumable experimental decision partner
     Then the plan requires replanning
     And a result cannot silently update its stale model
 
+  Scenario: Later evidence invalidates an already observed posterior
+    Given a saved experiment with an incorporated observation and posterior
+    When its upstream evidence, outcome, or posterior model is explicitly revised
+    Then resuming the experiment reports that replanning is needed
+    And its previous posterior and observation remain inspectable as historical material
+    And its summary does not present stale winners or spent protocols as current proposals
+
   Scenario: Failure is atomic and malformed state fails closed
     Given an impossible observation, stale revision, malformed input or contradictory stored history
     When a lifecycle operation is attempted
