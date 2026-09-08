@@ -28,8 +28,14 @@ compass-c --db ./decision.sqlite start \
   --objective "Decide whether the inspected change can proceed to review" \
   --constraints '["This record cannot authorize publication"]'
 compass-c --db ./decision.sqlite plan-experiment DID --revision N \
-  --parameters-file ./experiment-input.json
+  --parameters-file ./experiment-input.json --full
 ```
+
+This example requests `--full` on the write itself so the same response can be
+used to verify the saved inputs against the supplied file. A second immediate
+full readback is unnecessary for that check. Omit `--full` when the compact
+decision summary and returned IDs are enough; the saved inputs remain available
+for a later audit.
 
 If the plan relies on current notebook evidence, supply its note IDs using
 `--depends-on '["NOTE_ID"]'`. The plan retains those dependency anchors. A stale
@@ -59,8 +65,10 @@ The plan readback exposes the current decision `revision` separately from its
 frozen `plan_revision`. The compact summary retains decisive context; use
 `experiment PLAN_ID --full` for the complete model, original protocol, provenance,
 and any incorporated observation. Reading does not initialize, migrate, or write
-the notebook. Keep the actual returned revision for the next write rather than
-adding a `get` before and after every operation.
+the notebook. One such read recovers the model and protocol together with the
+revision for the next operation. Keep that returned revision rather than adding
+a `get` before and after every operation. A later conflicting write is handled
+by the revision check; a read cannot reserve the revision against other writers.
 
 ## Observe, preview, apply
 
@@ -85,8 +93,19 @@ compass-c --db ./decision.sqlite observe-experiment PLAN_ID --revision N \
 
 Without `--apply`, the operation previews the posterior and preference changes
 without writing. Inspect the prior and posterior winners and invalidated
-dependencies before explicitly applying. A preview does not reserve the revision;
-if another writer changes the decision, reconcile the current state.
+dependencies before explicitly applying. The preview's `current_revision` is
+the stored revision, not a committed posterior revision. Use it for explicit
+apply without an extra state read. If another writer changes the decision,
+reconcile the conflict instead of automatically retrying.
+
+When an audit asks for independent no-write proof in an isolated single-writer
+notebook, retain the known revision, preview response, and before/after bytes of
+the database and any journal/WAL sidecars (or their absence). Identical complete
+storage bytes also establish that the stored revision did not change; another
+public read solely to repeat that fact is unnecessary. A database-file hash alone
+does not establish this for concurrent writers or an uninspected WAL. Ordinary
+use relies on the read-only preview contract and revision checks; it does not
+require an external hashing procedure.
 
 Apply commits the observation and its model revision atomically. The returned
 `revision` identifies that write; `current_revision` identifies the live decision

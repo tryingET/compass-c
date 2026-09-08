@@ -55,8 +55,13 @@ def invoke(script: Path, database: Path, *args: str) -> dict:
 Use the returned decision_id and revision rather than inventing identifiers.
 Before record, revise, or invalidate, read the current revision. Observed/computed notes
 require a source reference; its presence is not independently verified. Record
-explicit depends_on links to note IDs from the same decision. After a mutation,
-get the record and inspect the actual note, revision, or invalidation result.
+explicit depends_on links to note IDs from the same decision. Inspect the result
+after a mutation. Low-level note replies identify the write; get the record when
+its actual contents are needed. Experiment lifecycle replies already include a
+validated state snapshot, and `--full` includes the saved inputs or model update.
+Inspecting that reply does not require an additional immediate `get`. Carry its
+returned revision into the next operation. Read current state to reconcile a lost
+reply, revision conflict, stale dependency, or final handoff.
 
 Use `brief <decision-id>` to inspect current recommendations, alternatives,
 evidence, uncertainty, checks, effects, reversal conditions, outcomes and stale
