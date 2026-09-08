@@ -2,6 +2,13 @@ Feature: Full-horizon operations through standalone interfaces
   Every supported interface exposes the same bounded advisory operations.
   A caller can preview evidence changes before explicitly applying them.
 
+  Scenario: An installed CLI user discovers note vocabulary without reading source
+    Given no notebook and no access to source implementation
+    When I request record or revise help
+    Then accepted note statuses and the default proposed status are visible
+    And record help lists accepted note kinds including reversal conditions
+    And no notebook is created
+
   Scenario Outline: Portfolio analysis preserves disagreement without creating storage
     Given an absent notebook and one decision valued differently by two stakeholders
     When I calculate its portfolio through <interface>
