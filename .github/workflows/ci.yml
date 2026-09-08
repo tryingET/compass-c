@@ -79,4 +79,4 @@ jobs:
       - name: Verify genuine stdio sessions against the installed wheel
         env:
           COMPASS_MCP_PYTHON: ${{ runner.temp }}/compass-wheel/bin/python
-        run: uv run --extra dev --extra mcp --locked python -m pytest tests/test_mcp_integration.py tests/test_horizon_interfaces.py -v --tb=short
+        run: uv run --extra dev --extra mcp --locked python -m pytest tests/test_mcp_integration.py tests/test_horizon_interfaces.py tests/test_lifecycle_interfaces.py -v --tb=short

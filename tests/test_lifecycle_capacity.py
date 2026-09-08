@@ -3,11 +3,11 @@
 from pathlib import Path
 
 import pytest
+from test_lifecycle import observation, parameters
 
 from compass_c import CompassError, Notebook
 from compass_c.lifecycle import apply_observation, plan_experiment
 from compass_c.lifecycle import experiment as resume_experiment
-from test_lifecycle import observation, parameters
 
 
 @pytest.mark.parametrize("dependency_count", [63, 64])

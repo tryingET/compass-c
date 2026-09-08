@@ -84,7 +84,7 @@ also invalidates dependent notes and prior recommendations. Reconsider those
 conclusions explicitly; do not silently restore them.
 
 Schema-1 notebooks remain readable and support their original operations.
-Revision history needs schema 2: `migrate` explicitly and transactionally upgrades
+Revision history needs schema 2 or later: `migrate` explicitly and transactionally upgrades
 an existing notebook. Reads never migrate, and newer or malformed schemas fail
 closed. Back up a valuable notebook with SQLite's backup API before an upgrade.
 
@@ -100,7 +100,10 @@ conflict, report contention rather than looping.
 
 A timeout or lost write response is an unknown outcome, not a rollback. With a
 known decision ID, get the record and identify whether the intended change is
-already present before considering a retry. The CLI has no idempotency-key feature.
+already present before considering a retry. General note writes have no idempotency key.
+Saved experiment observations have a dedicated event identity: identical retries
+return the stored receipt; changed payloads or reuse in another plan fail. See
+[Saved experiments](experiment-workflow.md) before using that operation.
 Do not replay a successful operation or use substring similarity as proof of identity.
 If start times out before its new ID is observed, use `list --limit 20 --offset 0`
 and `get` to inspect candidate IDs, objectives, creation times, and actual contents.

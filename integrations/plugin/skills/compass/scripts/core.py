@@ -20,8 +20,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "0.5.0"
-SCHEMA_VERSION = "2"
+VERSION = "0.6.0"
+SCHEMA_VERSION = "3"
 KINDS = {
     "assumption",
     "evidence",
@@ -165,7 +165,7 @@ class Notebook:
     def _initialize_schema(database: sqlite3.Connection) -> None:
         statements = """
             CREATE TABLE compass_meta (key TEXT PRIMARY KEY, value TEXT NOT NULL);
-            INSERT INTO compass_meta VALUES ('schema_version', '2');
+            INSERT INTO compass_meta VALUES ('schema_version', '3');
             CREATE TABLE decisions (
                 id TEXT PRIMARY KEY, objective TEXT NOT NULL, stakes TEXT NOT NULL,
                 constraints_json TEXT NOT NULL, revision INTEGER NOT NULL,
@@ -192,6 +192,32 @@ class Notebook:
             if statement.strip():
                 database.execute(statement)
         Notebook._revision_schema(database)
+        Notebook._experiment_schema(database)
+
+    @staticmethod
+    def _experiment_schema(database: sqlite3.Connection) -> None:
+        database.execute(
+            """CREATE TABLE experiment_plans (
+                id TEXT PRIMARY KEY,
+                decision_id TEXT NOT NULL REFERENCES decisions(id),
+                model_note_id TEXT NOT NULL REFERENCES notes(id),
+                parameters_json TEXT NOT NULL, proposal_json TEXT NOT NULL,
+                revision INTEGER NOT NULL, created_at TEXT NOT NULL
+            )"""
+        )
+        database.execute(
+            """CREATE TABLE experiment_observations (
+                id TEXT PRIMARY KEY,
+                decision_id TEXT NOT NULL REFERENCES decisions(id),
+                plan_id TEXT NOT NULL REFERENCES experiment_plans(id),
+                event_id TEXT NOT NULL, experiment_id TEXT NOT NULL,
+                observation_json TEXT NOT NULL, update_json TEXT NOT NULL,
+                outcome_note_id TEXT NOT NULL REFERENCES notes(id),
+                model_note_id TEXT NOT NULL REFERENCES notes(id),
+                revision INTEGER NOT NULL, created_at TEXT NOT NULL,
+                UNIQUE(decision_id, event_id), UNIQUE(plan_id)
+            )"""
+        )
 
     @staticmethod
     def _revision_schema(database: sqlite3.Connection) -> None:
@@ -215,7 +241,7 @@ class Notebook:
             raise CompassError(
                 "INVALID_STORAGE", "SQLite file is not a COMPASS-C notebook"
             ) from exc
-        if row is None or row["value"] not in {"1", SCHEMA_VERSION}:
+        if row is None or row["value"] not in {"1", "2", SCHEMA_VERSION}:
             raise CompassError("UNSUPPORTED_SCHEMA", "Unsupported COMPASS-C notebook schema")
         expected = {
             "compass_meta": ("key", "value"),
@@ -248,13 +274,36 @@ class Notebook:
                 "created_at",
             ),
         }
-        if row["value"] == "2":
+        if row["value"] in {"2", "3"}:
             expected["note_revisions"] = (
                 "id",
                 "decision_id",
                 "supersedes",
                 "note_id",
                 "reason",
+                "revision",
+                "created_at",
+            )
+        if row["value"] == "3":
+            expected["experiment_plans"] = (
+                "id",
+                "decision_id",
+                "model_note_id",
+                "parameters_json",
+                "proposal_json",
+                "revision",
+                "created_at",
+            )
+            expected["experiment_observations"] = (
+                "id",
+                "decision_id",
+                "plan_id",
+                "event_id",
+                "experiment_id",
+                "observation_json",
+                "update_json",
+                "outcome_note_id",
+                "model_note_id",
                 "revision",
                 "created_at",
             )
@@ -284,9 +333,36 @@ class Notebook:
             )
             if table == "note_revisions":
                 required.update({("supersedes", "notes", "id"), ("note_id", "notes", "id")})
+            if table == "experiment_plans":
+                required.add(("model_note_id", "notes", "id"))
+            if table == "experiment_observations":
+                required.update(
+                    {
+                        ("plan_id", "experiment_plans", "id"),
+                        ("outcome_note_id", "notes", "id"),
+                        ("model_note_id", "notes", "id"),
+                    }
+                )
             if foreign_keys != required:
                 raise CompassError(
                     "INVALID_STORAGE", "Notebook relationships do not match its schema"
+                )
+        if row["value"] == "3":
+            unique_columns = set()
+            for index in database.execute("PRAGMA index_list(experiment_observations)"):
+                if not index["unique"] or index["partial"]:
+                    continue
+                # Table-valued PRAGMA binds an untrusted stored index name as data.
+                columns = tuple(
+                    item["name"]
+                    for item in database.execute(
+                        "SELECT name FROM pragma_index_info(?)", (index["name"],)
+                    )
+                )
+                unique_columns.add(columns)
+            if not {("decision_id", "event_id"), ("plan_id",)} <= unique_columns:
+                raise CompassError(
+                    "INVALID_STORAGE", "Experiment observation uniqueness is missing"
                 )
         return row["value"]
 
@@ -626,7 +702,7 @@ class Notebook:
         with self._existing_connection(writable=True) as database:
             row = self._snapshot(database, decision_id)
             self._revision(row, expected_revision)
-            if self._verify_schema(database) != SCHEMA_VERSION:
+            if self._verify_schema(database) not in {"2", "3"}:
                 raise CompassError("MIGRATION_REQUIRED", "Run migrate explicitly before revising")
             notes = {note["id"]: note for note in row["notes"]}
             if note_id not in notes:
@@ -687,7 +763,7 @@ class Notebook:
         }
 
     def migrate(self) -> dict[str, Any]:
-        """Explicit, transactional schema-1 upgrade; reads never call this method."""
+        """Explicit, transactional schema-1/2 upgrade; reads never call this method."""
         with self._existing_connection(writable=True) as database:
             version = self._verify_schema(database)
             for row in database.execute("SELECT id FROM decisions"):
@@ -696,7 +772,9 @@ class Notebook:
                 raise CompassError("INVALID_STORAGE", "Notebook contains orphaned history")
             migrated = version != SCHEMA_VERSION
             if migrated:
-                self._revision_schema(database)
+                if version == "1":
+                    self._revision_schema(database)
+                self._experiment_schema(database)
                 database.execute(
                     "UPDATE compass_meta SET value=? WHERE key='schema_version'", (SCHEMA_VERSION,)
                 )
@@ -738,7 +816,15 @@ class Notebook:
         backwards-compatible review contract. It never interprets the condition,
         verifies a source, or invents a recommendation.
         """
-        decision = self.get(decision_id)
+        with self._existing_connection(writable=False) as database:
+            decision = self._snapshot(database, decision_id)
+            saved_experiments = None
+            if self._verify_schema(database) == "3":
+                from lifecycle import _experiments_snapshot
+
+                saved_experiments = _experiments_snapshot(self, database, decision_id)[
+                    "experiments"
+                ]
         current = [note for note in decision["notes"] if not note["stale"]]
         sections = {
             "recommendations": {"decision"},
@@ -766,6 +852,8 @@ class Notebook:
             review["status"] = "needs_work"
         result["review"] = review
         result["source_verified"] = False
+        if saved_experiments is not None:
+            result["experiments"] = saved_experiments
         return result
 
     def review(self, decision_id: str) -> dict[str, Any]:

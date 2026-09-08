@@ -15,11 +15,19 @@ from typing import Any
 
 from . import VERSION, CompassError, Notebook, calculate
 from .evidence import apply_updates, preview_updates
+from .lifecycle import (
+    apply_observation,
+    experiment,
+    experiments,
+    lifecycle_view,
+    plan_experiment,
+    preview_observation,
+)
 
 try:
     from mcp.server.mcpserver import MCPServer
     from mcp.types import ToolAnnotations
-    from pydantic import StrictInt
+    from pydantic import StrictBool, StrictInt
 except ImportError as exc:  # pragma: no cover - optional dependency
     raise SystemExit("Install the optional dependency: pip install 'compass-c[mcp]'") from exc
 
@@ -192,6 +200,84 @@ def compass_apply_updates(
 ) -> dict[str, Any]:
     """Explicitly apply an atomic evidence batch; history and source claims remain inspectable."""
     return evidence_result(True, decision_id, expected_revision, updates)
+
+
+def lifecycle_result(
+    function: Callable[..., dict[str, Any]], *args: Any, full: bool = False
+) -> dict[str, Any]:
+    def operation() -> dict[str, Any]:
+        path = os.environ.get("COMPASS_DB", str(Path.home() / ".compass" / "decisions.sqlite3"))
+        return lifecycle_view(function(Notebook(path), *args), full)
+
+    return result(operation)
+
+
+@mcp.tool(annotations=LOCAL_WRITE)
+def compass_plan_experiment(
+    decision_id: str,
+    expected_revision: StrictInt,
+    parameters: dict[str, Any],
+    depends_on: list[str] | None = None,
+    full: StrictBool = False,
+) -> dict[str, Any]:
+    """Freeze a bounded model and experiment proposal; return compact next steps by default."""
+    return lifecycle_result(
+        plan_experiment, decision_id, expected_revision, parameters, depends_on or [], full=full
+    )
+
+
+@mcp.tool(annotations=READ_ONLY)
+def compass_experiment(plan_id: str, full: StrictBool = False) -> dict[str, Any]:
+    """Resume a saved experiment; full=true includes frozen inputs and observation history."""
+    return lifecycle_result(experiment, plan_id, full=full)
+
+
+@mcp.tool(annotations=READ_ONLY)
+def compass_experiments(decision_id: str) -> dict[str, Any]:
+    """Discover a decision's saved experiment plans and concise next actions without writing."""
+    return lifecycle_result(experiments, decision_id)
+
+
+@mcp.tool(annotations=READ_ONLY)
+def compass_preview_observation(
+    plan_id: str,
+    expected_revision: StrictInt,
+    experiment_id: str,
+    event_id: str,
+    observation: dict[str, Any],
+    full: StrictBool = False,
+) -> dict[str, Any]:
+    """Preview an explicit sourced result and affected reasoning without changing the notebook."""
+    return lifecycle_result(
+        preview_observation,
+        plan_id,
+        expected_revision,
+        experiment_id,
+        event_id,
+        observation,
+        full=full,
+    )
+
+
+@mcp.tool(annotations=LOCAL_WRITE)
+def compass_apply_observation(
+    plan_id: str,
+    expected_revision: StrictInt,
+    experiment_id: str,
+    event_id: str,
+    observation: dict[str, Any],
+    full: StrictBool = False,
+) -> dict[str, Any]:
+    """Record an event once, preserve prior/posterior lineage, and invalidate affected reasoning."""
+    return lifecycle_result(
+        apply_observation,
+        plan_id,
+        expected_revision,
+        experiment_id,
+        event_id,
+        observation,
+        full=full,
+    )
 
 
 def main() -> None:

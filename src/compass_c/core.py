@@ -19,7 +19,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-VERSION = "0.5.0"
+VERSION = "0.6.0"
 SCHEMA_VERSION = "3"
 KINDS = {
     "assumption",
@@ -815,7 +815,15 @@ class Notebook:
         backwards-compatible review contract. It never interprets the condition,
         verifies a source, or invents a recommendation.
         """
-        decision = self.get(decision_id)
+        with self._existing_connection(writable=False) as database:
+            decision = self._snapshot(database, decision_id)
+            saved_experiments = None
+            if self._verify_schema(database) == "3":
+                from .lifecycle import _experiments_snapshot
+
+                saved_experiments = _experiments_snapshot(self, database, decision_id)[
+                    "experiments"
+                ]
         current = [note for note in decision["notes"] if not note["stale"]]
         sections = {
             "recommendations": {"decision"},
@@ -843,6 +851,8 @@ class Notebook:
             review["status"] = "needs_work"
         result["review"] = review
         result["source_verified"] = False
+        if saved_experiments is not None:
+            result["experiments"] = saved_experiments
         return result
 
     def review(self, decision_id: str) -> dict[str, Any]:

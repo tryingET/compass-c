@@ -132,12 +132,20 @@ explicit sourced observation and returns the prior and updated model, exact
 posterior probabilities, and conditional changes in preference. It rejects an
 impossible observation or a posterior exceeding the reusable-model precision bounds.
 
-Keep full models and results in task-owned JSON artifacts. Record concise computed
+For transient calculations, keep full models and results in task-owned JSON artifacts. Record concise computed
 summaries with those source references and explicit note dependencies. When a real
 result arrives, retain it as sourced evidence, revise the model explicitly, preview
 the affected evidence update, then reconsider the now-stale recommendation. This
 is an opt-in workflow; no monitoring, experiment execution or learning is hidden
 behind a calculation.
+
+For a persistent handoff, use the [saved experiment workflow](../../skills/compass/references/experiment-workflow.md).
+`plan-experiment` freezes the model and bounded protocols in the notebook;
+`experiments DECISION_ID` recovers plans; `experiment PLAN_ID` resumes one.
+`observe-experiment` previews an explicitly sourced observation and `--apply`
+incorporates it once, preserving prior/posterior history and invalidating dependent
+reasoning. Each plan accepts one result. Replanning requires caller-supplied
+likelihoods appropriate to the accumulated evidence.
 
 ## Resume and upgrade
 
@@ -152,8 +160,10 @@ compass-c --db .compass/decisions.sqlite3 migrate
 or make a repeated write idempotent. Inspect the exact resulting record before
 retrying an uncertain mutation. `REVISION_CONFLICT` means to read and reconcile.
 
-Schema-1 notebooks retain their original read/write operations. `revise` requires
-the explicit, transactional schema-2 upgrade; reads never migrate. Existing
+Schema-1/2 notebooks retain their original operations. `revise` and evidence
+batches need schema 2 or later; saved experiments need schema 3. `migrate`
+explicitly upgrades either older schema to 3 in one transaction; reads and starting
+a decision in an existing notebook never migrate. Existing
 IDs, revisions, timestamps, text and invalidations survive the upgrade. A
 current-schema migration is a no-op. Missing, newer, foreign, and malformed
 notebooks fail closed. Back up valuable notebooks using SQLite's backup API

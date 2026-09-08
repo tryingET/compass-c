@@ -18,6 +18,14 @@ from calculations import calculate  # noqa: E402
 from core import KINDS, STATUSES, VERSION, CompassError, Notebook  # noqa: E402
 from evaluation import evaluate  # noqa: E402
 from evidence import apply_updates, preview_updates  # noqa: E402
+from lifecycle import (  # noqa: E402
+    apply_observation,
+    experiment,
+    experiments,
+    lifecycle_view,
+    plan_experiment,
+    preview_observation,
+)
 
 
 class JsonArgumentParser(argparse.ArgumentParser):
@@ -139,6 +147,50 @@ def parser() -> JsonArgumentParser:
         "--apply", action="store_true", help="commit the validated batch atomically"
     )
 
+    plan = commands.add_parser(
+        "plan-experiment", help="freeze a bounded experiment against the current decision revision"
+    )
+    plan.add_argument("decision_id")
+    plan.add_argument("--revision", required=True, type=int)
+    plan.add_argument(
+        "--parameters-file", required=True, help="bounded UTF-8 model and experiment JSON"
+    )
+    plan.add_argument("--depends-on", default="[]", help="JSON list of current source note IDs")
+    plan.add_argument(
+        "--full", action="store_true", help="include the frozen model and full proposal"
+    )
+
+    plans = commands.add_parser("experiments", help="discover a decision's saved experiment plans")
+    plans.add_argument("decision_id")
+    resume = commands.add_parser("experiment", help="resume a saved experiment and its next step")
+    resume.add_argument("plan_id")
+    resume.add_argument(
+        "--full", action="store_true", help="include frozen inputs and observation history"
+    )
+
+    observe = commands.add_parser(
+        "observe-experiment", help="preview a sourced observation; --apply explicitly records it"
+    )
+    observe.add_argument("plan_id")
+    observe.add_argument("--revision", required=True, type=int)
+    observe.add_argument("--experiment", required=True, help="experiment ID in the saved proposal")
+    observe.add_argument(
+        "--event-id", required=True, help="stable observation identity within this decision"
+    )
+    observe.add_argument(
+        "--observation-file", required=True, help="bounded UTF-8 sourced observation JSON"
+    )
+    observe.add_argument(
+        "--apply",
+        action="store_true",
+        help="record the event once and invalidate affected reasoning",
+    )
+    observe.add_argument(
+        "--full",
+        action="store_true",
+        help="include prior and posterior models and the supplied observation",
+    )
+
     calculation = commands.add_parser("calculate")
     calculation.add_argument(
         "kind",
@@ -172,6 +224,34 @@ def execute(arguments: argparse.Namespace) -> dict[str, Any]:
         return evaluate(read_json(arguments.corpus), read_json(arguments.results))
 
     notebook = Notebook(arguments.db)
+    if arguments.command == "plan-experiment":
+        return lifecycle_view(
+            plan_experiment(
+                notebook,
+                arguments.decision_id,
+                arguments.revision,
+                read_json(arguments.parameters_file),
+                parse_json(arguments.depends_on),
+            ),
+            arguments.full,
+        )
+    if arguments.command == "experiment":
+        return lifecycle_view(experiment(notebook, arguments.plan_id), arguments.full)
+    if arguments.command == "experiments":
+        return experiments(notebook, arguments.decision_id)
+    if arguments.command == "observe-experiment":
+        operation = apply_observation if arguments.apply else preview_observation
+        return lifecycle_view(
+            operation(
+                notebook,
+                arguments.plan_id,
+                arguments.revision,
+                arguments.experiment,
+                arguments.event_id,
+                read_json(arguments.observation_file),
+            ),
+            arguments.full,
+        )
     if arguments.command == "update-evidence":
         operation = apply_updates if arguments.apply else preview_updates
         return operation(

@@ -18,9 +18,11 @@ permission to spend, deploy, send, delete, or otherwise act outside the user's a
 
 ## Status
 
-Version **0.5.0** adds coordinated portfolio comparison, bounded experiment planning,
-result-conditioned model updates, and atomic evidence batches to inspectable decision
-briefs, exact sensitivity, compatible records, and paired evaluation reports.
+Version **0.6.0** connects bounded experiment planning to saved models, cold resume,
+read-only observation previews, and atomic posterior updates with preserved history.
+It builds on portfolios, inspectable briefs, exact sensitivity, and evidence batches.
+Package versions are implementation checkpoints; **v1–v4 in the vision describe
+product outcomes**, not a claim that version 0.6.0 completes every outcome.
 The core is **standalone and standard-library only**. Agent Kernel and other development
 systems are not required to install or use it. MCP is an optional, separately installed extra.
 
