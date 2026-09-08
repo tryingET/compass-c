@@ -1,0 +1,10 @@
+import json
+import runpy
+from capture import BASE
+
+session = runpy.run_path(str(BASE / 'notebook-session.py'))
+cli, DID = session['cli'], session['DID']
+current = cli('get', DID, display=False)
+result = cli('record', DID, '--revision', str(current['revision']), '--kind', 'evidence', '--status', 'observed', '--source', str(BASE / 'command-trace.json') + '#sequence=10', '--content', 'Installed COMPASS-C 0.5.0 calculate portfolio returned exit status 0 and ok=true for the supplied portfolio model. This is an observed command result; model values remain caller assumptions and it is not a finite-model invariant experiment result.')
+(BASE / 'initial-evidence-record.json').write_text(json.dumps(result, indent=2) + '\n')
+cli('get', DID)

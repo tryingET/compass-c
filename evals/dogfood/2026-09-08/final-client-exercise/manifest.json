@@ -1,0 +1,71 @@
+{
+  "created_at": "2026-09-08T00:19:12.624951+00:00",
+  "source_commit": "b48ab35771645fd8b39e11f3f1ee28196c28c114",
+  "wheel_path": "/workspace/scratch/b6252d122d78/v0.5-distributions/compass_c-0.5.0-py3-none-any.whl",
+  "wheel_sha256": "9f8241fb1bccacc9841212e392141a7516c8c5a7a68c52cac5b6e27aaad8ce72",
+  "skill_path": "/workspace/scratch/b6252d122d78/compass-c/skills/compass/SKILL.md",
+  "skill_sha256": "09e26a8cb61167be937c581d21daf8e0286ba644137bbc523750a4db346d200a",
+  "guidance_sha256": {
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/SKILL.md": "09e26a8cb61167be937c581d21daf8e0286ba644137bbc523750a4db346d200a",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/decision-checks.md": "71d32559f91a65ea5493069d608e48513db1d99883793a3e4cad9d7bd10f948a",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/calculators.md": "09424ad41d8fc3ee5c770b9f33882e10812d05982addfa63b1afc423529ad026",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/notebook.md": "542705dedba709be5789a4ef6391bbc9d6fdb7c93b3f68715ae07c1b56f8a189",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/portfolio.md": "cf6101ab98f32941ce8b1c72130acb2467fd4d22afea23c9c96a66bf11e7fe84",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/experiments.md": "83013a77830800567ec031874a8b377926b15b9a15ac95ec44f17572494c5762"
+  },
+  "input_sha256": {
+    "inputs/experiment-inputs.json": "f094ba7db81599ebe03456acc6d4aa124f7a3d5c26b99dbaa3aeccceb2b4bcdb",
+    "inputs/portfolio-model.json": "5b0436907a24925c175a202ca92440315307cdda2658b4aded62315a8caaa641"
+  },
+  "agent_id": "/root/host_evaluation/final_client",
+  "scope": "Actual local installed-client usability, author-visible, no native discovery or generalized benefit claim; output fixtures and expected answers withheld.",
+  "collector_followups": [
+    "Once apply/readback and final brief are complete, finish without further optional probes. Preserve all actual captures. Root has code verification green and is finalizing. Report the command count honestly as usability overhead, distinguishing setup/help/capture commands from substantive user operations where the trace permits; do not hide failed attempts if any."
+  ],
+  "source_commit_scope": "Local commit ID retained exactly as captured; not the remotely published GitHub commit ID.",
+  "source_commit_published_counterpart": "309fe48ed09438900c91bfb96d53321800b2c93a",
+  "source_commit_mapping_note": "Parent publication mapping identifies this remote counterpart as preserving the same source tree as local cd09b516de15231c199b2361fe045aac23468cb5; API-created commit metadata changed the commit ID.",
+  "host": {
+    "name": "ChatGPT Work Mode collaboration agent",
+    "model": "Inherited parent model and reasoning settings; exact provider model/build and sampling not exposed",
+    "fork_turns": "none"
+  },
+  "capture_script_archive": "capture-script-map.json",
+  "completed_artifact_sha256": {
+    "after-apply-brief.json": "0e8151bd2ca66dda7481d7b8d73aeb8c29972fee3b89c1ef6dafbf847fa7aaf1",
+    "after-apply-readback.json": "8e7b3e6a6ad9430a9770d865b5a200eedca65f9c81236c235177c64dcacaf86a",
+    "after-preview-readback.json": "d1fbad76ce229b815d550226f1d84b8a749d52c0ae645ecea0e1dbc9558783c0",
+    "apply-output.json": "d15c7d80ab3fdc0082800f482b193773b5ba14df7daa2735f05bc2de4dfb2c88",
+    "before-revision-brief.json": "b9e247b5051a70c0916abafc420fee4f54e711e17d54ac81eb5ea3e2f44a015e",
+    "capture-script-map.json": "d32c848caa55186bafdd40a558e28d35934cdfd55b33bc36eee6676af453650d",
+    "capture.py.txt": "cb1af62258d306e5d639e9a659869fa9d1c4b516099e3c511dcd48832a20a284",
+    "command-trace.json": "6dd1d47be5f8d3021ce6f2fe3e600f65cfb70c6a3eb9042d62fbc224becd12fd",
+    "current-note-ids.json": "55f3719361cfa80d522ad19234b9f87f3cdd948cc9062f8f28fcac5c28d79641",
+    "evidence-updates.json": "248583441228aa227b5afe7e6c0a080251ae8930fd41f10ab6f7594b66fd4bda",
+    "experiment-output.json": "8091c0171f9feaa0d9405fe3086846b1f5dff046647c9c65ace7c3c7b053be20",
+    "final-brief.md": "8a97fdc681fe853a7fbe8b127a88c92958aa2683c783cbe9b921813a82dbb809",
+    "final-notebook-brief.json": "0fefa223f9c1814d895e0f9e392c74e21a587489fba44f6a97b9205e0ea98be6",
+    "final-notebook-readback.json": "ae170fa56702b6eed91cd573c01ef3c52eac000b5db4740e5b191fd3d49fc73c",
+    "finish-capture.py.txt": "96b95dbdb0690a4c3f6529145fb48322c3d395472603a97caa20d22d94c06069",
+    "help-capture.py.txt": "cd0c1cf4cf9292a155189b19d8c23e9344742e1cd0b99578c270ec65dd1cdde2",
+    "initial-evidence-record.json": "4c1a76fa367d667a97a91359477e3a93a954ded2f81732080c0cb8a423dd634b",
+    "inputs/experiment-inputs.json": "f094ba7db81599ebe03456acc6d4aa124f7a3d5c26b99dbaa3aeccceb2b4bcdb",
+    "inputs/portfolio-model.json": "5b0436907a24925c175a202ca92440315307cdda2658b4aded62315a8caaa641",
+    "note-ids.json": "b95a440faf647f4cbe8ae3098abb51ff95f33d51a805bf41742a0ab5157fdd0b",
+    "notebook-session.py.txt": "0a39539da31feb55b074b94e4c5f050c52f62790f73ef48a7669b099e9e726d0",
+    "portfolio-output.json": "826ecd91232258d39879d4b5da783e9b3485e03b4593799781ee7179e33a9ae9",
+    "preview-output.json": "b8b55d1ec6a3c5e45a95a82aee91bc122049668f3d536051709a8739e37df59f",
+    "preview-verification.json": "24eb5b333197bf8b6bf6ef246c375ba8abbee924be655a4e639cb88c808f7ecc",
+    "reconsideration-readbacks.json": "03a280f0c1a3165dec261fa0974b04bac421e5906938b2b76c837c806bec2eae",
+    "sensitivity-output.json": "53784d40d4f6fd0069aae5413e2d27e9a24fd0ad36283b73a40d58f446421af0",
+    "stage1.py.txt": "c9343ad45127b0b8fc004d937a02e45dd8bc2c49e2ca1c62de95a556d31562c0",
+    "stage2.py.txt": "cdddab101472ec177e6309be07225ed9c30bc8daa5b51084bd834ec1171d2129",
+    "stage3.py.txt": "470c784d882bacececdf2516804e59105203e519343d916438b60d9cbf478caf",
+    "stage4-preview.py.txt": "30190ed733abbb6f96bf4fad1122f99c428902215ce9f0838bf6e54bd85488ec",
+    "stage5-apply.py.txt": "5e3c16c4b02519ad3dadb11ed09bc3c4b5636dbe790ee9ae49a5c2c7555d2f50",
+    "stage6-reconsider.py.txt": "5c1f47aede450d159391b48f127d86e1d23f7d6eef2f5a1120a872dc17223844",
+    "start-output.json": "fe5825efd2bf15b9369403e9db106587688b6f6e0392a2cc9e5d229eaa099ba5",
+    "task.json": "550de6709620dce6df717f7103b5f38258009c24f34fbd8fe44a3184f57244f4",
+    "usability.json": "a574a1abfe8f4f9fe75068c4c144ca2972373bdde615891acd95ebc7bca2b57c"
+  }
+}

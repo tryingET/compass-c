@@ -1,0 +1,15 @@
+import json
+import runpy
+from capture import BASE
+
+session = runpy.run_path(str(BASE / 'notebook-session.py'))
+cli, DID = session['cli'], session['DID']
+before = cli('get', DID, display=False)
+updates = json.loads((BASE / 'evidence-updates.json').read_text())
+result = cli('update-evidence', DID, '--revision', str(before['revision']), '--updates', json.dumps(updates), '--apply')
+(BASE / 'apply-output.json').write_text(json.dumps(result, indent=2) + '\n')
+after = cli('get', DID, display=False)
+(BASE / 'after-apply-readback.json').write_text(json.dumps(after, indent=2) + '\n')
+brief = cli('brief', DID, display=False)
+(BASE / 'after-apply-brief.json').write_text(json.dumps(brief, indent=2) + '\n')
+print(json.dumps({'revision': after['revision'], 'current_notes': [note for note in after['notes'] if not note['stale']], 'stale_notes': [note for note in after['notes'] if note['stale']], 'revision_history': after['revisions'], 'review': brief['review']}, indent=2))

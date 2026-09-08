@@ -86,6 +86,59 @@ Record a fresh conditional recommendation only after reconsideration. Record an
 does not establish that the decision process caused it. Use `calculate brier`
 for resolved binary forecasts, preserving the original forecast and actual outcome.
 
+## Preview and apply a batch of new observations
+
+Several independent corrections can commit together. Preview is read-only;
+apply validates the entire batch again at the same expected revision.
+
+```python
+from compass_c.evidence import apply_updates, preview_updates
+
+current = book.brief(decision_id)
+updates = [
+    {
+        "note_id": current["evidence"][0]["id"],
+        "content": "Synthetic replicated conversion is 0.06",
+        "reason": "Explicit new observation from the replica",
+        "status": "observed",
+        "source": "synthetic pilot run 3",
+    }
+]
+preview = preview_updates(book, decision_id, current["revision"], updates)
+assert book.get(decision_id)["revision"] == current["revision"]
+committed = apply_updates(book, decision_id, current["revision"], updates)
+assert committed["revision"] == current["revision"] + 1
+```
+
+The CLI equivalent is `update-evidence DECISION_ID --revision N --updates 'JSON'`;
+add `--apply` to commit. MCP exposes separate `compass_preview_updates` and
+`compass_apply_updates` tools. No source is fetched, and no prose reversal condition
+is interpreted. Any invalid member, obsolete revision or storage failure leaves
+the whole batch unchanged. Independent roots are required: update downstream
+inferences explicitly after reconsidering the replacement evidence.
+
+## Coordinate and learn without acquiring execution authority
+
+[`calculate portfolio`](../../skills/compass/references/portfolio.md) enumerates a
+bounded set of choices under shared capacity, exclusions and dependencies. It
+retains each stakeholder's optima, explicit caller-supplied deferral values, and
+reversal conditions. Dependency layers express precedence; they are not a schedule
+or resource reservation. No common ethical scale is invented.
+
+[`calculate experiment`](../../skills/compass/references/experiments.md) compares a
+no-test baseline with supplied finite experiments, their costs, bounds, outcome
+branches and expected information value. `calculate update_beliefs` consumes an
+explicit sourced observation and returns the prior and updated model, exact
+posterior probabilities, and conditional changes in preference. It rejects an
+impossible observation or a posterior exceeding the reusable-model precision bounds.
+
+Keep full models and results in task-owned JSON artifacts. Record concise computed
+summaries with those source references and explicit note dependencies. When a real
+result arrives, retain it as sourced evidence, revise the model explicitly, preview
+the affected evidence update, then reconsider the now-stale recommendation. This
+is an opt-in workflow; no monitoring, experiment execution or learning is hidden
+behind a calculation.
+
 ## Resume and upgrade
 
 ```bash

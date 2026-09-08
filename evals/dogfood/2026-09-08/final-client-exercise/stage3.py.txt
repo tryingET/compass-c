@@ -1,0 +1,37 @@
+import json
+import runpy
+from capture import BASE
+
+session = runpy.run_path(str(BASE / 'notebook-session.py'))
+cli, DID = session['cli'], session['DID']
+ids = {'command_evidence': json.loads((BASE / 'initial-evidence-record.json').read_text())['note_id']}
+
+def record(name, kind, content, dependencies=(), status=None, source=None):
+    current = cli('get', DID, display=False)
+    argv = ['record', DID, '--revision', str(current['revision']), '--kind', kind, '--content', content, '--depends-on', json.dumps([ids[key] for key in dependencies])]
+    if status:
+        argv += ['--status', status]
+    if source:
+        argv += ['--source', source]
+    result = cli(*argv, display=False)
+    ids[name] = result['note_id']
+    (BASE / 'note-ids.json').write_text(json.dumps(ids, indent=2) + '\n')
+    readback = cli('get', DID, display=False)
+    observed = next(note for note in readback['notes'] if note['id'] == result['note_id'])
+    print(json.dumps({'name': name, 'record_result': result, 'readback_note': observed}))
+
+record('model_assumptions', 'assumption', 'All capacity, effort, additive commitment values, zero deferral values, priors, utilities, likelihoods and duration bounds come from the two supplied author-visible models. They are neither elicited stakeholder preferences nor measured reliability. All work remains required eventually. Review minutes, experiment seconds and hypothetical utility points are distinct units.', source=str(BASE / 'inputs'))
+record('portfolio_result', 'evidence', 'The installed portfolio calculation enumerated 64 candidates and 24 feasible portfolios. The sole Pareto/common optimum p00f selects living_decisions (25), portfolio (20), experiments (25), then integrated_paths (20), using 90 review minutes and leaving zero margin. Values are delivery_owner=33 and evidence_reviewer=32. Dependency layers constrain only precedence, not concurrency or a resource schedule.', ('command_evidence', 'model_assumptions'), 'computed', str(BASE / 'portfolio-output.json'))
+record('dissent', 'limitation', 'Preserve the differing modeled priorities: host_usefulness values 5/10 and organization_governance 4/9 for delivery_owner/evidence_reviewer; integrated_paths is 10/9. The supplied totals nevertheless give both roles p00f, so preference_conflict=false does not establish actual stakeholder agreement. No cross-stakeholder weights, real elicitation or empirical usefulness evidence are supplied.', ('model_assumptions',))
+record('experiment_result', 'evidence', 'The installed experiment proposal returns no-test winner seek more arithmetic review (EV 0); accepting on the prior has modeled EV -2. The proposed independent-finite-model-invariants check has EVSI 4.4 and net value 4.2 after cost 0.2, within budget 1 and duration bound 30 seconds. Its hypothetical pass branch has probability 0.74, posterior [133/148,15/148], and accepts; fail has probability 0.26, posterior [7/52,45/52], and seeks review. These branches were computed, never observed.', ('model_assumptions',), 'computed', str(BASE / 'experiment-output.json'))
+record('core_alternative', 'alternative', 'Conditional core review: review living_decisions, portfolio and experiments first; review integrated_paths only after those prerequisites. Under the supplied capacity and additive values this is p00f, 90 minutes, values 33/32, with host_usefulness and organization_governance deferred for this window.', ('portfolio_result',))
+record('delay_alternative', 'alternative', 'If arithmetic acceptance remains unresolved or any prerequisite overruns, complete the three core prerequisite reviews and defer integrated_paths: p007 uses 70 minutes, leaves 20 modeled minutes, and has values 23/23. The model assigns no option value to spare capacity; this fallback sacrifices 10/9 modeled points to preserve the acceptance boundary.', ('portfolio_result', 'experiment_result'))
+record('host_alternative', 'alternative', 'If actual owners require earlier usefulness evidence, living_decisions + experiments + host_usefulness is p015: 90 minutes, values 21/26; portfolio, integrated_paths and governance are deferred. This is dominated under the supplied model, but an explicit owner constraint or revised values could make it relevant. Do not attribute that preference to an actual stakeholder.', ('portfolio_result', 'dissent'))
+record('prospective_check', 'test', 'Prospective only: obtain an authorized result for the supplied protocol, 32 deterministic three-state models against an independent exact-arithmetic oracle, stopping after success or first failure. Preserve the observation source and time before any update_beliefs call. Merely running calculate experiment cannot satisfy this protocol.', ('experiment_result',))
+record('missing_observation', 'limitation', 'No finite-model invariant observation, oracle implementation or executed 32-model experiment is supplied or produced in this exercise. Keep prior probabilities [0.7,0.3] unchanged; do not call update_beliefs with CLI exit success as pass. The no-observation arithmetic choice remains seek more arithmetic review.', ('experiment_result',))
+record('effects', 'effect', 'Conditional mechanism: prioritizing core review can expose integration defects sooner while deferring usefulness/governance evidence. A speculative downstream risk is that readers treat arithmetic success as product validation and commit earlier, reducing options before host evidence arrives. Leading indicator: a brief drops its missing-observation limit; disconfirmation: sourced host evidence independently supports the commitment. Consequence: retain the limit and reopen sequencing if usefulness/governance is a real prerequisite.', ('portfolio_result', 'missing_observation'))
+record('reversal', 'reversal_condition', 'Reopen the core portfolio if a prerequisite fails, required review effort exceeds the zero-margin 90-minute allowance, or an actual owner adds a usefulness/governance prerequisite or changes values/deferral assumptions. For the fixed arithmetic payoffs, acceptance requires P(meets invariants)>0.75; the tie is at 0.75. Only a properly sourced outcome from the stated protocol can justify the supplied Bayesian pass/fail update; no such outcome exists here.', ('portfolio_result', 'experiment_result', 'missing_observation'))
+record('initial_recommendation', 'decision', 'Conditionally prioritize the core prerequisites and then integrated_paths under the supplied portfolio assumptions; preserve the no-test choice of more arithmetic review before accepting the arithmetic implementation. Use p007 if the acceptance evidence stays missing or a prerequisite overruns, and reconsider p015 if actual owner constraints require usefulness evidence first. This is an advisory sequencing comparison, with no experiment executed and no external action permission.', ('portfolio_result', 'experiment_result', 'missing_observation', 'reversal'))
+brief = cli('brief', DID, display=False)
+(BASE / 'before-revision-brief.json').write_text(json.dumps(brief, indent=2) + '\n')
+print(json.dumps({'revision': brief['revision'], 'review': brief['review']}, indent=2))

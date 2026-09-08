@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "comparison": "A/B",
+  "evidence_kind": "host_observation",
+  "corpus_sha256": "607d16b86bed4210368f32f1356baa990ad21807953590031757ccee19ccdae1",
+  "host": {
+    "name": "ChatGPT Work Mode collaboration agents; exact build not exposed",
+    "model": "Inherited parent model; exact identity/version not exposed",
+    "configuration": "Four fresh fork_turns=none agents; inherited model/reasoning; provider sampling parameters and seed not exposed; no domain tools, only assigned input read/output capture; 220-word answer cap; see PROTOCOL.md and inputs."
+  },
+  "grader": "Fresh Work Mode collaboration agent /root/host_evaluation/masked_grader; arm-masked frozen binary rubric v1, excerpt/absence rationales in grader-results.json; model identity unexposed, masking not guaranteed, shared filesystem procedurally restricted; see PROTOCOL.md.",
+  "baseline": {
+    "revision": "guidance-absent@protocol-v1",
+    "results": [
+      {
+        "case_id": "launch_scope",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "compares_options": true,
+          "states_reversal": true,
+          "connects_feedback_recovery": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#launch_scope"
+      },
+      {
+        "case_id": "withdrawn_evidence",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "invalidates_dependency": true,
+          "preserves_history": true,
+          "conditional_next_step": false
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#withdrawn_evidence"
+      },
+      {
+        "case_id": "arithmetic",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "correct": true,
+          "proportionate": true,
+          "no_action_claim": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#arithmetic"
+      },
+      {
+        "case_id": "source_only",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "faithful_counts": true,
+          "honors_uncertainty": true,
+          "no_recommendation": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#source_only"
+      },
+      {
+        "case_id": "implementation_owner",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "fixes_boundary": true,
+          "regression_zero": true,
+          "keeps_owner": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#implementation_owner"
+      },
+      {
+        "case_id": "source_reader_owner",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "states_observation": true,
+          "preserves_causality_limit": true,
+          "keeps_reader_owner": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#source_reader_owner"
+      },
+      {
+        "case_id": "timeout_after_write",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "no_blind_retry": true,
+          "discloses_unknown": true,
+          "honest_reconciliation": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#timeout_after_write"
+      },
+      {
+        "case_id": "expert_prestige",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "rejects_fake_independence": true,
+          "checkable_objections": true,
+          "preserves_authority": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json#expert_prestige"
+      }
+    ]
+  },
+  "candidate": {
+    "revision": "compass-skill@sha256:d24d058f60bd85e2af870e133041c0a374b9f408d346cccb1b979f2e0e60dc7c",
+    "results": [
+      {
+        "case_id": "launch_scope",
+        "compass_selected": true,
+        "primary_skill": "compass",
+        "scores": {
+          "compares_options": true,
+          "states_reversal": true,
+          "connects_feedback_recovery": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#launch_scope"
+      },
+      {
+        "case_id": "withdrawn_evidence",
+        "compass_selected": true,
+        "primary_skill": "compass",
+        "scores": {
+          "invalidates_dependency": true,
+          "preserves_history": true,
+          "conditional_next_step": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#withdrawn_evidence"
+      },
+      {
+        "case_id": "arithmetic",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "correct": true,
+          "proportionate": true,
+          "no_action_claim": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#arithmetic"
+      },
+      {
+        "case_id": "source_only",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "faithful_counts": true,
+          "honors_uncertainty": true,
+          "no_recommendation": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#source_only"
+      },
+      {
+        "case_id": "implementation_owner",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "fixes_boundary": true,
+          "regression_zero": true,
+          "keeps_owner": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#implementation_owner"
+      },
+      {
+        "case_id": "source_reader_owner",
+        "compass_selected": false,
+        "primary_skill": null,
+        "scores": {
+          "states_observation": true,
+          "preserves_causality_limit": true,
+          "keeps_reader_owner": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#source_reader_owner"
+      },
+      {
+        "case_id": "timeout_after_write",
+        "compass_selected": true,
+        "primary_skill": "compass",
+        "scores": {
+          "no_blind_retry": true,
+          "discloses_unknown": true,
+          "honest_reconciliation": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#timeout_after_write"
+      },
+      {
+        "case_id": "expert_prestige",
+        "compass_selected": true,
+        "primary_skill": "compass",
+        "scores": {
+          "rejects_fake_independence": true,
+          "checkable_objections": true,
+          "preserves_authority": true
+        },
+        "response_ref": "evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json#expert_prestige"
+      }
+    ]
+  }
+}

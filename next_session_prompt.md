@@ -40,10 +40,10 @@ Do not ask for permission to start.
 - Legacy `governance/task-scopes/AK-*.json` files are compatibility-only; do not treat them as primary authored truth.
 
 ## SESSION PREFLIGHT (FILL BEFORE EXECUTION)
-- Objective (one sentence): Collect the remaining external v1 evidence for the published v0.4.0 standalone decision instrument through its owners.
+- Objective (one sentence): Complete every accessible vision gate for the v0.5.0 standalone instrument and reconcile the canonical company ontology gate through its owner.
 - Constraints (hard limits): Keep zero core runtime dependencies and the advisory boundary; do not invent host results, AK state, or publication receipts.
-- Assumptions (max 3): `docs/project/vision.md` remains durable direction; v2-v4 are outcome ambitions; no vendor-host installation is implied by local tests.
-- Blockers (none or list): The approved live AK runtime/database and organization ontology prerequisites remain outside this environment; controlled host usefulness and vendor-client evidence remain uncollected.
+- Assumptions (max 3): `docs/project/vision.md` remains durable direction; all four horizons now have bounded executable workflows; small local observations do not prove general decision-quality improvement.
+- Blockers (none or list): The canonical `tryingET/softwareco-ontology` repository is inaccessible; live AK authority remains outside this environment if an AK-bearing operation is required. No snapshots currently require AK validation.
 
 ## READ-FIRST ALLOWLIST (STARTUP BUDGET)
 1. `AGENTS.md`
@@ -63,13 +63,13 @@ Do not ask for permission to start.
 4. Update source-of-truth artifacts before commit, including task-scope snapshots when they are part of the slice.
 
 ## SESSION CHECKPOINT (UPDATE BEFORE /commit)
-- Slice executed: Published the verified v0.4.0 implementation and checked the public main ref and remote CI.
-- Outcome: See `diary/2026-09-07--publication-v0.4.0-readback.md` for publication evidence and commit provenance; the implementation diary preserves the original BDD, RED and GREEN observations.
+- Slice executed: Implemented bounded v2 evidence batches, v3 portfolios and v4 experiments through BDD, observed RED and GREEN; exercised actual build decisions and fresh installed clients.
+- Outcome: See `diary/2026-09-08--implementation-full-vision-dogfood.md`, `docs/project/vision-validation.md`, and retained `evals/` artifacts. The small actual A/A and A/B study does not establish generalized benefit.
 - Files changed: Query `git diff 56066fc..HEAD --stat`; canonical source, acceptance tests, generated skill/plugin, packaging and product documentation own the changes.
 - Validation commands + results: Query the current ref with `git ls-remote origin refs/heads/main` and current CI with `gh run list --repo tryingET/compass-c --branch main --workflow CI`. The publication diary records observed checks; remote CI does not run `./scripts/ci/full.sh` or establish host usefulness.
 - Deferred tasks updated in AK + `governance/work-items.json` exported: Not performed; approved AK runtime/database unavailable. The projection is unchanged.
 - Task-scope snapshots refreshed (if applicable): None authored or fabricated.
-- Next-session starting point: Inspect `git status`, query the remote ref and CI, then reconcile approved AK task/direction state through its owner before selecting the next slice. Preserve the external governance and host evidence gates in product posture.
+- Next-session starting point: Inspect `git status`, query the remote ref and CI, then materialize the canonical Softwareco ontology at its actual owner revision once access is available and rerun `scripts/ci/full.sh`. Do not replace missing owner sources or fabricate AK state. Consult actual AK task/direction authority before an AK-bearing continuation.
 
 ## END-OF-SESSION
 Run `/commit` and ensure this file reflects the real checkpoint for the next operator/agent.

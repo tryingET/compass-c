@@ -29,6 +29,12 @@ local MCP SDK client/server path. The included 24-case skill corpus remains auth
 development material. Vendor-host discovery, account installation, and improved decision
 quality still require direct host evidence; local tests cannot establish those outcomes.
 
+This repository now [dogfoods its own decisions](evals/dogfood/2026-09-08/final-brief.json)
+and retains a [small actual host evaluation](evals/observations/2026-09-08-work-mode-guidance/README.md).
+The study found one additional passing case with guidance and no regressions; its
+sample and grading uncertainty do not establish general improvement. See the
+[vision acceptance map](docs/project/vision-validation.md) for every horizon and its evidence boundary.
+
 `LICENSE` exactly matches `tryingET/pi-extensions`, including its provider rider. It is **not
 standard MIT**. Review the license before distributing or installing the skill in a restricted
 host.

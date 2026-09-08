@@ -1,0 +1,35 @@
+{
+  "request": "Use COMPASS-C to reassess this repository's next integration-review sequencing using only the two supplied sanitized model inputs. Evaluate the portfolio and prospective experiment plan through the installed CLI. Preserve stakeholder disagreement, model provenance, uncertainty and dependency-order limits. Create a new task-owned notebook, record an actual observed installed-command result, explicitly preview an evidence revision and inspect that it did not write, then explicitly apply the revision and read back the resulting current and stale notes. Reconsider dependent conclusions and give a concise conditional recommendation, alternative and reversal condition in a final brief. Do not conflate a successful command with executing the proposed finite-model experiment. Any missing experiment observation remains missing. Capture usability failures and your corrections instead of hiding them. Do not change runtime code or skill guidance.",
+  "installed_python": "/workspace/scratch/b6252d122d78/v0.5-core/bin/python",
+  "installed_cli_entrypoint": "/workspace/scratch/b6252d122d78/v0.5-core/bin/compass-c",
+  "installed_module_entrypoint": [
+    "-m",
+    "compass_c"
+  ],
+  "input_files": [
+    "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/inputs/portfolio-model.json",
+    "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/inputs/experiment-inputs.json"
+  ],
+  "allowed_guidance_files": [
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/SKILL.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/decision-checks.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/calculators.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/notebook.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/portfolio.md",
+    "/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/experiments.md"
+  ],
+  "guidance_note": "Load the canonical skill and only its relevant listed references. Use installed command --help for schemas. Do not read tests, runtime source, prior dogfood output/brief/observation files, host-study scores, or other evidence. No expected outputs are supplied.",
+  "write_scope": {
+    "evidence_directory": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise",
+    "new_task_owned_database": "/workspace/scratch/b6252d122d78/compass-c/.compass/final-client-exercise.sqlite"
+  },
+  "capture_requirements": [
+    "Write exact executed argv arrays, exit status, stdout and stderr into a JSON command trace; retain failed commands.",
+    "Capture your actual final user-facing brief as final-brief.md and your usability observations/departures as usability.json.",
+    "All subprocesses must use the installed environment with PYTHONDONTWRITEBYTECODE=1 and no repository PYTHONPATH. Retain the observed package location/version so installed-wheel use is inspectable.",
+    "Notebook construction must be explicit and new; use the returned decision and note IDs/revisions. No existing database may be opened or changed.",
+    "You may create a capture driver inside the evidence directory. No writes outside that directory and the named new database and its SQLite sidecars. Do not create global skills, install packages, browse, delegate, spend, deploy or contact anyone.",
+    "Treat input provenance as caller assumptions, not stakeholder elicitation or measured probabilities. This is an author-visible usability exercise, not a holdout or comparative benefit study.",
+    "Do not capture private reasoning traces; retain commands, outputs, concise justifications, sources and final answers only."
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "stakeholders": [
+    "delivery_owner",
+    "evidence_reviewer"
+  ],
+  "resources": {
+    "review_minutes": 90
+  },
+  "source": "Current COMPASS-C v2-v4 implementation tasks. All numeric capacities, effort, commitment values and zero deferral values are author assumptions for one next review window. These are modeled roles, not claims about actual stakeholder preferences. All work remains required eventually.",
+  "decisions": [
+    {
+      "id": "living_decisions",
+      "resources": {
+        "review_minutes": 25
+      },
+      "values": {
+        "delivery_owner": 8,
+        "evidence_reviewer": 8
+      },
+      "defer_values": {
+        "delivery_owner": 0,
+        "evidence_reviewer": 0
+      },
+      "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+    },
+    {
+      "id": "portfolio",
+      "resources": {
+        "review_minutes": 20
+      },
+      "values": {
+        "delivery_owner": 7,
+        "evidence_reviewer": 7
+      },
+      "defer_values": {
+        "delivery_owner": 0,
+        "evidence_reviewer": 0
+      },
+      "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+    },
+    {
+      "id": "experiments",
+      "resources": {
+        "review_minutes": 25
+      },
+      "values": {
+        "delivery_owner": 8,
+        "evidence_reviewer": 8
+      },
+      "defer_values": {
+        "delivery_owner": 0,
+        "evidence_reviewer": 0
+      },
+      "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+    },
+    {
+      "id": "integrated_paths",
+      "resources": {
+        "review_minutes": 20
+      },
+      "values": {
+        "delivery_owner": 10,
+        "evidence_reviewer": 9
+      },
+      "defer_values": {
+        "delivery_owner": 0,
+        "evidence_reviewer": 0
+      },
+      "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+      "requires": [
+        "living_decisions",
+        "portfolio",
+        "experiments"
+      ]
+    },
+    {
+      "id": "host_usefulness",
+      "resources": {
+        "review_minutes": 40
+      },
+      "values": {
+        "delivery_owner": 5,
+        "evidence_reviewer": 10
+      },
+      "defer_values": {
+        "delivery_owner": 0,
+        "evidence_reviewer": 0
+      },
+      "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+    },
+    {
+      "id": "organization_governance",
+      "resources": {
+        "review_minutes": 40
+      },
+      "values": {
+        "delivery_owner": 4,
+        "evidence_reviewer": 9
+      },
+      "defer_values": {
+        "delivery_owner": 0,
+        "evidence_reviewer": 0
+      },
+      "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+    }
+  ]
+}

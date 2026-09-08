@@ -1,0 +1,5 @@
+from capture import run
+
+CLI = '/workspace/scratch/b6252d122d78/v0.5-core/bin/compass-c'
+for command in ('calculate', 'start', 'record', 'get', 'update-evidence', 'brief'):
+    run([CLI, command, '--help'])

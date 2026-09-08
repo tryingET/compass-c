@@ -1,0 +1,86 @@
+{
+  "exercise": "Actual author-visible installed-client use; no holdout, comparative benefit study, supplied expected output, browsing, delegation, dependency installation, source inspection or external action.",
+  "outcome": "Completed portfolio/experiment/sensitivity calculations, explicit new notebook construction, observed command evidence, no-write preview inspection, explicit apply and current/stale readbacks, dependent reconsideration and final brief.",
+  "installed_version": "0.5.0",
+  "installed_package_location": "/workspace/scratch/b6252d122d78/v0.5-core/lib/python3.12/site-packages/compass_c/__init__.py",
+  "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+  "final_revision": 24,
+  "final_review_status": "record_complete_not_verified",
+  "stale_notes_retained": 8,
+  "captured_subprocess_count": 91,
+  "captured_command_counts": {
+    "setup_guidance_input_package_reads": 2,
+    "help": 7,
+    "calculate": 3,
+    "start": 1,
+    "get": 50,
+    "brief": 4,
+    "record": 22,
+    "update-evidence": 2
+  },
+  "count_interpretation": "Counts are exact target subprocesses in command-trace.json. Setup/guidance/package reads and help are separated from calculations and notebook user operations. Repeated get readbacks are real usability overhead from reading current revisions before writes and inspecting writes afterward; these are not unique decisions or measured benefit. Host tool wrappers and capture-driver launches are not additional entries in this target-command trace.",
+  "captured_failed_command_count": 0,
+  "captured_failed_commands": [],
+  "installed_client_failures": [],
+  "observations": [
+    {
+      "issue": "record --help exposes KIND and STATUS as unrestricted strings without listing supported categories or the default proposed status.",
+      "impact": "Category discovery required inspecting an empty brief review; readback revealed the default status. This caused navigation overhead but no failed command.",
+      "correction": "Used brief current_counts for category names and actual note readback for status; did not inspect runtime source."
+    },
+    {
+      "issue": "Calculator help describes PARAMETERS only as a JSON object.",
+      "impact": "Portfolio and experiment schema discovery depended on the allowed reference files.",
+      "correction": "Read the relevant references and passed JSON with exact argv arrays."
+    },
+    {
+      "issue": "The full portfolio enumeration produced a long host display that was truncated.",
+      "impact": "A displayed transcript alone was insufficient to inspect every portfolio.",
+      "correction": "The complete stdout was already preserved in command-trace.json and portfolio-output.json; downstream reading used the current-run saved output."
+    },
+    {
+      "issue": "Evidence clarification invalidated seven dependent notes plus the original evidence even though numeric assumptions were unchanged.",
+      "impact": "Explicit reconsideration and fresh dependency links were required; the tool did not silently restore them.",
+      "correction": "Read all current/stale notes and recorded reconsidered portfolio conclusions, alternatives, effects, reversal condition and recommendation."
+    },
+    {
+      "issue": "No independent finite-model experiment observation is available.",
+      "impact": "Cannot perform a legitimate result-conditioned belief update or claim arithmetic acceptance from CLI success.",
+      "correction": "Kept the experiment prospective, retained the original prior and separately recorded observed notebook outcomes."
+    }
+  ],
+  "departures": [
+    {
+      "type": "bootstrap_capture_and_environment",
+      "detail": "The first action read task.json with the host exec_command cmd string shown below, before the task instructions and capture driver were loaded. That one cat target was not executed through the installed-Python capture driver, and PYTHONDONTWRITEBYTECODE/PYTHONPATH controls were not explicitly set for it. It was read-only and did not import Python. Its tool-reported exit was 0. No claim is made that this bootstrap shell invocation satisfies the all-subprocess environment/capture requirement.",
+      "host_command": "cat /workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/task.json",
+      "target_argv": [
+        "cat",
+        "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/task.json"
+      ],
+      "exit_status": 0,
+      "stdout": "{\n  \"request\": \"Use COMPASS-C to reassess this repository's next integration-review sequencing using only the two supplied sanitized model inputs. Evaluate the portfolio and prospective experiment plan through the installed CLI. Preserve stakeholder disagreement, model provenance, uncertainty and dependency-order limits. Create a new task-owned notebook, record an actual observed installed-command result, explicitly preview an evidence revision and inspect that it did not write, then explicitly apply the revision and read back the resulting current and stale notes. Reconsider dependent conclusions and give a concise conditional recommendation, alternative and reversal condition in a final brief. Do not conflate a successful command with executing the proposed finite-model experiment. Any missing experiment observation remains missing. Capture usability failures and your corrections instead of hiding them. Do not change runtime code or skill guidance.\",\n  \"installed_python\": \"/workspace/scratch/b6252d122d78/v0.5-core/bin/python\",\n  \"installed_cli_entrypoint\": \"/workspace/scratch/b6252d122d78/v0.5-core/bin/compass-c\",\n  \"installed_module_entrypoint\": [\n    \"-m\",\n    \"compass_c\"\n  ],\n  \"input_files\": [\n    \"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/inputs/portfolio-model.json\",\n    \"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/inputs/experiment-inputs.json\"\n  ],\n  \"allowed_guidance_files\": [\n    \"/workspace/scratch/b6252d122d78/compass-c/skills/compass/SKILL.md\",\n    \"/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/decision-checks.md\",\n    \"/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/calculators.md\",\n    \"/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/notebook.md\",\n    \"/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/portfolio.md\",\n    \"/workspace/scratch/b6252d122d78/compass-c/skills/compass/references/experiments.md\"\n  ],\n  \"guidance_note\": \"Load the canonical skill and only its relevant listed references. Use installed command --help for schemas. Do not read tests, runtime source, prior dogfood output/brief/observation files, host-study scores, or other evidence. No expected outputs are supplied.\",\n  \"write_scope\": {\n    \"evidence_directory\": \"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise\",\n    \"new_task_owned_database\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/final-client-exercise.sqlite\"\n  },\n  \"capture_requirements\": [\n    \"Write exact executed argv arrays, exit status, stdout and stderr into a JSON command trace; retain failed commands.\",\n    \"Capture your actual final user-facing brief as final-brief.md and your usability observations/departures as usability.json.\",\n    \"All subprocesses must use the installed environment with PYTHONDONTWRITEBYTECODE=1 and no repository PYTHONPATH. Retain the observed package location/version so installed-wheel use is inspectable.\",\n    \"Notebook construction must be explicit and new; use the returned decision and note IDs/revisions. No existing database may be opened or changed.\",\n    \"You may create a capture driver inside the evidence directory. No writes outside that directory and the named new database and its SQLite sidecars. Do not create global skills, install packages, browse, delegate, spend, deploy or contact anyone.\",\n    \"Treat input provenance as caller assumptions, not stakeholder elicitation or measured probabilities. This is an author-visible usability exercise, not a holdout or comparative benefit study.\",\n    \"Do not capture private reasoning traces; retain commands, outputs, concise justifications, sources and final answers only.\"\n  ]\n}\n",
+      "stderr": "",
+      "outer_shell_argv": "Not exposed by the host tool result; not reconstructed."
+    },
+    {
+      "type": "capture_boundary",
+      "detail": "The JSON trace captures exact argv, exit status, stdout and stderr of every subprocess launched by capture.run, including every installed CLI invocation. Stage-driver processes were launched via host exec_command using env -u PYTHONPATH PYTHONDONTWRITEBYTECODE=1 and the installed Python, but their outer wrapper stdout/stderr and argv were retained in the host conversation rather than duplicated as separate rows. File writes used the allowed task scope."
+    }
+  ],
+  "artifacts": [
+    "final-brief.md",
+    "command-trace.json",
+    "portfolio-output.json",
+    "experiment-output.json",
+    "sensitivity-output.json",
+    "preview-verification.json",
+    "preview-output.json",
+    "apply-output.json",
+    "after-apply-readback.json",
+    "reconsideration-readbacks.json",
+    "final-notebook-readback.json",
+    "final-notebook-brief.json"
+  ],
+  "new_task_owned_database": "/workspace/scratch/b6252d122d78/compass-c/.compass/final-client-exercise.sqlite"
+}
