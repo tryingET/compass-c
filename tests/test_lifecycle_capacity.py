@@ -6,6 +6,7 @@ import pytest
 
 from compass_c import CompassError, Notebook
 from compass_c.lifecycle import apply_observation, plan_experiment
+from compass_c.lifecycle import experiment as resume_experiment
 from test_lifecycle import observation, parameters
 
 
@@ -35,3 +36,14 @@ def test_plan_reserves_a_dependency_link_for_its_observation(
         assert notes[result["model_note_id"]]["depends_on"] == dependencies + [
             result["outcome_note_id"]
         ]
+
+
+def test_observed_plan_does_not_propose_its_consumed_experiment(tmp_path: Path) -> None:
+    book = Notebook(tmp_path / "consumed.sqlite3")
+    did = book.start("Observe this plan once")["decision_id"]
+    plan = plan_experiment(book, did, 1, parameters())
+    apply_observation(book, plan["plan_id"], 2, "smoke", "event-1", observation())
+    resumed = resume_experiment(book, plan["plan_id"])
+    assert resumed["status"] == "observed"
+    assert resumed["summary"]["proposed_experiment_ids"] == []
+    assert resumed["proposal"]["result"]["proposed_experiment_ids"] == ["smoke"]
