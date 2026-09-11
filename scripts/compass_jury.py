@@ -231,7 +231,7 @@ def load_program():
     return module
 
 
-def evaluate(inputs, lm, *, allow_stub=False):
+def evaluate(inputs, lm, *, allow_stub=False, stage_callback=None):
     """Run the real generated graph with per-stage validation and supplied LM.
 
     This function does not authorize or construct a provider and authenticates no
@@ -244,13 +244,19 @@ def evaluate(inputs, lm, *, allow_stub=False):
     import dspy
 
     observed = {}
+    started = set()
     bound_inputs = inputs
 
     class ValidatingAdapter(dspy.JSONAdapter):
         def __call__(self, lm, lm_kwargs, signature, demos, inputs):
             (field,) = signature.output_fields
+            if field in started or len(observed) >= len(OUTPUTS):
+                raise ValueError("duplicate/excess program stage")
             if field != OUTPUTS[len(observed)]:
                 raise ValueError("unexpected program stage/order")
+            started.add(field)
+            if stage_callback is not None:
+                stage_callback(field)
             result = super().__call__(lm, lm_kwargs, signature, demos, inputs)
             if len(result) != 1 or set(result[0]) != {field}:
                 raise ValueError("one exact output required")

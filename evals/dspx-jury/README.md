@@ -111,15 +111,56 @@ Adjudication must retain and assess each juror's actual verdict and correctly fl
 verdict disagreement. These checks validate structure and citation membership,
 **not the truth or quality of the model's explanation**.
 
-No live provider constructor, credential reader, retry/budget platform or foundry
-execution gate has been added. Before paid execution, bind the existing supported
-GLM-5.3 host/LM with caching and retries disabled, a fresh context per stage, retained
-raw responses/failures and a reviewed call/token/spending limit. A six-capture pilot
-requires 18 juror and 6 adjudicator stage calls; no new participant answers are
-needed. A stopped/uncertain call is not permission to replay it. The library function
-alone does not enforce transport retry or billing limits.
+## One-shot live pilot and retained failure
 
-Current evidence: generated program, 26 deterministic tests, three native offline
-execution probes, and six actual historical input preparations. **No live jury or
-adjudicator has run, and no historical grade has been replaced.** Next work stays
-under AK5673 in this repo; a platform change requires a demonstrated owner-level gap.
+`scripts/compass_jury_live.py` now binds the maintained `dspy_lm_auth.LM` route
+using the owner environment, without modifying DSPx or implementing authentication.
+The fixed endpoint is Z.ai Coding Plan; requested model is GLM-5.3, not Flash.
+A caller-supplied OpenAI client and guarded HTTP transport bound each stage to one
+attempt even if higher layers try to retry. The runner disables caches/retries,
+uses fresh formatted messages per stage, and retains request bodies, raw responses,
+usage and failures without logging credentials. Jurors never receive peer judgments.
+
+The fixed private root is `.compass/evaluations/glm53-jury-AK5673`. Exclusive locking
+and a durable, never-removed one-shot marker prevent ordinary repeated invocation,
+including after a crash. There is no resume, output-root or budget override. These
+are local custody controls, not protection against an actor modifying the runner,
+a global spending platform, or provider billing/retention guarantees.
+
+The frozen protocol used 24 maximum attempts, 8,192 completion tokens per attempt,
+600-second transport timeouts, 160,000-byte requests, 2 MB responses and a 12,000-byte
+escaped juror-result bound. The projected added reservation was $1.7682684 against
+$2.135484075 remaining after historical reservations and the forensic review.
+Reservations use message bytes plus framing as a conservative catalog-priced bound,
+not an invoice. `store:false` reached the wire via supported `extra_body`; provider
+retention enforcement remains unverified. No training was performed.
+
+**The live pilot failed on its first juror.** The provider returned HTTP200 and
+model label `glm-5.3`, but `finish_reason:length`: 8,192 completion tokens included
+7,458 reasoning tokens, leaving the JSON judgment unfinished. Raw evidence remains
+private; [pilot-attempt.json](pilot-attempt.json) records its hashes and bounded
+facts. One request reserved $0.0802442. No complete juror judgment, adjudicator call,
+retry, grade replacement or quality-improvement result followed (AK evidence9267).
+The 8,192-token cap was insufficient for this observed reasoning-enabled request.
+
+Do **not** rerun `--execute`, remove the marker, or relabel the partial response as
+an accepted judgment. A separately approved replacement pilot needs a revised frozen
+token/reasoning/budget protocol and must retain this failed attempt unchanged.
+
+Offline preflight (no LM construction or credential resolution):
+
+```bash
+/path/to/dspy-lm-auth/.venv/bin/python scripts/compass_jury_live.py --preflight
+```
+
+Required integration verification uses the owner environment; the default repo suite
+explicitly skips tests whose optional LM dependencies are absent:
+
+```bash
+/path/to/dspy-lm-auth/.venv/bin/python -c 'import dspy_lm_auth, dspy, httpx, openai'
+/path/to/dspy-lm-auth/.venv/bin/python -m pytest tests/test_compass_jury_live.py tests/test_compass_jury.py -q
+```
+
+The actual maintained LM/DSPy/client stack passed 72 offline tests, including a
+synthetic 24-call complete pilot and first-failure stops. These tests establish
+plumbing and failure containment, **not live completion or grading quality**.

@@ -81,3 +81,40 @@ transport retry custody or a billing platform. Bind the supported existing live 
 review the exact candidate rubric and predeclare call/token/spending limits before
 the six-capture pilot (18 juror + 6 adjudicator stage calls). Do not reactivate the
 archived ad-hoc COMPASS evaluation drivers. Same-model consensus remains advisory.
+
+## Live continuation: one attempted juror, not completed adjudication
+
+The operator subsequently requested finishing the live runner and performing the
+jury/adjudicator. The earlier remaining-work paragraph describes the prior slice,
+not current status. Research found hidden retry/fallback seams in the maintained
+LM stack. The COMPASS-local runner composes its existing LM, supported client injection
+and a one-attempt-per-stage HTTP guard; no provider or DSPx source was modified.
+
+Offline real-stack probes exposed LiteLLM omitting the ordinary `store=False` default;
+supported `extra_body` preserved the wire field. MockTransport verification covered
+24 stages, fresh juror inputs, fail-stop behavior, truncation and malformed outputs.
+Independent review `dispatch-1789160708578` found no P0/P1 blocker for the reviewed
+local pilot. Directory fsync was added for stage/input receipt entries. This remains
+local custody, not global spend or provider-retention proof.
+
+The expired owned AK5673 lease could not be renewed with `claim` (exit1); that block
+stopped before its tests. Releasing/reclaiming this exact owned task succeeded, and
+its scope snapshot was re-exported. Parent verification then passed 72 tests in the
+maintained owner environment and `just check`. AK9266 binds the exact preflight:
+24 calls, 8,192 completion tokens each, one frozen rubric, no retries, and a projected
+$1.7682684 additional reservation within the original $10 evaluation allowance.
+
+The live command exited1. The first t059 juror received HTTP200/model `glm-5.3` but
+returned `finish_reason:length`: 6,272 prompt tokens and 8,192 completion tokens,
+including 7,458 reasoning tokens. The final JSON was incomplete. The raw response
+was retained and the guard stopped after exactly one request. **Zero valid judgments,
+zero adjudicator calls and zero retries.** This was token-budget exhaustion, not
+proof of model unavailability or a completed review. The runner's outer error was
+`LMTransportError`; the retained provider body gives the more precise cause.
+
+AK9267 records the failed pilot. `evals/dspx-jury/pilot-attempt.json` binds response,
+request, rubric and protocol hashes; private evidence lives in
+`.compass/evaluations/glm53-jury-AK5673`. Added reservation: $0.0802442; accumulated
+conservative reservation: $7.944760125, not an invoice. Original grades remain intact.
+Do not reset its one-shot marker. A replacement pilot requires explicit owner approval
+and a revised frozen token/reasoning/budget protocol, retaining this failed attempt.
