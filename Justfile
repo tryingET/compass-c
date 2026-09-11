@@ -18,6 +18,13 @@ dogfood-hosts:
     test -n "${PI_CODING_AGENT_PACKAGE:?Set the installed Pi package directory}"
     COMPASS_HOST_DOGFOOD=1 uv run --frozen --extra dev python -m pytest tests/test_host_dogfood.py -v --tb=short
 
+# Real generated DSPy graph, using the existing DSPx environment and an offline stub.
+dogfood-jury:
+    test -n "${DSPX_REPO:?Set the existing DSPx checkout path}"
+    MLFLOW_ENABLE=0 PYTHONDONTWRITEBYTECODE=1 uv run --project "$DSPX_REPO" --no-sync python evals/dspx-jury/smoke.py
+    MLFLOW_ENABLE=0 PYTHONDONTWRITEBYTECODE=1 uv run --project "$DSPX_REPO" --no-sync python evals/dspx-jury/smoke.py --invalid-stage juror_1_json
+    MLFLOW_ENABLE=0 PYTHONDONTWRITEBYTECODE=1 uv run --project "$DSPX_REPO" --no-sync python evals/dspx-jury/smoke.py --invalid-stage adjudication_json
+
 check:
     uv run --extra dev ruff format --check .
     uv run --extra dev ruff check .

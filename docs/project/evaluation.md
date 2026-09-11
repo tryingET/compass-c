@@ -232,3 +232,27 @@ The live capture drivers are archival text snapshots, not reusable commands. The
 cross-process budget ownership was not hardened; future live execution belongs behind
 an execution-owner custody gate. Do not run the snapshots or infer platform-wide
 budget enforcement from this controller-serialized experiment.
+
+## Forensic review and the generated jury program
+
+Later inspection under AK5641/evidence9198 found that the same-model grader applied
+identical criteria inconsistently: both apparent improvements (t060/t059 and t076/t075)
+involved missing fixtures and comparable proposed next steps graded differently.
+Both timeout answers t089/t090 inferred noncommitment from missing current storage,
+but only t090 failed that criterion. Eight bounded failures had empty final answers;
+seven nevertheless passed the original rubric. Correct calculator outputs also
+coexisted with incorrect explanations. The original counts remain historical model
+judgments, not corrected or accepted quality measurements.
+
+[The COMPASS-owned jury program](../../evals/dspx-jury/README.md) was generated using
+existing DSPx, not by extending DSPx. Three independent-input `Predict` modules share
+one rubric and feed a separate adjudicator alongside original evidence. The local
+adapter checks criterion coverage, source quotations and explicit handling of juror
+disagreement, with separate delivery/correctness/safety dimensions. Same-model
+agreement remains correlated; structural validity does not prove truthful judging.
+
+AK5673 owns the candidate program. Its generated graph and negative paths have run
+with DSPx's credential-free stub, and six disputed captures have been prepared as
+inputs. No live GLM jury/adjudicator calls or replacement historical grades are
+claimed. Live provider configuration, exact rubric acceptance and spending/call
+bounds remain explicit prerequisites, not effects of generating a program.

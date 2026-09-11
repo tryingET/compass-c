@@ -1,0 +1,3 @@
+# Native DSPx receipt bundle is local generation evidence, not portable source.
+/generated/
+/runs/

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "exported_at": "2026-09-11T15:30:35.315462710+00:00",
+  "task_id": 5673,
+  "entity_version": 2,
+  "commit_sha": null,
+  "scope": {
+    "allowed_paths": [
+      "Justfile",
+      "diary/2026-09-11--implementation-dspx-generated-jury.md",
+      "docs/project/evaluation.md",
+      "docs/project/product_posture.md",
+      "evals/dspx-jury/**",
+      "governance/task-scopes/AK-*.snapshot.json",
+      "scripts/compass_jury*.py",
+      "tests/test_compass_jury*.py"
+    ],
+    "required_paths": [],
+    "forbidden_paths": [
+      "AGENTS.md",
+      "LICENSE",
+      "docs/_core/**",
+      "skills/**",
+      "src/**"
+    ]
+  },
+  "default_applies": false,
+  "export_tool": "ak task scope export",
+  "export_tool_version": "snapshot-v1"
+}
