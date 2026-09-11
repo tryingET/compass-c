@@ -2,7 +2,7 @@
 summary: "Current versus target product maturity for COMPASS-C."
 as_of: "2026-09-11"
 last_validated: "2026-09-11"
-last_validated_commit: "ed42c018e5344fe75c520bb62002c2c3619de33e"
+last_validated_commit: "0c16f0e30870220dcecd3a9463f32943101a3325"
 evidence_paths:
   - "README.md"
   - "src/compass_c"
@@ -15,6 +15,8 @@ evidence_paths:
   - "scripts/mcp_call.py"
   - "scripts/report_glm_dogfood.py"
   - "scripts/compass_jury.py"
+  - "scripts/compass_jury_live.py"
+  - "scripts/compass_jury_budget.py"
   - "scripts/compass_jury_materialize.py"
   - "diary/2026-09-11--implementation-dspx-generated-jury.md"
   - "scripts/ci/fast.sh"
@@ -66,13 +68,15 @@ write/retry safety and actual ChatGPT browser installation remain unproved.
 | MCP | SDK 2.1.1 pinned; seventeen tools; local wheel sessions and an actual GLM-driven Pi SDK workflow using six core operations observed. Missing-store errors now state their limited scope. | Directly verified supported client paths. | Custom Pi integration is not default host/account installation. One of three targeted recovery probes still offered unsafe retry assurance; no unattended-write approval or shared-service readiness. |
 | First consumer | Three prospective saved-workflow runs with fresh preparer/resumer pairs. Two failed effort gates exposed guidance and capture friction; the third passed all eight unchanged criteria with eight product attempts and no failures. | Useful self-correction during this repository's own work. | Small author-visible local exercise; full audit output is lengthy and generic briefs can still flag missing narrative categories. Capture ergonomics do not establish product benefit. |
 | Repo skill adoption | Repo-owned maintainer guidance remains separate from standalone skill/plugin archives. | Recipient-owned improvement based on verified learning. | KES acceptance, controlled behavioral improvement and cross-repo adoption remain with their owners. |
-| Evaluation program | Existing DSPx generated a COMPASS-owned three-juror/one-adjudicator DSPy DAG. Native stub execution and negative-path checks passed; six original captures were prepared as inputs. | Consistent, evidence-grounded adjudication under one shared rubric. | No live GLM jury/adjudicator execution. Exact candidate rubric, live LM configuration and call/spending bounds remain to be reviewed; same-model agreement is not truth. |
+| Evaluation program | Existing DSPx generated the COMPASS-owned three-juror/one-adjudicator DSPy DAG. Maintained GLM binding and local one-attempt guards passed offline tests. First live juror returned truncated output at its token cap; pilot stopped. | Consistent, evidence-grounded adjudication under one shared rubric. | Zero complete live judgments and zero adjudicator calls. Revised token/reasoning/budget protocol and explicit replacement-pilot approval remain required; same-model agreement is not truth. |
 
 ## Observed validation
 
-At the current evidence baseline, the local Python 3.13.12 suite passed **628 tests
-and 17 subtests**, with three installed-host probes skipped. The added jury slice
-contributes 26 deterministic tests; its actual four-stage generated graph and two
+At the current evidence baseline, the local suite passed **636 tests and 17 subtests**,
+with 42 explicit skips (optional live-LM dependency tests plus three installed-host
+probes). Required separate verification in the maintained LM owner environment passed
+**73 jury tests**, including actual LM/DSPy/client execution with mocked HTTP and
+first-failure containment. The earlier actual four-stage generated graph and two
 negative paths also passed through the existing DSPx environment with a stub provider. Acceptance includes compatibility,
 concurrency, exact arithmetic, portfolios, experiments, evidence transactions,
 paired reports, installation, archives and raw-to-grade transformation integrity.
@@ -91,6 +95,10 @@ equivalent missing-input responses were scored differently, shared unsafe reason
 was underdetected, and unfinished answers could pass. Original scores remain unchanged.
 The [generated review program](../../evals/dspx-jury/README.md) is local evaluation
 code, not a new DSPx platform feature or proof that re-adjudication has happened.
+Its first live GLM-5.3 request returned HTTP200 but exhausted the 8,192-token cap,
+including 7,458 reasoning tokens, before finishing its JSON judgment. The raw response
+and failed attempt are retained under AK9267; no retry or replacement grade followed.
+Local reservation controls are not global billing or provider-retention guarantees.
 
 Earlier Python 3.12/577-test and publication-wheel receipts remain historical evidence
 of their original revisions. The pure-core and publication-wheel comparison in
