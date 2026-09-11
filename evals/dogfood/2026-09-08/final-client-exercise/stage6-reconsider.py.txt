@@ -1,0 +1,41 @@
+import json
+import runpy
+from capture import BASE
+
+session = runpy.run_path(str(BASE / 'notebook-session.py'))
+cli, DID = session['cli'], session['DID']
+ids = json.loads((BASE / 'note-ids.json').read_text())
+original_ids = dict(ids)
+ids['command_evidence'] = json.loads((BASE / 'apply-output.json').read_text())['updates'][0]['note_id']
+reconsidered = []
+
+def record(name, kind, content, dependencies=(), status=None, source=None):
+    current = cli('get', DID, display=False)
+    argv = ['record', DID, '--revision', str(current['revision']), '--kind', kind, '--content', content, '--depends-on', json.dumps([ids[key] for key in dependencies])]
+    if status:
+        argv += ['--status', status]
+    if source:
+        argv += ['--source', source]
+    result = cli(*argv, display=False)
+    ids[name] = result['note_id']
+    after = cli('get', DID, display=False)
+    observed = next(note for note in after['notes'] if note['id'] == result['note_id'])
+    reconsidered.append({'name': name, 'previous_note_id': original_ids.get(name), 'new_note': observed, 'revision': after['revision']})
+    (BASE / 'reconsideration-readbacks.json').write_text(json.dumps(reconsidered, indent=2) + '\n')
+    (BASE / 'current-note-ids.json').write_text(json.dumps(ids, indent=2) + '\n')
+    print(json.dumps(reconsidered[-1]))
+
+record('portfolio_result', 'evidence', 'Reconsidered after the command-evidence clarification: the unchanged input and captured output still establish p00f as the sole common/Pareto optimum among 24 feasible portfolios, with values 33/32 and all 90 review minutes used. This establishes a conditional allocation, not arithmetic correctness or an executable schedule. Prerequisite set {living_decisions, portfolio, experiments} must precede integrated_paths; order within the set is unspecified.', ('command_evidence', 'model_assumptions'), 'computed', str(BASE / 'portfolio-output.json'))
+record('sensitivity', 'evidence', 'Installed calculate sensitivity, using the supplied fixed payoffs and a declared probability path from [0,1] to [1,0], returns the exact 3/4 boundary: more arithmetic review below P(meets invariants)=0.75, tie at 0.75, acceptance above. This is conditional arithmetic; no probability estimate has been changed or measured.', ('model_assumptions', 'experiment_result'), 'computed', str(BASE / 'sensitivity-output.json'))
+record('core_alternative', 'alternative', 'Reconsidered p00f remains the model-preferred review target: living_decisions + portfolio + experiments, then integrated_paths; 90 minutes, values 33/32. The evidence clarification changes the confidence boundary, not the modeled ranking. Keep arithmetic acceptance pending the missing experiment evidence and defer host_usefulness/governance only for this review window.', ('portfolio_result', 'missing_observation'))
+record('delay_alternative', 'alternative', 'Reconsidered conservative alternative p007 reviews the three prerequisites and defers integrated_paths: 70 modeled minutes and values 23/23, giving up 10/9 points versus p00f. The 20-minute remainder is modeled capacity, not a reservation or guaranteed allowance for overruns. Choosing this fallback while acceptance is unresolved is an explicit advisory judgment beyond the allocation calculation, not a constraint inferred by the CLI.', ('portfolio_result', 'experiment_result', 'missing_observation'))
+record('host_alternative', 'alternative', 'Reconsidered p015 (living_decisions + experiments + host_usefulness) uses 90 minutes, values 21/26, and defers portfolio, integration and governance. It remains dominated under these inputs; retain it only as a concrete alternative if real owner constraints make host evidence prerequisite or the supplied values change. No actual stakeholder agreement or dissent has been elicited.', ('portfolio_result', 'dissent'))
+record('effects', 'effect', 'Reconsidered effect branch remains speculative: during and after this review window, core-first allocation may expose integration issues sooner while postponing host/governance learning for both modeled roles. If publication drops the missing-experiment limit, readers could treat CLI success as product validation and commit prematurely. Indicator: the limit disappears from an acceptance brief; disconfirmation: independently sourced host evidence addresses the actual acceptance need. Reopen sequence when that need becomes an owner constraint; no measured effect is claimed.', ('portfolio_result', 'missing_observation'))
+record('reversal', 'reversal_condition', 'The revision contains no observed prerequisite failure, overrun, changed owner constraint or finite-experiment result, so it does not itself reverse the portfolio ranking or justify acceptance. Reopen p00f if prerequisite review fails or modeled total effort exceeds 90 minutes, or real usefulness/governance prerequisites, values or waiting costs change. For the fixed arithmetic model, acceptance wins only above P(meets invariants)=0.75 (tie at 0.75). A sourced result from the stated independent oracle protocol would permit a conditional update: pass favors acceptance, fail retains more review; either remains limited to the modeled invariants.', ('portfolio_result', 'sensitivity', 'missing_observation'))
+record('final_recommendation', 'decision', 'After explicit reconsideration, begin the core prerequisite reviews and retain p00f as the conditional 90-minute target, with integrated_paths following all three. The command-evidence revision supplies no oracle observation, so retain more arithmetic review for the acceptance decision and do not convert the prospective pass branch into evidence. Use p007 as the conservative deferral alternative while acceptance remains unresolved or capacity is insufficient; consider p015 only under revised owner constraints. Both modeled roles rank p00f first despite different supplied priorities; that is not real stakeholder consensus. No external action or experiment execution is authorized by this conclusion.', ('portfolio_result', 'experiment_result', 'missing_observation', 'reversal', 'dissent'))
+record('notebook_outcome', 'outcome', 'Observed notebook exercise: preview at revision 14 returned applied=false; get readbacks were identical and database SHA-256 unchanged. Explicit apply advanced to revision 15, appended replacement evidence and marked eight prior notes stale. Readback retained the history. Dependent conclusions were then reconsidered and recorded against current evidence. This outcome concerns notebook commands, not the independent finite-model invariant experiment.', ('command_evidence',), 'observed', str(BASE / 'preview-verification.json') + '; ' + str(BASE / 'apply-output.json') + '; ' + str(BASE / 'after-apply-readback.json'))
+final_record = cli('get', DID, display=False)
+final_brief = cli('brief', DID, display=False)
+(BASE / 'final-notebook-readback.json').write_text(json.dumps(final_record, indent=2) + '\n')
+(BASE / 'final-notebook-brief.json').write_text(json.dumps(final_brief, indent=2) + '\n')
+print(json.dumps({'decision_id': DID, 'revision': final_brief['revision'], 'review': final_brief['review'], 'current_recommendations': final_brief['recommendations'], 'stale_count': len(final_brief['stale_notes'])}, indent=2))

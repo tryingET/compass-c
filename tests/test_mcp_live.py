@@ -27,6 +27,17 @@ TOOLS = {
     "compass_review",
     "compass_invalidate",
     "compass_calculate",
+    "compass_brief",
+    "compass_revise",
+    "compass_list",
+    "compass_migrate",
+    "compass_preview_updates",
+    "compass_apply_updates",
+    "compass_plan_experiment",
+    "compass_experiment",
+    "compass_experiments",
+    "compass_preview_observation",
+    "compass_apply_observation",
 }
 
 

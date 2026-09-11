@@ -1,0 +1,29 @@
+import hashlib
+import json
+import runpy
+from pathlib import Path
+from capture import BASE, run
+
+session = runpy.run_path(str(BASE / 'notebook-session.py'))
+cli, DID, DB, CLI = [session[key] for key in ('cli', 'DID', 'DB', 'CLI')]
+ids = json.loads((BASE / 'note-ids.json').read_text())
+raw = json.loads((BASE / 'inputs' / 'experiment-inputs.json').read_text())['model']
+parameters = {key: raw[key] for key in ('actions', 'scenarios', 'payoffs')}
+parameters.update({'probability_start': [0, 1], 'probability_end': [1, 0]})
+calculation = run([CLI, 'calculate', 'sensitivity', '--parameters', json.dumps(parameters)], display=False)
+(BASE / 'sensitivity-output.json').write_text(calculation.stdout)
+print('sensitivity:', calculation.stdout)
+if calculation.returncode:
+    raise SystemExit(calculation.returncode)
+before = cli('get', DID, display=False)
+digest_before = hashlib.sha256(Path(DB).read_bytes()).hexdigest()
+updates = [{'note_id': ids['command_evidence'], 'content': 'Readback of installed COMPASS-C 0.5.0 commands confirms portfolio exit=0 and ok=true, common optimum p00f with values 33/32 and zero remaining review minutes, and experiment proposal exit=0 and ok=true with prospective net information value 4.2. These are observed CLI outputs under caller assumptions. The 32 deterministic three-state oracle protocol was not executed; there is no pass/fail observation, and priors remain [0.7,0.3]. Dependency layers express precedence only; no timed or concurrent schedule or real stakeholder consensus was observed.', 'reason': 'Expand the initial terse command observation after detailed output inspection; explicitly separate CLI success from the missing experiment observation and record the zero-margin/precedence limits. No model input or experiment outcome is changed.', 'status': 'observed', 'source': str(BASE / 'command-trace.json') + '#sequences=1,10,11'}]
+(BASE / 'evidence-updates.json').write_text(json.dumps(updates, indent=2) + '\n')
+preview = cli('update-evidence', DID, '--revision', str(before['revision']), '--updates', json.dumps(updates))
+after = cli('get', DID, display=False)
+digest_after = hashlib.sha256(Path(DB).read_bytes()).hexdigest()
+verification = {'before_revision': before['revision'], 'after_revision': after['revision'], 'get_readback_identical': before == after, 'database_sha256_before': digest_before, 'database_sha256_after': digest_after, 'database_bytes_unchanged': digest_before == digest_after}
+(BASE / 'preview-verification.json').write_text(json.dumps(verification, indent=2) + '\n')
+(BASE / 'preview-output.json').write_text(json.dumps(preview, indent=2) + '\n')
+(BASE / 'after-preview-readback.json').write_text(json.dumps(after, indent=2) + '\n')
+print('preview verification:', json.dumps(verification, indent=2))

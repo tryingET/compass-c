@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "help",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "observe-experiment",
+    "--help"
+  ],
+  "started_at": "2026-09-08T01:37:06.508381+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "usage: compass-c observe-experiment [-h] --revision REVISION --experiment\n                                    EXPERIMENT --event-id EVENT_ID\n                                    --observation-file OBSERVATION_FILE\n                                    [--apply] [--full]\n                                    plan_id\n\npositional arguments:\n  plan_id\n\noptions:\n  -h, --help            show this help message and exit\n  --revision REVISION\n  --experiment EXPERIMENT\n                        experiment ID in the saved proposal\n  --event-id EVENT_ID   stable observation identity within this decision\n  --observation-file OBSERVATION_FILE\n                        bounded UTF-8 sourced observation JSON\n  --apply               record the event once and invalidate affected\n                        reasoning\n  --full                include prior and posterior models and the supplied\n                        observation\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:37:06.561228+00:00",
+  "elapsed_seconds": 0.05283932000020286,
+  "stdout_utf8_bytes": 909,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "help",
+      "--output",
+      "05-observe-help.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+      "observe-experiment",
+      "--help"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

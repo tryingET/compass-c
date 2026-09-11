@@ -1,0 +1,65 @@
+{
+  "model": {
+    "actions": [
+      "accept arithmetic implementation for integration review",
+      "seek more arithmetic review"
+    ],
+    "scenarios": [
+      "arithmetic meets tested invariants",
+      "arithmetic has an invariant defect"
+    ],
+    "payoffs": [
+      [
+        10,
+        -30
+      ],
+      [
+        0,
+        0
+      ]
+    ],
+    "probabilities": [
+      0.7,
+      0.3
+    ],
+    "value_unit": "hypothetical development utility points",
+    "provenance": [
+      "Author-visible development decision model created before this invariant check."
+    ],
+    "assumptions": [
+      "Priors and utility values are illustrative judgment, not calibrated reliability evidence."
+    ]
+  },
+  "experiments": [
+    {
+      "id": "independent-finite-model-invariants",
+      "question": "Do independently computed three-state Bayesian and EVSI invariants hold?",
+      "protocol": "Run 32 deterministic three-state models once against an independent exact-arithmetic oracle; stop after success or the first assertion failure.",
+      "outcomes": [
+        "pass",
+        "fail"
+      ],
+      "likelihoods": [
+        [
+          0.95,
+          0.05
+        ],
+        [
+          0.25,
+          0.75
+        ]
+      ],
+      "cost": 0.2,
+      "duration": 30,
+      "provenance": [
+        "Likelihoods, utility cost and duration bound are explicit hypothetical development estimates."
+      ],
+      "assumptions": [
+        "A passing check is limited evidence for these exact invariants; it cannot prove all software or product correctness."
+      ]
+    }
+  ],
+  "budget": 1,
+  "max_duration": 30,
+  "duration_unit": "seconds"
+}

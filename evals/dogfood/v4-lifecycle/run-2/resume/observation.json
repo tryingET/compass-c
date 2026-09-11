@@ -1,0 +1,6 @@
+{
+  "outcome": "pass",
+  "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-2/resume/06-bounded-check.json",
+  "observed_at": "2026-09-08T01:37:15.256827+00:00",
+  "note": "One bounded execution exited 0; all three declared cases passed: informative_two_state, uncertainty_without_decision_value, and tied_prior_and_conditional_preferences. Finite arithmetic evidence only."
+}

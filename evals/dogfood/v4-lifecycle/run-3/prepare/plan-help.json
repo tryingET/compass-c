@@ -1,0 +1,54 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "help",
+  "cwd": "/workspace/scratch/b6252d122d78/compass-c",
+  "requested_argv": [
+    "compass-c",
+    "plan-experiment",
+    "--help"
+  ],
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "plan-experiment",
+    "--help"
+  ],
+  "target_resolution": {
+    "alias": "compass-c",
+    "manifest_key": "installed_cli",
+    "manifest_sha256": "7dc69bf811ff2b3c7ae61097d345498365f6473d05bfc9277e6a09ee0e6657ca"
+  },
+  "started_at": "2026-09-08T01:49:42.558081+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "usage: compass-c plan-experiment [-h] --revision REVISION --parameters-file\n                                 PARAMETERS_FILE [--depends-on DEPENDS_ON]\n                                 [--full]\n                                 decision_id\n\npositional arguments:\n  decision_id\n\noptions:\n  -h, --help            show this help message and exit\n  --revision REVISION\n  --parameters-file PARAMETERS_FILE\n                        bounded UTF-8 model and experiment JSON\n  --depends-on DEPENDS_ON\n                        JSON list of current source note IDs\n  --full                include the frozen model and full proposal\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:49:42.602065+00:00",
+  "elapsed_seconds": 0.04398304600181291,
+  "stdout_utf8_bytes": 617,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "exposed_argv": [
+      "evals/dogfood/v4-lifecycle/capture-run-3.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "help",
+      "--output",
+      "plan-help.json",
+      "--",
+      "compass-c",
+      "plan-experiment",
+      "--help"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

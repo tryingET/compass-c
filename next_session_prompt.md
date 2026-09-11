@@ -40,10 +40,10 @@ Do not ask for permission to start.
 - Legacy `governance/task-scopes/AK-*.json` files are compatibility-only; do not treat them as primary authored truth.
 
 ## SESSION PREFLIGHT (FILL BEFORE EXECUTION)
-- Objective (one sentence):
-- Constraints (hard limits):
-- Assumptions (max 3):
-- Blockers (none or list):
+- Objective (one sentence): Continue the cumulative v1–v4 vision from the standalone 0.6.0 experiment lifecycle, preserving observed failures and completing authorized acceptance gates.
+- Constraints (hard limits): Keep zero core runtime dependencies and the advisory boundary; do not invent host results, AK state, or publication receipts.
+- Assumptions (max 3): `docs/project/vision.md` remains durable direction; all four horizons now have bounded executable workflows; small local observations do not prove general decision-quality improvement.
+- Blockers (none or list): `softwareco/ontology` is unavailable at its declared owner revision; Softwareco's current submodule points to `tryingET/softwareco-ontology`, whose 404 does not establish existence or access status. Live AK authority remains outside this environment if an AK-bearing operation is required. No snapshots currently require AK validation.
 
 ## READ-FIRST ALLOWLIST (STARTUP BUDGET)
 1. `AGENTS.md`
@@ -54,22 +54,22 @@ Do not ask for permission to start.
 6. `docs/project/product_posture.md`
 7. Most recent `diary/YYYY-MM-DD--type-scope-summary.md`
 
-## EXECUTION MODE (ONE SESSION = ONE SLICE)
-1. Pick one highest-leverage actionable slice from the AK-backed backlog/projection.
-2. Implement end-to-end on a branch.
+## EXECUTION MODE
+1. Continue the authorized task and consult actual AK authority when the operation requires it. Do not turn a projection into a new execution mandate.
+2. Complete the authorized acceptance gates end-to-end, with BDD, observed RED, GREEN and actual dogfood. Commit checkpoints preserve work without declaring the entire vision complete. Follow `AGENTS.md`'s main-first workflow; use a branch or PR when the operator requests that gate.
 3. Validate:
    - `./scripts/ci/fast.sh`
    - `./scripts/ci/full.sh` (when CI/policy/ontology/contracts/work-items changed; it runs `fast.sh` first, then heavier checks)
 4. Update source-of-truth artifacts before commit, including task-scope snapshots when they are part of the slice.
 
 ## SESSION CHECKPOINT (UPDATE BEFORE /commit)
-- Slice executed:
-- Outcome:
-- Files changed:
-- Validation commands + results:
-- Deferred tasks updated in AK + `governance/work-items.json` exported:
-- Task-scope snapshots refreshed (if applicable):
-- Next-session starting point:
+- Work executed: Connected saved v4 plans, cold resume, sourced observations, exact model updates and preserved v2 history across standalone CLI, portable skill and MCP; retained v1–v3 behavior. Dogfood failures and corrections remain in the evidence.
+- Outcome: See `diary/2026-09-08--implementation-v4-experiment-lifecycle.md`, `docs/project/vision-validation.md`, and `evals/dogfood/v4-lifecycle/`. Inspect each run's assessment; no local diagnostic establishes generalized benefit.
+- Files changed: Query `git diff bec7f1137fabf91ecad4c16a87203fa2af5af23a..HEAD --stat`; canonical source, acceptance tests, generated skill/plugin, packaging and product documentation own the changes.
+- Validation commands + results: Query the current ref with `git ls-remote origin refs/heads/main` and current CI with `gh run list --repo tryingET/compass-c --branch main --workflow CI`. The publication diary records observed checks; remote CI does not run `./scripts/ci/full.sh` or establish host usefulness.
+- Deferred tasks updated in AK + `governance/work-items.json` exported: Not performed; approved AK runtime/database unavailable. The projection is unchanged.
+- Task-scope snapshots refreshed (if applicable): None authored or fabricated.
+- Next-session starting point: Inspect `git status`, query the remote ref and CI, and read the current posture and retained dogfood assessments. Reconcile the missing Softwareco ontology through its owner before rerunning that blocked gate. Do not substitute old source trees or fabricate AK state. Consult actual AK task/direction authority before an AK-bearing continuation.
 
 ## END-OF-SESSION
 Run `/commit` and ensure this file reflects the real checkpoint for the next operator/agent.

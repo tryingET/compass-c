@@ -1,0 +1,193 @@
+{
+  "objective": "Choose the next integration-review sequence under the supplied 90-minute model, preserving modeled stakeholder disagreement and the unobserved finite-model experiment.",
+  "stakes": "medium",
+  "revision": 14,
+  "created_at": "2026-09-08T00:21:15.806762+00:00",
+  "constraints": [
+    "Only the supplied sanitized models and installed command observations",
+    "90 modeled review minutes; all deferred work remains required eventually",
+    "No external actions or execution of the proposed independent oracle experiment",
+    "Author assumptions are not elicited preferences or calibrated probabilities"
+  ],
+  "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+  "notes": [
+    {
+      "id": "761580d8156540058f8acb85229c796b",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "evidence",
+      "content": "Installed COMPASS-C 0.5.0 calculate portfolio returned exit status 0 and ok=true for the supplied portfolio model. This is an observed command result; model values remain caller assumptions and it is not a finite-model invariant experiment result.",
+      "status": "observed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/command-trace.json#sequence=10",
+      "stale": false,
+      "created_at": "2026-09-08T00:21:57.391263+00:00",
+      "depends_on": []
+    },
+    {
+      "id": "6a6e5f67eaa240789b154fcb48dd6591",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "assumption",
+      "content": "All capacity, effort, additive commitment values, zero deferral values, priors, utilities, likelihoods and duration bounds come from the two supplied author-visible models. They are neither elicited stakeholder preferences nor measured reliability. All work remains required eventually. Review minutes, experiment seconds and hypothetical utility points are distinct units.",
+      "status": "proposed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/inputs",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:02.186962+00:00",
+      "depends_on": []
+    },
+    {
+      "id": "be6747c5bf504681b361b74a210bc9cc",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "evidence",
+      "content": "The installed portfolio calculation enumerated 64 candidates and 24 feasible portfolios. The sole Pareto/common optimum p00f selects living_decisions (25), portfolio (20), experiments (25), then integrated_paths (20), using 90 review minutes and leaving zero margin. Values are delivery_owner=33 and evidence_reviewer=32. Dependency layers constrain only precedence, not concurrency or a resource schedule.",
+      "status": "computed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/portfolio-output.json",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:02.343978+00:00",
+      "depends_on": [
+        "761580d8156540058f8acb85229c796b",
+        "6a6e5f67eaa240789b154fcb48dd6591"
+      ]
+    },
+    {
+      "id": "58918e4b0a6c4134a154a4e3ac8ab61a",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "limitation",
+      "content": "Preserve the differing modeled priorities: host_usefulness values 5/10 and organization_governance 4/9 for delivery_owner/evidence_reviewer; integrated_paths is 10/9. The supplied totals nevertheless give both roles p00f, so preference_conflict=false does not establish actual stakeholder agreement. No cross-stakeholder weights, real elicitation or empirical usefulness evidence are supplied.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:02.498013+00:00",
+      "depends_on": [
+        "6a6e5f67eaa240789b154fcb48dd6591"
+      ]
+    },
+    {
+      "id": "0ca0dc25257647399ac2d201d7511130",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "evidence",
+      "content": "The installed experiment proposal returns no-test winner seek more arithmetic review (EV 0); accepting on the prior has modeled EV -2. The proposed independent-finite-model-invariants check has EVSI 4.4 and net value 4.2 after cost 0.2, within budget 1 and duration bound 30 seconds. Its hypothetical pass branch has probability 0.74, posterior [133/148,15/148], and accepts; fail has probability 0.26, posterior [7/52,45/52], and seeks review. These branches were computed, never observed.",
+      "status": "computed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/experiment-output.json",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:02.652074+00:00",
+      "depends_on": [
+        "6a6e5f67eaa240789b154fcb48dd6591"
+      ]
+    },
+    {
+      "id": "03c2fe442bd04ad492cc76ba650862e8",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "alternative",
+      "content": "Conditional core review: review living_decisions, portfolio and experiments first; review integrated_paths only after those prerequisites. Under the supplied capacity and additive values this is p00f, 90 minutes, values 33/32, with host_usefulness and organization_governance deferred for this window.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:02.824869+00:00",
+      "depends_on": [
+        "be6747c5bf504681b361b74a210bc9cc"
+      ]
+    },
+    {
+      "id": "2803bfe295224327b01cc83a823af906",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "alternative",
+      "content": "If arithmetic acceptance remains unresolved or any prerequisite overruns, complete the three core prerequisite reviews and defer integrated_paths: p007 uses 70 minutes, leaves 20 modeled minutes, and has values 23/23. The model assigns no option value to spare capacity; this fallback sacrifices 10/9 modeled points to preserve the acceptance boundary.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:02.952143+00:00",
+      "depends_on": [
+        "be6747c5bf504681b361b74a210bc9cc",
+        "0ca0dc25257647399ac2d201d7511130"
+      ]
+    },
+    {
+      "id": "c0c0ff4c7a6a4fc0ac53837eae7bfbf0",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "alternative",
+      "content": "If actual owners require earlier usefulness evidence, living_decisions + experiments + host_usefulness is p015: 90 minutes, values 21/26; portfolio, integrated_paths and governance are deferred. This is dominated under the supplied model, but an explicit owner constraint or revised values could make it relevant. Do not attribute that preference to an actual stakeholder.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:03.079748+00:00",
+      "depends_on": [
+        "be6747c5bf504681b361b74a210bc9cc",
+        "58918e4b0a6c4134a154a4e3ac8ab61a"
+      ]
+    },
+    {
+      "id": "2813945420e94244b806bd56221eb3c8",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "test",
+      "content": "Prospective only: obtain an authorized result for the supplied protocol, 32 deterministic three-state models against an independent exact-arithmetic oracle, stopping after success or first failure. Preserve the observation source and time before any update_beliefs call. Merely running calculate experiment cannot satisfy this protocol.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:03.208838+00:00",
+      "depends_on": [
+        "0ca0dc25257647399ac2d201d7511130"
+      ]
+    },
+    {
+      "id": "14e1ff90c71848b3a5a2a2a76e72350c",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "limitation",
+      "content": "No finite-model invariant observation, oracle implementation or executed 32-model experiment is supplied or produced in this exercise. Keep prior probabilities [0.7,0.3] unchanged; do not call update_beliefs with CLI exit success as pass. The no-observation arithmetic choice remains seek more arithmetic review.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:03.329976+00:00",
+      "depends_on": [
+        "0ca0dc25257647399ac2d201d7511130"
+      ]
+    },
+    {
+      "id": "7a30c3e290ef4240bfc034240a62e5a1",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "effect",
+      "content": "Conditional mechanism: prioritizing core review can expose integration defects sooner while deferring usefulness/governance evidence. A speculative downstream risk is that readers treat arithmetic success as product validation and commit earlier, reducing options before host evidence arrives. Leading indicator: a brief drops its missing-observation limit; disconfirmation: sourced host evidence independently supports the commitment. Consequence: retain the limit and reopen sequencing if usefulness/governance is a real prerequisite.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:03.461071+00:00",
+      "depends_on": [
+        "be6747c5bf504681b361b74a210bc9cc",
+        "14e1ff90c71848b3a5a2a2a76e72350c"
+      ]
+    },
+    {
+      "id": "4ba09d4ce31142cfaa4b5be1cf3f6914",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "reversal_condition",
+      "content": "Reopen the core portfolio if a prerequisite fails, required review effort exceeds the zero-margin 90-minute allowance, or an actual owner adds a usefulness/governance prerequisite or changes values/deferral assumptions. For the fixed arithmetic payoffs, acceptance requires P(meets invariants)>0.75; the tie is at 0.75. Only a properly sourced outcome from the stated protocol can justify the supplied Bayesian pass/fail update; no such outcome exists here.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:03.588947+00:00",
+      "depends_on": [
+        "be6747c5bf504681b361b74a210bc9cc",
+        "0ca0dc25257647399ac2d201d7511130",
+        "14e1ff90c71848b3a5a2a2a76e72350c"
+      ]
+    },
+    {
+      "id": "fe7a1d0f29ef40b6a94553da16ecf94d",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "decision",
+      "content": "Conditionally prioritize the core prerequisites and then integrated_paths under the supplied portfolio assumptions; preserve the no-test choice of more arithmetic review before accepting the arithmetic implementation. Use p007 if the acceptance evidence stays missing or a prerequisite overruns, and reconsider p015 if actual owner constraints require usefulness evidence first. This is an advisory sequencing comparison, with no experiment executed and no external action permission.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:23:03.712025+00:00",
+      "depends_on": [
+        "be6747c5bf504681b361b74a210bc9cc",
+        "0ca0dc25257647399ac2d201d7511130",
+        "14e1ff90c71848b3a5a2a2a76e72350c",
+        "4ba09d4ce31142cfaa4b5be1cf3f6914"
+      ]
+    }
+  ],
+  "invalidations": [],
+  "revisions": [],
+  "scope": "analysis_only",
+  "action_permission": "not_granted"
+}

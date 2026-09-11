@@ -1,0 +1,152 @@
+{
+  "ok": true,
+  "data": {
+    "calculation": "experiment",
+    "result": {
+      "model": {
+        "actions": [
+          "accept arithmetic implementation for integration review",
+          "seek more arithmetic review"
+        ],
+        "scenarios": [
+          "arithmetic meets tested invariants",
+          "arithmetic has an invariant defect"
+        ],
+        "payoffs": [
+          [
+            10,
+            -30
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "probabilities": [
+          0.7,
+          0.3
+        ],
+        "value_unit": "hypothetical development utility points",
+        "provenance": [
+          "Author-visible development decision model created before this invariant check."
+        ],
+        "assumptions": [
+          "Priors and utility values are illustrative judgment, not calibrated reliability evidence."
+        ]
+      },
+      "baseline": {
+        "expected_value": 0.0,
+        "expected_value_exact": "0",
+        "expected_value_winners": [
+          "seek more arithmetic review"
+        ]
+      },
+      "perfect_information_value": 7.0,
+      "perfect_information_value_exact": "7",
+      "decision_changing_scenarios": [
+        "arithmetic meets tested invariants"
+      ],
+      "experiments": [
+        {
+          "id": "independent-finite-model-invariants",
+          "experiment": {
+            "id": "independent-finite-model-invariants",
+            "question": "Do independently computed three-state Bayesian and EVSI invariants hold?",
+            "protocol": "Run 32 deterministic three-state models once against an independent exact-arithmetic oracle; stop after success or the first assertion failure.",
+            "outcomes": [
+              "pass",
+              "fail"
+            ],
+            "likelihoods": [
+              [
+                0.95,
+                0.05
+              ],
+              [
+                0.25,
+                0.75
+              ]
+            ],
+            "cost": 0.2,
+            "duration": 30,
+            "provenance": [
+              "Likelihoods, utility cost and duration bound are explicit hypothetical development estimates."
+            ],
+            "assumptions": [
+              "A passing check is limited evidence for these exact invariants; it cannot prove all software or product correctness."
+            ]
+          },
+          "status": "informative_within_bounds",
+          "within_budget": true,
+          "within_duration": true,
+          "outcomes": [
+            {
+              "outcome": "pass",
+              "possible": true,
+              "probability": 0.74,
+              "probability_exact": "37/50",
+              "posterior_probabilities": [
+                0.8986486486486487,
+                0.10135135135135136
+              ],
+              "posterior_probabilities_exact": [
+                "133/148",
+                "15/148"
+              ],
+              "expected_value": 5.945945945945946,
+              "expected_value_exact": "220/37",
+              "expected_value_winners": [
+                "accept arithmetic implementation for integration review"
+              ],
+              "preference_changed": true,
+              "prior_winners_rejected": [
+                "seek more arithmetic review"
+              ]
+            },
+            {
+              "outcome": "fail",
+              "possible": true,
+              "probability": 0.26,
+              "probability_exact": "13/50",
+              "posterior_probabilities": [
+                0.1346153846153846,
+                0.8653846153846154
+              ],
+              "posterior_probabilities_exact": [
+                "7/52",
+                "45/52"
+              ],
+              "expected_value": 0.0,
+              "expected_value_exact": "0",
+              "expected_value_winners": [
+                "seek more arithmetic review"
+              ],
+              "preference_changed": false,
+              "prior_winners_rejected": []
+            }
+          ],
+          "expected_value_with_information": 4.4,
+          "expected_value_with_information_exact": "22/5",
+          "sample_information_value": 4.4,
+          "sample_information_value_exact": "22/5",
+          "net_information_value": 4.2,
+          "net_information_value_exact": "21/5",
+          "expected_value_after_cost": 4.2,
+          "expected_value_after_cost_exact": "21/5",
+          "decision_change_probability": 0.74,
+          "decision_change_probability_exact": "37/50"
+        }
+      ],
+      "budget": 1.0,
+      "max_duration": 30.0,
+      "duration_unit": "seconds",
+      "proposed_experiment_ids": [
+        "independent-finite-model-invariants"
+      ],
+      "proposal_is_sequence": false,
+      "criterion_chosen_by_tool": false
+    },
+    "limitations": "Conditional expected value under caller-supplied payoffs, priors and likelihoods; not empirical validation or action authorization. Larger comparable payoffs are preferred. Costs use the model's value_unit and durations use the supplied duration_unit. Each proposal covers one observation with mutually exclusive exhaustive outcomes; candidates are alternatives, not an experiment sequence or joint information model. Supplied probability vectors within 1e-10 of one are normalized only for rounding. Exact decimal arithmetic determines winners; displayed numbers are rounded. Sources and likelihoods are preserved as supplied, not independently verified. Hard constraints, omitted scenarios, changing payoffs and execution permissions remain the owner's responsibility. For sequential observations, the owner must supply likelihoods appropriate conditional on the evidence already used; reusing a likelihood does not establish conditional independence.",
+    "action_permission": "not_granted"
+  }
+}

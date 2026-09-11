@@ -1,0 +1,58 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "product",
+  "argv": [
+    "/workspace/scratch/b6252d122d122d78/v0.6-core/bin/compass-c",
+    "--db",
+    "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite",
+    "plan-experiment",
+    "6274b21cddee461692b687992ccb8d69",
+    "--revision",
+    "1",
+    "--parameters-file",
+    "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/parameters.json",
+    "--full"
+  ],
+  "started_at": "2026-09-08T01:33:39.849619+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": null,
+  "stdout": "",
+  "stderr": "[Errno 2] No such file or directory: '/workspace/scratch/b6252d122d122d78/v0.6-core/bin/compass-c'",
+  "timed_out": false,
+  "launch_error": "FileNotFoundError",
+  "finished_at": "2026-09-08T01:33:39.851101+00:00",
+  "elapsed_seconds": 0.001473161000831169,
+  "stdout_utf8_bytes": 0,
+  "stderr_utf8_bytes": 98,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "product",
+      "--output",
+      "06-plan.json",
+      "--",
+      "/workspace/scratch/b6252d122d122d78/v0.6-core/bin/compass-c",
+      "--db",
+      "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite",
+      "plan-experiment",
+      "6274b21cddee461692b687992ccb8d69",
+      "--revision",
+      "1",
+      "--parameters-file",
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/parameters.json",
+      "--full"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

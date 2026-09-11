@@ -1,0 +1,197 @@
+{
+  "method": "Answer length uses Python str.split whitespace words, including code. Routing is self-reported and unscored. No latency or provider-token measurements were available.",
+  "rows": [
+    {
+      "participant": "set-1",
+      "case_id": "launch_scope",
+      "answer_words": 127,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-2",
+      "case_id": "launch_scope",
+      "answer_words": 145,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "launch_scope",
+      "answer_words": 143,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "launch_scope",
+      "answer_words": 190,
+      "compass_selected_self_report": true
+    },
+    {
+      "participant": "set-2",
+      "case_id": "withdrawn_evidence",
+      "answer_words": 139,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "withdrawn_evidence",
+      "answer_words": 149,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "withdrawn_evidence",
+      "answer_words": 174,
+      "compass_selected_self_report": true
+    },
+    {
+      "participant": "set-1",
+      "case_id": "withdrawn_evidence",
+      "answer_words": 154,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "arithmetic",
+      "answer_words": 1,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-2",
+      "case_id": "arithmetic",
+      "answer_words": 1,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "arithmetic",
+      "answer_words": 1,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-1",
+      "case_id": "arithmetic",
+      "answer_words": 1,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "source_only",
+      "answer_words": 27,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-1",
+      "case_id": "source_only",
+      "answer_words": 27,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-2",
+      "case_id": "source_only",
+      "answer_words": 28,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "source_only",
+      "answer_words": 28,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-2",
+      "case_id": "implementation_owner",
+      "answer_words": 25,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-1",
+      "case_id": "implementation_owner",
+      "answer_words": 25,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "implementation_owner",
+      "answer_words": 32,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "implementation_owner",
+      "answer_words": 25,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-1",
+      "case_id": "source_reader_owner",
+      "answer_words": 51,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-2",
+      "case_id": "source_reader_owner",
+      "answer_words": 46,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "source_reader_owner",
+      "answer_words": 48,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "source_reader_owner",
+      "answer_words": 60,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-2",
+      "case_id": "timeout_after_write",
+      "answer_words": 71,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "timeout_after_write",
+      "answer_words": 64,
+      "compass_selected_self_report": true
+    },
+    {
+      "participant": "set-1",
+      "case_id": "timeout_after_write",
+      "answer_words": 63,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "timeout_after_write",
+      "answer_words": 65,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-1",
+      "case_id": "expert_prestige",
+      "answer_words": 131,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-2",
+      "case_id": "expert_prestige",
+      "answer_words": 82,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-3",
+      "case_id": "expert_prestige",
+      "answer_words": 127,
+      "compass_selected_self_report": false
+    },
+    {
+      "participant": "set-4",
+      "case_id": "expert_prestige",
+      "answer_words": 147,
+      "compass_selected_self_report": true
+    }
+  ]
+}

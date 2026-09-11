@@ -1,0 +1,53 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "product",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "--db",
+    "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite",
+    "start",
+    "--objective",
+    "Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review.",
+    "--constraints",
+    "[\"Preserve the supplied model and experiment inputs unchanged.\",\"Prepare and save a prospective plan; leave the experiment pending for a separate resumer.\",\"Do not execute the check or create an observation in the prepare phase.\",\"A favorable finite check supports only integration review; it does not authorize publication or establish general correctness or usability.\"]"
+  ],
+  "started_at": "2026-09-08T01:17:39.123751+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"ok\": true,\n  \"data\": {\n    \"decision_id\": \"dd0ad8861fe04cd68bd1f1d46aa6db33\",\n    \"revision\": 1,\n    \"scope\": \"analysis_only\",\n    \"action_permission\": \"not_granted\",\n    \"next\": \"Record actual evidence and at least two alternatives; do not invent facts.\"\n  }\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:17:39.179962+00:00",
+  "elapsed_seconds": 0.05621652199988603,
+  "stdout_utf8_bytes": 267,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "product",
+      "--output",
+      "05-start.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+      "--db",
+      "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite",
+      "start",
+      "--objective",
+      "Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review.",
+      "--constraints",
+      "[\"Preserve the supplied model and experiment inputs unchanged.\",\"Prepare and save a prospective plan; leave the experiment pending for a separate resumer.\",\"Do not execute the check or create an observation in the prepare phase.\",\"A favorable finite check supports only integration review; it does not authorize publication or establish general correctness or usability.\"]"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "calculation": "update_beliefs",
+  "result": {
+    "prior_model": {
+      "actions": [
+        "accept arithmetic implementation for integration review",
+        "seek more arithmetic review"
+      ],
+      "scenarios": [
+        "arithmetic meets tested invariants",
+        "arithmetic has an invariant defect"
+      ],
+      "payoffs": [
+        [
+          10,
+          -30
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "probabilities": [
+        0.7,
+        0.3
+      ],
+      "value_unit": "hypothetical development utility points",
+      "provenance": [
+        "Author-visible development decision model created before this invariant check."
+      ],
+      "assumptions": [
+        "Priors and utility values are illustrative judgment, not calibrated reliability evidence."
+      ]
+    },
+    "model": {
+      "actions": [
+        "accept arithmetic implementation for integration review",
+        "seek more arithmetic review"
+      ],
+      "scenarios": [
+        "arithmetic meets tested invariants",
+        "arithmetic has an invariant defect"
+      ],
+      "payoffs": [
+        [
+          10,
+          -30
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "probabilities": [
+        0.8986486486486487,
+        0.10135135135135136
+      ],
+      "value_unit": "hypothetical development utility points",
+      "provenance": [
+        "Author-visible development decision model created before this invariant check."
+      ],
+      "assumptions": [
+        "Priors and utility values are illustrative judgment, not calibrated reliability evidence."
+      ],
+      "probabilities_exact": [
+        "133/148",
+        "15/148"
+      ]
+    },
+    "experiment": {
+      "id": "independent-finite-model-invariants",
+      "question": "Do independently computed three-state Bayesian and EVSI invariants hold?",
+      "protocol": "Run 32 deterministic three-state models once against an independent exact-arithmetic oracle; stop after success or the first assertion failure.",
+      "outcomes": [
+        "pass",
+        "fail"
+      ],
+      "likelihoods": [
+        [
+          0.95,
+          0.05
+        ],
+        [
+          0.25,
+          0.75
+        ]
+      ],
+      "cost": 0.2,
+      "duration": 30,
+      "provenance": [
+        "Likelihoods, utility cost and duration bound are explicit hypothetical development estimates."
+      ],
+      "assumptions": [
+        "A passing check is limited evidence for these exact invariants; it cannot prove all software or product correctness."
+      ]
+    },
+    "observation": {
+      "outcome": "pass",
+      "source": "evals/dogfood/2026-09-08/experiment-observation.json",
+      "observed_at": "2026-09-08T00:15:19.188510+00:00",
+      "note": "Observed all 32 independent three-state development-model checks pass (32 completed). This tests arithmetic invariants, not independent host usefulness."
+    },
+    "evidence_probability": 0.74,
+    "evidence_probability_exact": "37/50",
+    "prior_winners": [
+      "seek more arithmetic review"
+    ],
+    "posterior_winners": [
+      "accept arithmetic implementation for integration review"
+    ],
+    "preference_changed": true,
+    "prior_winners_rejected": [
+      "seek more arithmetic review"
+    ],
+    "source_verified": false,
+    "criterion_chosen_by_tool": false
+  },
+  "limitations": "Conditional expected value under caller-supplied payoffs, priors and likelihoods; not empirical validation or action authorization. Larger comparable payoffs are preferred. Costs use the model's value_unit and durations use the supplied duration_unit. Each proposal covers one observation with mutually exclusive exhaustive outcomes; candidates are alternatives, not an experiment sequence or joint information model. Supplied probability vectors within 1e-10 of one are normalized only for rounding. Exact decimal arithmetic determines winners; displayed numbers are rounded. Sources and likelihoods are preserved as supplied, not independently verified. Hard constraints, omitted scenarios, changing payoffs and execution permissions remain the owner's responsibility. For sequential observations, the owner must supply likelihoods appropriate conditional on the evidence already used; reusing a likelihood does not establish conditional independence.",
+  "action_permission": "not_granted"
+}

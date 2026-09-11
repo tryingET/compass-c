@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "setup",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import json\nfrom pathlib import Path\nroot=Path(\"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-2/resume\")\nsource=root/\"06-bounded-check.json\"\ncapture=json.loads(source.read_text())\nresult=json.loads(capture[\"stdout\"])\nassert capture[\"exit_status\"] == 0 and not capture[\"timed_out\"]\nassert result[\"outcome\"] == \"pass\" and len(result[\"cases\"]) == 3 and all(x[\"passed\"] for x in result[\"cases\"])\nobservation={\"outcome\": \"pass\", \"source\": str(source), \"observed_at\": result[\"finished_at\"], \"note\": \"One bounded execution exited 0; all three declared cases passed: informative_two_state, uncertainty_without_decision_value, and tied_prior_and_conditional_preferences. Finite arithmetic evidence only.\"}\nwith (root/\"observation.json\").open(\"x\") as f: f.write(json.dumps(observation, indent=2)+\"\\n\")\nidentity={\"decision_id\": \"6274b21cddee461692b687992ccb8d69\", \"plan_id\": \"8851a5935fd44ce3a21c4be95f360161\", \"experiment_id\": \"installed-three-case-oracle\", \"event_id\": \"run-2-installed-three-case-oracle-20260908T013715Z\", \"observation_file\": str(root/\"observation.json\")}\nwith (root/\"event-identity.json\").open(\"x\") as f: f.write(json.dumps(identity, indent=2)+\"\\n\")\nprint(json.dumps({\"observation\": observation, \"identity\": identity}, indent=2))"
+  ],
+  "started_at": "2026-09-08T01:37:37.308019+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"observation\": {\n    \"outcome\": \"pass\",\n    \"source\": \"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-2/resume/06-bounded-check.json\",\n    \"observed_at\": \"2026-09-08T01:37:15.256827+00:00\",\n    \"note\": \"One bounded execution exited 0; all three declared cases passed: informative_two_state, uncertainty_without_decision_value, and tied_prior_and_conditional_preferences. Finite arithmetic evidence only.\"\n  },\n  \"identity\": {\n    \"decision_id\": \"6274b21cddee461692b687992ccb8d69\",\n    \"plan_id\": \"8851a5935fd44ce3a21c4be95f360161\",\n    \"experiment_id\": \"installed-three-case-oracle\",\n    \"event_id\": \"run-2-installed-three-case-oracle-20260908T013715Z\",\n    \"observation_file\": \"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-2/resume/observation.json\"\n  }\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:37:37.330415+00:00",
+  "elapsed_seconds": 0.02239543399991817,
+  "stdout_utf8_bytes": 815,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "setup",
+      "--output",
+      "07-retain-observation.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "-c",
+      "import json\nfrom pathlib import Path\nroot=Path(\"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-2/resume\")\nsource=root/\"06-bounded-check.json\"\ncapture=json.loads(source.read_text())\nresult=json.loads(capture[\"stdout\"])\nassert capture[\"exit_status\"] == 0 and not capture[\"timed_out\"]\nassert result[\"outcome\"] == \"pass\" and len(result[\"cases\"]) == 3 and all(x[\"passed\"] for x in result[\"cases\"])\nobservation={\"outcome\": \"pass\", \"source\": str(source), \"observed_at\": result[\"finished_at\"], \"note\": \"One bounded execution exited 0; all three declared cases passed: informative_two_state, uncertainty_without_decision_value, and tied_prior_and_conditional_preferences. Finite arithmetic evidence only.\"}\nwith (root/\"observation.json\").open(\"x\") as f: f.write(json.dumps(observation, indent=2)+\"\\n\")\nidentity={\"decision_id\": \"6274b21cddee461692b687992ccb8d69\", \"plan_id\": \"8851a5935fd44ce3a21c4be95f360161\", \"experiment_id\": \"installed-three-case-oracle\", \"event_id\": \"run-2-installed-three-case-oracle-20260908T013715Z\", \"observation_file\": str(root/\"observation.json\")}\nwith (root/\"event-identity.json\").open(\"x\") as f: f.write(json.dumps(identity, indent=2)+\"\\n\")\nprint(json.dumps({\"observation\": observation, \"identity\": identity}, indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "setup",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import importlib.metadata as m, compass_c, sys, json; d=m.distribution('compass-c'); print(json.dumps({'version': d.version, 'distribution_location': str(d.locate_file('')), 'module_location': compass_c.__file__, 'python': sys.executable}, indent=2))"
+  ],
+  "started_at": "2026-09-08T01:36:57.987771+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"version\": \"0.6.0\",\n  \"distribution_location\": \"/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages\",\n  \"module_location\": \"/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages/compass_c/__init__.py\",\n  \"python\": \"/workspace/scratch/b6252d122d78/v0.6-core/bin/python\"\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:36:58.056403+00:00",
+  "elapsed_seconds": 0.0686334120000538,
+  "stdout_utf8_bytes": 311,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "setup",
+      "--output",
+      "01-package-identity.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "-c",
+      "import importlib.metadata as m, compass_c, sys, json; d=m.distribution('compass-c'); print(json.dumps({'version': d.version, 'distribution_location': str(d.locate_file('')), 'module_location': compass_c.__file__, 'python': sys.executable}, indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

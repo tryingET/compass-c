@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import cmath
 import math
+from fractions import Fraction
 
 from core import CompassError, integer, number, strings
 
@@ -20,47 +21,160 @@ def fields(p, required, optional=()):
         )
 
 
+def _comparison_model(p):
+    """Validate the shared bounded model without assuming probabilities."""
+    actions = strings(p["actions"], "actions", maximum=64)
+    scenarios = strings(p["scenarios"], "scenarios", maximum=128)
+    if (
+        not actions
+        or not scenarios
+        or len(set(actions)) != len(actions)
+        or len(set(scenarios)) != len(scenarios)
+    ):
+        raise CompassError("INVALID_INPUT", "Provide nonempty unique action and scenario names")
+    matrix = p["payoffs"]
+    if type(matrix) is not list or len(matrix) != len(actions):
+        raise CompassError("INVALID_INPUT", "One payoff row per action required")
+    parsed = []
+    for row in matrix:
+        if type(row) is not list or len(row) != len(scenarios):
+            raise CompassError("INVALID_INPUT", "One payoff per scenario required in each row")
+        parsed.append([number(x, "payoff") for x in row])
+    return actions, scenarios, parsed
+
+
+def _probability_vector(value, size, field):
+    if type(value) is not list or len(value) != size:
+        raise CompassError("INVALID_INPUT", f"{field}: one probability per scenario required")
+    probabilities = [number(x, field, 0, 1) for x in value]
+    if not math.isclose(math.fsum(probabilities), 1.0, abs_tol=1e-10, rel_tol=0):
+        raise CompassError("INVALID_INPUT", f"{field}: probabilities must sum to one")
+    return probabilities
+
+
+def _sensitivity(p):
+    """Compute the upper envelope of affine expected values, without sampling.
+
+    Rational arithmetic uses the decimal representations of validated numbers.
+    Distinct rational boundaries survive even when their float renderings coincide.
+    With 64 actions there are at most 2016 pair intersections to examine.
+    """
+    fields(p, ["actions", "scenarios", "payoffs", "probability_start", "probability_end"])
+    actions, scenarios, matrix = _comparison_model(p)
+    start, end = (
+        [Fraction(str(x)) for x in _probability_vector(p[field], len(scenarios), field)]
+        for field in ("probability_start", "probability_end")
+    )
+    exact_matrix = [[Fraction(str(value)) for value in row] for row in matrix]
+    starts = [sum(q * x for q, x in zip(start, row, strict=True)) for row in exact_matrix]
+    ends = [sum(q * x for q, x in zip(end, row, strict=True)) for row in exact_matrix]
+    slopes = [b - a for a, b in zip(starts, ends, strict=True)]
+
+    def values(t):
+        return [a + slope * t for a, slope in zip(starts, slopes, strict=True)]
+
+    def winners(t):
+        expected = values(t)
+        best = max(expected)
+        return [action for action, value in zip(actions, expected, strict=True) if value == best]
+
+    def point(t):
+        return {
+            "t": float(t),
+            "t_exact": str(t),
+            "probabilities": [float((1 - t) * a + t * b) for a, b in zip(start, end, strict=True)],
+            "expected_value_winners": winners(t),
+        }
+
+    crossings = set()
+    for i in range(len(actions)):
+        for j in range(i + 1, len(actions)):
+            if slopes[i] == slopes[j]:
+                continue
+            t = (starts[j] - starts[i]) / (slopes[i] - slopes[j])
+            if 0 < t < 1 and t not in crossings:
+                expected = values(t)
+                # A crossing matters only when these nonparallel lines are best.
+                # Identically tied winners do not make an inferior crossing relevant.
+                if expected[i] == max(expected):
+                    crossings.add(t)
+    ordered = sorted(crossings)
+    boundaries = [Fraction(0), *ordered, Fraction(1)]
+    return {
+        "probability_path": "p(t) = (1 - t) * probability_start + t * probability_end",
+        "rows": [
+            {"action": action, "expected_start": float(a), "expected_end": float(b)}
+            for action, a, b in zip(actions, starts, ends, strict=True)
+        ],
+        "endpoints": {"start": point(Fraction(0)), "end": point(Fraction(1))},
+        "breakpoints": [point(t) for t in ordered],
+        "intervals": [
+            {
+                "start": float(a),
+                "end": float(b),
+                "start_exact": str(a),
+                "end_exact": str(b),
+                "expected_value_winners": winners((a + b) / 2),
+            }
+            for a, b in zip(boundaries[:-1], boundaries[1:], strict=True)
+        ],
+        "criterion_chosen_by_tool": False,
+        "assumptions": [
+            "Payoffs are fixed and comparable; larger values are preferable.",
+            "Both probability endpoints are supplied by the caller; "
+            "only their convex path is tested.",
+            "Expected value is examined conditionally, without selecting the owner's criterion.",
+            "Interval winners apply to open interiors; endpoint and breakpoint ties are separate.",
+            "Probability sums allow absolute rounding error up to 1e-10; "
+            "inputs are not normalized.",
+            "Decimal representations of validated numbers define exact rational comparisons; "
+            "numeric output is rounded, while *_exact fields preserve rational path coordinates.",
+        ],
+    }
+
+
 def calculate(kind: str, p: dict) -> dict:
     if type(kind) is not str:
         raise CompassError("INVALID_INPUT", "kind must be a string")
+    if kind in {"experiment", "update_beliefs"}:
+        from experiments import propose_experiments, revise_model
+
+        return (propose_experiments if kind == "experiment" else revise_model)(p)
     limitations = "Conditional arithmetic, not empirical validation or action authorization."
-    if kind == "compare":
+    if kind == "portfolio":
+        from portfolio import analyze_portfolio
+
+        result = analyze_portfolio(p)
+        limitations += (
+            " Supplied additive stakeholder and deferral values are not elicited preferences. "
+            "Precedence layers are not a resource schedule; no stakeholder criterion is selected."
+        )
+    elif kind == "compare":
         fields(p, ["actions", "scenarios", "payoffs"], ["probabilities"])
-        actions = strings(p["actions"], "actions", maximum=64)
-        scenarios = strings(p["scenarios"], "scenarios", maximum=128)
-        if (
-            not actions
-            or not scenarios
-            or len(set(actions)) != len(actions)
-            or len(set(scenarios)) != len(scenarios)
-        ):
-            raise CompassError("INVALID_INPUT", "Provide nonempty unique action and scenario names")
-        matrix = p["payoffs"]
-        if type(matrix) is not list or len(matrix) != len(actions):
-            raise CompassError("INVALID_INPUT", "One payoff row per action required")
-        parsed = []
-        for row in matrix:
-            if type(row) is not list or len(row) != len(scenarios):
-                raise CompassError("INVALID_INPUT", "One payoff per scenario required in each row")
-            parsed.append([number(x, "payoff") for x in row])
+        actions, scenarios, parsed = _comparison_model(p)
         probs = p.get("probabilities")
         if probs is not None:
-            if type(probs) is not list or len(probs) != len(scenarios):
-                raise CompassError("INVALID_INPUT", "One probability per scenario required")
-            probs = [number(x, "probability", 0, 1) for x in probs]
-            if not math.isclose(sum(probs), 1.0, abs_tol=1e-10, rel_tol=0):
-                raise CompassError("INVALID_INPUT", "Probabilities must sum to one")
-        best = [max(row[j] for row in parsed) for j in range(len(scenarios))]
+            probs = _probability_vector(probs, len(scenarios), "probabilities")
+        exact_matrix = [[Fraction(str(value)) for value in row] for row in parsed]
+        best = [max(row[j] for row in exact_matrix) for j in range(len(scenarios))]
+        regrets = [
+            max(b - value for b, value in zip(best, row, strict=True)) for row in exact_matrix
+        ]
+        expected = None
+        if probs is not None:
+            exact_probs = [Fraction(str(value)) for value in probs]
+            expected = [
+                sum(q * value for q, value in zip(exact_probs, row, strict=True))
+                for row in exact_matrix
+            ]
         rows = []
-        for action, row in zip(actions, parsed, strict=True):
+        for i, (action, row) in enumerate(zip(actions, parsed, strict=True)):
             rows.append(
                 {
                     "action": action,
                     "worst_case": min(row),
-                    "max_regret": max(b - v for b, v in zip(best, row, strict=True)),
-                    "expected": sum(q * v for q, v in zip(probs, row, strict=True))
-                    if probs is not None
-                    else None,
+                    "max_regret": float(regrets[i]),
+                    "expected": float(expected[i]) if expected is not None else None,
                 }
             )
         selectors = {
@@ -68,17 +182,29 @@ def calculate(kind: str, p: dict) -> dict:
                 r["action"] for r in rows if r["worst_case"] == max(v["worst_case"] for v in rows)
             ],
             "minimax_regret": [
-                r["action"] for r in rows if r["max_regret"] == min(v["max_regret"] for v in rows)
+                action
+                for action, regret in zip(actions, regrets, strict=True)
+                if regret == min(regrets)
             ],
         }
-        if probs is not None:
+        if expected is not None:
             selectors["expected_value"] = [
-                r["action"] for r in rows if r["expected"] == max(v["expected"] for v in rows)
+                action
+                for action, value in zip(actions, expected, strict=True)
+                if value == max(expected)
             ]
         result = {"rows": rows, "criterion_winners": selectors, "criterion_chosen_by_tool": False}
         limitations += (
             " Assumes comparable payoffs and already-admissible actions; hard constraints "
-            "and omitted scenarios are not evaluated."
+            "and omitted scenarios are not evaluated. Winners use exact decimal representations "
+            "of validated numbers; displayed metrics are rounded."
+        )
+    elif kind == "sensitivity":
+        result = _sensitivity(p)
+        limitations += (
+            " Tests expected-value preference only along the supplied probability path with fixed "
+            "payoffs and already-admissible actions. Hard constraints, omitted scenarios, other "
+            "probability paths, and payoff uncertainty are not evaluated."
         )
     elif kind == "committee":
         fields(p, ["members", "accuracy", "correlation"])
@@ -225,7 +351,7 @@ def calculate(kind: str, p: dict) -> dict:
     else:
         raise CompassError(
             "UNKNOWN_CALCULATION",
-            "Choose compare, committee, bundle, feedback, recovery, tail, or brier",
+            "Choose compare, sensitivity, committee, bundle, feedback, recovery, tail, or brier",
         )
     return {
         "calculation": kind,

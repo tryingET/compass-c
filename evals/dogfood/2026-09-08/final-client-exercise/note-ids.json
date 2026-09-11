@@ -1,0 +1,15 @@
+{
+  "command_evidence": "761580d8156540058f8acb85229c796b",
+  "model_assumptions": "6a6e5f67eaa240789b154fcb48dd6591",
+  "portfolio_result": "be6747c5bf504681b361b74a210bc9cc",
+  "dissent": "58918e4b0a6c4134a154a4e3ac8ab61a",
+  "experiment_result": "0ca0dc25257647399ac2d201d7511130",
+  "core_alternative": "03c2fe442bd04ad492cc76ba650862e8",
+  "delay_alternative": "2803bfe295224327b01cc83a823af906",
+  "host_alternative": "c0c0ff4c7a6a4fc0ac53837eae7bfbf0",
+  "prospective_check": "2813945420e94244b806bd56221eb3c8",
+  "missing_observation": "14e1ff90c71848b3a5a2a2a76e72350c",
+  "effects": "7a30c3e290ef4240bfc034240a62e5a1",
+  "reversal": "4ba09d4ce31142cfaa4b5be1cf3f6914",
+  "initial_recommendation": "fe7a1d0f29ef40b6a94553da16ecf94d"
+}

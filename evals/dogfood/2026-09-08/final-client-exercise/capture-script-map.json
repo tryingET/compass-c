@@ -1,0 +1,55 @@
+{
+  "purpose": "Exact executed capture-only script bytes archived as text, not formatted or presented as supported reusable tools. Command traces retain their original filenames. The canonical experiment-partner.py outside this directory is unchanged.",
+  "files": [
+    {
+      "executed_filename": "capture.py",
+      "archived_filename": "capture.py.txt",
+      "sha256": "cb1af62258d306e5d639e9a659869fa9d1c4b516099e3c511dcd48832a20a284"
+    },
+    {
+      "executed_filename": "finish-capture.py",
+      "archived_filename": "finish-capture.py.txt",
+      "sha256": "96b95dbdb0690a4c3f6529145fb48322c3d395472603a97caa20d22d94c06069"
+    },
+    {
+      "executed_filename": "help-capture.py",
+      "archived_filename": "help-capture.py.txt",
+      "sha256": "cd0c1cf4cf9292a155189b19d8c23e9344742e1cd0b99578c270ec65dd1cdde2"
+    },
+    {
+      "executed_filename": "notebook-session.py",
+      "archived_filename": "notebook-session.py.txt",
+      "sha256": "0a39539da31feb55b074b94e4c5f050c52f62790f73ef48a7669b099e9e726d0"
+    },
+    {
+      "executed_filename": "stage1.py",
+      "archived_filename": "stage1.py.txt",
+      "sha256": "c9343ad45127b0b8fc004d937a02e45dd8bc2c49e2ca1c62de95a556d31562c0"
+    },
+    {
+      "executed_filename": "stage2.py",
+      "archived_filename": "stage2.py.txt",
+      "sha256": "cdddab101472ec177e6309be07225ed9c30bc8daa5b51084bd834ec1171d2129"
+    },
+    {
+      "executed_filename": "stage3.py",
+      "archived_filename": "stage3.py.txt",
+      "sha256": "470c784d882bacececdf2516804e59105203e519343d916438b60d9cbf478caf"
+    },
+    {
+      "executed_filename": "stage4-preview.py",
+      "archived_filename": "stage4-preview.py.txt",
+      "sha256": "30190ed733abbb6f96bf4fad1122f99c428902215ce9f0838bf6e54bd85488ec"
+    },
+    {
+      "executed_filename": "stage5-apply.py",
+      "archived_filename": "stage5-apply.py.txt",
+      "sha256": "5e3c16c4b02519ad3dadb11ed09bc3c4b5636dbe790ee9ae49a5c2c7555d2f50"
+    },
+    {
+      "executed_filename": "stage6-reconsider.py",
+      "archived_filename": "stage6-reconsider.py.txt",
+      "sha256": "5c1f47aede450d159391b48f127d86e1d23f7d6eef2f5a1120a872dc17223844"
+    }
+  ]
+}

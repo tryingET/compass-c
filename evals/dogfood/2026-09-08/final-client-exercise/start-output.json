@@ -1,0 +1,10 @@
+{
+  "ok": true,
+  "data": {
+    "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+    "revision": 1,
+    "scope": "analysis_only",
+    "action_permission": "not_granted",
+    "next": "Record actual evidence and at least two alternatives; do not invent facts."
+  }
+}

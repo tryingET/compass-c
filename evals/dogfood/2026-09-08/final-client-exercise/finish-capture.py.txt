@@ -1,0 +1,49 @@
+from collections import Counter
+import json
+from pathlib import Path
+from capture import BASE
+
+rows = json.loads((BASE / 'command-trace.json').read_text())
+counts = Counter()
+for row in rows:
+    argv = row['argv']
+    if Path(argv[0]).name == 'python':
+        counts['setup_guidance_input_package_reads'] += 1
+    elif '--help' in argv:
+        counts['help'] += 1
+    else:
+        index = 3 if len(argv) > 1 and argv[1] == '--db' else 1
+        counts[argv[index]] += 1
+failures = [{'sequence': row['sequence'], 'argv': row['argv'], 'exit_status': row['exit_status'], 'stdout': row['stdout'], 'stderr': row['stderr']} for row in rows if row['exit_status'] != 0]
+final = json.loads((BASE / 'final-notebook-brief.json').read_text())
+usability = {
+    'exercise': 'Actual author-visible installed-client use; no holdout, comparative benefit study, supplied expected output, browsing, delegation, dependency installation, source inspection or external action.',
+    'outcome': 'Completed portfolio/experiment/sensitivity calculations, explicit new notebook construction, observed command evidence, no-write preview inspection, explicit apply and current/stale readbacks, dependent reconsideration and final brief.',
+    'installed_version': '0.5.0',
+    'installed_package_location': '/workspace/scratch/b6252d122d78/v0.5-core/lib/python3.12/site-packages/compass_c/__init__.py',
+    'decision_id': final['decision_id'],
+    'final_revision': final['revision'],
+    'final_review_status': final['review']['status'],
+    'stale_notes_retained': len(final['stale_notes']),
+    'captured_subprocess_count': len(rows),
+    'captured_command_counts': dict(counts),
+    'count_interpretation': 'Counts are exact target subprocesses in command-trace.json. Setup/guidance/package reads and help are separated from calculations and notebook user operations. Repeated get readbacks are real usability overhead from reading current revisions before writes and inspecting writes afterward; these are not unique decisions or measured benefit. Host tool wrappers and capture-driver launches are not additional entries in this target-command trace.',
+    'captured_failed_command_count': len(failures),
+    'captured_failed_commands': failures,
+    'installed_client_failures': [],
+    'observations': [
+        {'issue': 'record --help exposes KIND and STATUS as unrestricted strings without listing supported categories or the default proposed status.', 'impact': 'Category discovery required inspecting an empty brief review; readback revealed the default status. This caused navigation overhead but no failed command.', 'correction': 'Used brief current_counts for category names and actual note readback for status; did not inspect runtime source.'},
+        {'issue': 'Calculator help describes PARAMETERS only as a JSON object.', 'impact': 'Portfolio and experiment schema discovery depended on the allowed reference files.', 'correction': 'Read the relevant references and passed JSON with exact argv arrays.'},
+        {'issue': 'The full portfolio enumeration produced a long host display that was truncated.', 'impact': 'A displayed transcript alone was insufficient to inspect every portfolio.', 'correction': 'The complete stdout was already preserved in command-trace.json and portfolio-output.json; downstream reading used the current-run saved output.'},
+        {'issue': 'Evidence clarification invalidated seven dependent notes plus the original evidence even though numeric assumptions were unchanged.', 'impact': 'Explicit reconsideration and fresh dependency links were required; the tool did not silently restore them.', 'correction': 'Read all current/stale notes and recorded reconsidered portfolio conclusions, alternatives, effects, reversal condition and recommendation.'},
+        {'issue': 'No independent finite-model experiment observation is available.', 'impact': 'Cannot perform a legitimate result-conditioned belief update or claim arithmetic acceptance from CLI success.', 'correction': 'Kept the experiment prospective, retained the original prior and separately recorded observed notebook outcomes.'}
+    ],
+    'departures': [
+        {'type': 'bootstrap_capture_and_environment', 'detail': 'The first action read task.json with the host exec_command cmd string shown below, before the task instructions and capture driver were loaded. That one cat target was not executed through the installed-Python capture driver, and PYTHONDONTWRITEBYTECODE/PYTHONPATH controls were not explicitly set for it. It was read-only and did not import Python. Its tool-reported exit was 0. No claim is made that this bootstrap shell invocation satisfies the all-subprocess environment/capture requirement.', 'host_command': 'cat /workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/task.json', 'target_argv': ['cat', str(BASE / 'task.json')], 'exit_status': 0, 'stdout': (BASE / 'task.json').read_text(), 'stderr': '', 'outer_shell_argv': 'Not exposed by the host tool result; not reconstructed.'},
+        {'type': 'capture_boundary', 'detail': 'The JSON trace captures exact argv, exit status, stdout and stderr of every subprocess launched by capture.run, including every installed CLI invocation. Stage-driver processes were launched via host exec_command using env -u PYTHONPATH PYTHONDONTWRITEBYTECODE=1 and the installed Python, but their outer wrapper stdout/stderr and argv were retained in the host conversation rather than duplicated as separate rows. File writes used the allowed task scope.'}
+    ],
+    'artifacts': ['final-brief.md', 'command-trace.json', 'portfolio-output.json', 'experiment-output.json', 'sensitivity-output.json', 'preview-verification.json', 'preview-output.json', 'apply-output.json', 'after-apply-readback.json', 'reconsideration-readbacks.json', 'final-notebook-readback.json', 'final-notebook-brief.json'],
+    'new_task_owned_database': '/workspace/scratch/b6252d122d78/compass-c/.compass/final-client-exercise.sqlite'
+}
+(BASE / 'usability.json').write_text(json.dumps(usability, indent=2) + '\n')
+print(json.dumps({'captured_subprocess_count': len(rows), 'counts': dict(counts), 'captured_failed_commands': len(failures), 'final_revision': final['revision'], 'final_brief_bytes': (BASE / 'final-brief.md').stat().st_size, 'usability_bytes': (BASE / 'usability.json').stat().st_size}, indent=2))

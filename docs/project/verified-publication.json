@@ -4,10 +4,17 @@
   "url": "https://github.com/tryingET/compass-c",
   "visibility": "public",
   "default_branch": "main",
-  "verified_commit": "218d9f3df0cae6073f126b5d571452b2ad024be5",
+  "verified_commit": "d839c97b9bc169672c2f25935e770017a0bb5990",
+  "scope": "Observed public main snapshot at verified_at; later documentation commits may advance the branch.",
   "verification": {
     "github_api_ref_match": true,
     "git_ls_remote_match": true
   },
-  "verified_at": "2026-09-05T08:46:10Z"
+  "ci": {
+    "run_id": 34170286584,
+    "url": "https://github.com/tryingET/compass-c/actions/runs/34170286584",
+    "head_commit": "d839c97b9bc169672c2f25935e770017a0bb5990",
+    "all_four_jobs_succeeded": true
+  },
+  "verified_at": "2026-09-07T23:31:34Z"
 }

@@ -1,0 +1,276 @@
+{
+  "observed_at": "2026-09-08T02:01:42.909103+00:00",
+  "write_argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "--db",
+    "/workspace/scratch/b6252d122d78/compass-c/.compass/vision-dogfood-2026-09-08.sqlite3",
+    "record",
+    "3f244e36d35e410b9cd36bb353a1771c",
+    "--revision",
+    "18",
+    "--kind",
+    "outcome",
+    "--status",
+    "observed",
+    "--source",
+    "evals/dogfood/v4-lifecycle/run-3/assessment.json",
+    "--content",
+    "The third fresh installed-client handoff passed all eight frozen criteria in eight product operations without failures. Earlier effort failures remain recorded; the same real bounded check, one observation, prior/posterior history and explicit authority limits were preserved. These local results do not establish generalized decision-quality benefit."
+  ],
+  "receipt": {
+    "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+    "note_id": "38d77fcbe17742a7867874172af29a34",
+    "revision": 19,
+    "action_permission": "not_granted",
+    "source_verified": false
+  },
+  "record": {
+    "objective": "Complete the COMPASS-C vision through bounded standalone behavior and observed usefulness while preserving honest evidence and owner authority.",
+    "stakes": "medium",
+    "revision": 19,
+    "created_at": "2026-09-08T00:04:37.044733+00:00",
+    "constraints": [
+      "Zero core runtime dependencies",
+      "BDD before tests RED before implementation GREEN",
+      "No invented empirical or owner approvals",
+      "No global installation or cross-repo rollout",
+      "Use COMPASS-C on its own build decisions"
+    ],
+    "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+    "notes": [
+      {
+        "id": "fdf3fd35e0354137ba9fcc45fb7cdec8",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "evidence",
+        "content": "The durable vision explicitly includes v1 measured usefulness, v2 opt-in updates, v3 shared constraints/sequencing/option value/disagreement, and v4 informative experiments with model revision.",
+        "status": "observed",
+        "source": "docs/project/vision.md",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.084306+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "5341aa14c2b1484da4999317c244901f",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "evidence",
+        "content": "Published v0.4.0 main 35b2007 passed all four CI jobs, while portfolio and experiment operations are absent from the canonical calculation dispatcher.",
+        "status": "observed",
+        "source": "GitHub Actions run 34170683868; src/compass_c/calculations.py at 35b2007",
+        "stale": true,
+        "created_at": "2026-09-08T00:04:37.121876+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "377fa9a08d0941219228e911aad9356c",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "alternative",
+        "content": "Implement bounded local portfolio and experiment functions and explicit atomic evidence updates; verify the same supported interfaces.",
+        "status": "proposed",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.160279+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "a93ac5c906d5436f8eec2644ccc9ed3e",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "alternative",
+        "content": "Declare completion from the existing CI result; rejected because it does not cover v3/v4 or measured usefulness.",
+        "status": "proposed",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.200460+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "e9031cd1b3fb4ba085acee7e40653d38",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "alternative",
+        "content": "Build a universal autonomous platform; rejected because the vision explicitly favors stronger decisions and owner-retained authority.",
+        "status": "proposed",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.238080+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "510865dec2a54464b04bc3adfc38ef5c",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "limitation",
+        "content": "A small author-visible same-host evaluation may find no benefit or regressions; no result can establish universal usefulness or vendor discovery.",
+        "status": "assumed",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.292062+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "234527884e7d449789e7d011d51991d7",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "test",
+        "content": "Freeze acceptance scenarios, observe missing behaviors fail, implement bounded functions, run real same-host A/A and A/B guidance exercises, and verify packaged CLI/portable/MCP paths.",
+        "status": "proposed",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.332103+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "1e7053e687894844bf62757ce96a8690",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "effect",
+        "content": "Pure modules preserve optional use and avoid requiring coordination infrastructure; explicit evidence updates reduce partial revision risk but cannot interpret prose reversal conditions.",
+        "status": "inferred",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.376162+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "ff67dd907fc84300aaca988c290f9720",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "reversal_condition",
+        "content": "If bounded APIs cannot preserve provenance, reject invalid models, or retain compatibility, revise their design before publication. If host evaluation shows no improvement, retain that result and narrow usefulness claims.",
+        "status": "proposed",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:04:37.414340+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "65b97d070acc45bf87e6dc51f714506e",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "decision",
+        "content": "Proceed with bounded modules and actual host observations; keep empirical claims at the scope supported by recorded results.",
+        "status": "inferred",
+        "source": "",
+        "stale": true,
+        "created_at": "2026-09-08T00:04:37.451803+00:00",
+        "depends_on": [
+          "fdf3fd35e0354137ba9fcc45fb7cdec8",
+          "5341aa14c2b1484da4999317c244901f"
+        ]
+      },
+      {
+        "id": "2810de7d11fd40869d83faf0032eb9fa",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "evidence",
+        "content": "All four horizons now have bounded standalone operations. The full Python3.12 suite passed479tests and17subtests. Fourteen installed-wheel MCP/interface scenarios passed; a separate core-wheel environment contains only compass-c0.5.0 and no MCP.",
+        "status": "observed",
+        "source": "Implementation b48ab35; tests/test_horizon_interfaces.py; observed full-suite and wheel runs2026-09-08",
+        "stale": false,
+        "created_at": "2026-09-08T00:22:47.679900+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "db804b14e2fe4f0b9698618aa94a53b4",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "evidence",
+        "content": "Actual same-host guidance study: A/A7of8 to7of8; A/B7of8 to8of8, one improvement and no regressions, exact sign-test p1.0. The difference depends on an acknowledged grading distinction; no general benefit established.",
+        "status": "observed",
+        "source": "evals/observations/2026-09-08-work-mode-guidance/README.md",
+        "stale": false,
+        "created_at": "2026-09-08T00:22:47.767795+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "21d096040c4f41e3a66aee83fddc7563",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "outcome",
+        "content": "Prospective tests and independent review found and repaired exact-probability expansion and non-reusable posterior edge cases before publication. Earlier evidence and recommendation remain stale in this notebook; explicit reconsideration follows.",
+        "status": "observed",
+        "source": "tests/test_experiments.py; RED commits112e2f0 and4e14b6f; GREENb48ab35",
+        "stale": false,
+        "created_at": "2026-09-08T00:22:47.810851+00:00",
+        "depends_on": [
+          "2810de7d11fd40869d83faf0032eb9fa"
+        ]
+      },
+      {
+        "id": "4e33773972a14363ae0fe2046699e783",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "limitation",
+        "content": "Canonical softwareco-ontology source remains inaccessible. No fake ontology, AK database, lifecycle closeout or blanket vision-completion claim follows from passing product tests.",
+        "status": "observed",
+        "source": "softwareco .gitmodules at433e8b8; ontology gitlink07d4b8b89f6ca436618adb42827885e9a45289c7",
+        "stale": false,
+        "created_at": "2026-09-08T00:22:47.868836+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "075811b5a4f9451896f6216decf3f1bc",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "decision",
+        "content": "Accept bounded v0.5.0 implementation for final source publication and exact-head CI verification. Report local usefulness observations at their actual scope; preserve the unresolved owner ontology gate and broader empirical uncertainty.",
+        "status": "inferred",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:22:47.912442+00:00",
+        "depends_on": [
+          "2810de7d11fd40869d83faf0032eb9fa",
+          "db804b14e2fe4f0b9698618aa94a53b4"
+        ]
+      },
+      {
+        "id": "3e16a5efbdd742a0b244050e83ec92c1",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "evidence",
+        "content": "The retained v0.5 installed-client exercise used 91 captured commands, including 50 get reads, and did not incorporate an actual experiment result. This supports investigating saved experiment handoff, not a matched before/after improvement claim.",
+        "status": "observed",
+        "source": "evals/dogfood/2026-09-08/final-client-exercise/README.md",
+        "stale": false,
+        "created_at": "2026-09-08T01:02:27.470576+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "bb60dadc808c43608daabff21c568577",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "outcome",
+        "content": "The first saved-workflow dogfood preserved the frozen model through a cold handoff, ran the actual bounded check, previewed without mutation and applied one observation. Its effort gate failed:11 lifecycle operations exceeded8. Preserve that failure and test the identified guidance correction with fresh participants under unchanged criteria.",
+        "status": "observed",
+        "source": "evals/dogfood/v4-lifecycle/run-1/assessment.json",
+        "stale": false,
+        "created_at": "2026-09-08T01:31:48.444874+00:00",
+        "depends_on": []
+      },
+      {
+        "id": "38d77fcbe17742a7867874172af29a34",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "kind": "outcome",
+        "content": "The third fresh installed-client handoff passed all eight frozen criteria in eight product operations without failures. Earlier effort failures remain recorded; the same real bounded check, one observation, prior/posterior history and explicit authority limits were preserved. These local results do not establish generalized decision-quality benefit.",
+        "status": "observed",
+        "source": "evals/dogfood/v4-lifecycle/run-3/assessment.json",
+        "stale": false,
+        "created_at": "2026-09-08T02:01:42.861560+00:00",
+        "depends_on": []
+      }
+    ],
+    "invalidations": [
+      {
+        "id": "4f3d67b27ab94be794bcc5c2726eff82",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "root_id": "5341aa14c2b1484da4999317c244901f",
+        "reason": "Replace pre-implementation observation with actual completed verification",
+        "revision": 12,
+        "created_at": "2026-09-08T00:22:47.679842+00:00",
+        "affected_notes": [
+          "5341aa14c2b1484da4999317c244901f",
+          "65b97d070acc45bf87e6dc51f714506e"
+        ]
+      }
+    ],
+    "revisions": [
+      {
+        "id": "fc9147a1e8a64b89afef75eba26d388b",
+        "decision_id": "3f244e36d35e410b9cd36bb353a1771c",
+        "supersedes": "5341aa14c2b1484da4999317c244901f",
+        "note_id": "2810de7d11fd40869d83faf0032eb9fa",
+        "reason": "Replace pre-implementation observation with actual completed verification",
+        "revision": 12,
+        "created_at": "2026-09-08T00:22:47.679900+00:00"
+      }
+    ],
+    "scope": "analysis_only",
+    "action_permission": "not_granted"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "product",
+  "cwd": "/workspace/scratch/b6252d122d78/compass-c",
+  "requested_argv": [
+    "compass-c",
+    "--db",
+    ".compass/v4-lifecycle-run-3.sqlite",
+    "brief",
+    "135fea85caae4b5e94eae5d093a33988"
+  ],
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+    "--db",
+    ".compass/v4-lifecycle-run-3.sqlite",
+    "brief",
+    "135fea85caae4b5e94eae5d093a33988"
+  ],
+  "target_resolution": {
+    "alias": "compass-c",
+    "manifest_key": "installed_cli",
+    "manifest_sha256": "7dc69bf811ff2b3c7ae61097d345498365f6473d05bfc9277e6a09ee0e6657ca"
+  },
+  "started_at": "2026-09-08T01:53:36.543782+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"ok\": true,\n  \"data\": {\n    \"objective\": \"Decide whether the candidate’s inspected finite arithmetic can proceed to integration review or needs further arithmetic review\",\n    \"stakes\": \"low\",\n    \"revision\": 3,\n    \"created_at\": \"2026-09-08T01:49:50.520623+00:00\",\n    \"constraints\": [\n      \"Preserve the supplied model and experiment inputs unchanged.\",\n      \"Prepare a prospective plan only; leave the experiment pending for a separate resumer.\",\n      \"A favorable finite check supports integration review only and cannot authorize publication or prove general software correctness or product value.\"\n    ],\n    \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n    \"invalidations\": [\n      {\n        \"id\": \"2921f3ae4a74445189f92fb272dcbf00\",\n        \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n        \"root_id\": \"debba11ace8d4f30a9361c81aa82da50\",\n        \"reason\": \"Incorporated experiment observation a0540a0270f54f528eddd99647a1c4e7.\",\n        \"revision\": 3,\n        \"created_at\": \"2026-09-08T01:53:26.760218+00:00\",\n        \"affected_notes\": [\n          \"debba11ace8d4f30a9361c81aa82da50\"\n        ]\n      }\n    ],\n    \"revisions\": [\n      {\n        \"id\": \"4e4920da045a40f280da9893af91cd68\",\n        \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n        \"supersedes\": \"debba11ace8d4f30a9361c81aa82da50\",\n        \"note_id\": \"bd7ea62dbe734ee98a0482e20d0d8c3a\",\n        \"reason\": \"Incorporated experiment observation a0540a0270f54f528eddd99647a1c4e7.\",\n        \"revision\": 3,\n        \"created_at\": \"2026-09-08T01:53:26.760036+00:00\"\n      }\n    ],\n    \"scope\": \"analysis_only\",\n    \"action_permission\": \"not_granted\",\n    \"recommendations\": [],\n    \"alternatives\": [],\n    \"evidence\": [],\n    \"uncertainty\": [\n      {\n        \"id\": \"bd7ea62dbe734ee98a0482e20d0d8c3a\",\n        \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n        \"kind\": \"forecast\",\n        \"content\": \"Posterior model for experiment plan ab4d416167af4950bd9a2802576f43c9.\",\n        \"status\": \"computed\",\n        \"source\": \"compass-c:experiment-observation:a0540a0270f54f528eddd99647a1c4e7\",\n        \"stale\": false,\n        \"created_at\": \"2026-09-08T01:53:26.760036+00:00\",\n        \"depends_on\": [\n          \"7bd0679c50d043ce8b1954a742840e3f\"\n        ]\n      }\n    ],\n    \"checks\": [],\n    \"effects\": [],\n    \"outcomes\": [\n      {\n        \"id\": \"7bd0679c50d043ce8b1954a742840e3f\",\n        \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n        \"kind\": \"outcome\",\n        \"content\": \"The recovered installed-three-case-oracle protocol ran exactly once with the isolated installed Python, PYTHONPATH removed, PYTHONDONTWRITEBYTECODE=1, and a 30-second parent timeout. It exited 0 and returned outcome pass with all three cases present and passed: informative_two_state, uncertainty_without_decision_value, and tied_prior_and_conditional_preferences. This is bounded finite-case evidence, not general correctness.\",\n        \"status\": \"observed\",\n        \"source\": \"/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-3/resume/actual-check.json\",\n        \"stale\": false,\n        \"created_at\": \"2026-09-08T01:53:26.760036+00:00\",\n        \"depends_on\": []\n      }\n    ],\n    \"reversal_conditions\": [],\n    \"stale_notes\": [\n      {\n        \"id\": \"debba11ace8d4f30a9361c81aa82da50\",\n        \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n        \"kind\": \"forecast\",\n        \"content\": \"Frozen model for experiment plan ab4d416167af4950bd9a2802576f43c9.\",\n        \"status\": \"computed\",\n        \"source\": \"compass-c:experiment-plan:ab4d416167af4950bd9a2802576f43c9\",\n        \"stale\": true,\n        \"created_at\": \"2026-09-08T01:49:58.049545+00:00\",\n        \"depends_on\": []\n      }\n    ],\n    \"review\": {\n      \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n      \"revision\": 3,\n      \"current_counts\": {\n        \"alternative\": 0,\n        \"assumption\": 0,\n        \"decision\": 0,\n        \"effect\": 0,\n        \"evidence\": 0,\n        \"forecast\": 1,\n        \"limitation\": 0,\n        \"outcome\": 1,\n        \"reversal_condition\": 0,\n        \"test\": 0\n      },\n      \"status\": \"needs_work\",\n      \"next_checks\": [\n        \"Record decision-relevant evidence with uncertainty and provenance.\",\n        \"Compare at least two alternatives, including delay or inaction.\",\n        \"Specify a check that could change the conclusion.\",\n        \"State the operating envelope and remaining uncertainty.\",\n        \"Record a conditional recommendation; this cannot authorize execution.\",\n        \"Record an explicit reversal condition for reconsideration.\"\n      ],\n      \"stale_notes\": [\n        \"debba11ace8d4f30a9361c81aa82da50\"\n      ],\n      \"action_permission\": \"not_granted\",\n      \"source_verified\": false,\n      \"limits\": \"Structural checks only; note presence does not establish truth or authority.\"\n    },\n    \"source_verified\": false,\n    \"experiments\": [\n      {\n        \"plan_id\": \"ab4d416167af4950bd9a2802576f43c9\",\n        \"decision_id\": \"135fea85caae4b5e94eae5d093a33988\",\n        \"revision\": 3,\n        \"plan_revision\": 2,\n        \"model_note_id\": \"debba11ace8d4f30a9361c81aa82da50\",\n        \"current_model_note_id\": \"bd7ea62dbe734ee98a0482e20d0d8c3a\",\n        \"current_model_stale\": false,\n        \"status\": \"observed\",\n        \"scope\": \"analysis_only\",\n        \"action_permission\": \"not_granted\",\n        \"source_verified\": false,\n        \"summary\": {\n          \"current_winners\": [\n            \"accept the bounded installed arithmetic for integration review\"\n          ],\n          \"recorded_winners\": [\n            \"accept the bounded installed arithmetic for integration review\"\n          ],\n          \"proposed_experiment_ids\": [],\n          \"proposal_basis\": \"frozen_prior\",\n          \"proposal_current\": false,\n          \"single_observation_consumed\": true,\n          \"no_test\": {\n            \"expected_value\": 0.0,\n            \"expected_value_exact\": \"0\",\n            \"expected_value_winners\": [\n              \"seek additional arithmetic review\"\n            ]\n          },\n          \"candidates\": [\n            {\n              \"id\": \"installed-three-case-oracle\",\n              \"question\": \"Do all three frozen finite-model checks agree with an independent Fraction oracle against the installed candidate?\",\n              \"protocol\": \"Run /workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/check_installed.py exactly once using the isolated installed Python supplied with the task, PYTHONDONTWRITEBYTECODE=1 and no PYTHONPATH. Use a 30-second parent timeout. The script launches no child process, writes no files, and checks three fixed finite models through the public package API. Stop at its first failure. Retain exact argv, exit status, stdout, stderr and timestamps. Observe pass only if the script exits 0 and its JSON outcome is pass with all three cases present; observe fail for a completed failing check. A timeout or unavailable check remains an unavailable observation and cannot be turned into pass. The retained check output is the observation source; a successful plan or notebook command is not the observation.\",\n              \"cost\": 0.5,\n              \"duration\": 30,\n              \"status\": \"informative_within_bounds\",\n              \"net_information_value\": 3.3,\n              \"net_information_value_exact\": \"33/10\",\n              \"outcomes\": [\n                {\n                  \"outcome\": \"pass\",\n                  \"probability_exact\": \"31/50\",\n                  \"possible\": true,\n                  \"expected_value_winners\": [\n                    \"accept the bounded installed arithmetic for integration review\"\n                  ],\n                  \"preference_changed\": true\n                },\n                {\n                  \"outcome\": \"fail\",\n                  \"probability_exact\": \"19/50\",\n                  \"possible\": true,\n                  \"expected_value_winners\": [\n                    \"seek additional arithmetic review\"\n                  ],\n                  \"preference_changed\": false\n                }\n              ]\n            }\n          ],\n          \"bounds\": {\n            \"budget\": 1.0,\n            \"max_duration\": 30.0,\n            \"duration_unit\": \"seconds\"\n          },\n          \"value_unit\": \"illustrative development utility points\",\n          \"next_action\": \"Reconsider invalidated recommendations using the retained posterior. For another observation, freeze a new plan with likelihoods conditional on this evidence.\",\n          \"source_verified\": false\n        }\n      }\n    ]\n  }\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:53:36.588253+00:00",
+  "elapsed_seconds": 0.04446350700163748,
+  "stdout_utf8_bytes": 8491,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "exposed_argv": [
+      "evals/dogfood/v4-lifecycle/capture-run-3.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "product",
+      "--output",
+      "final-notebook-brief.json",
+      "--",
+      "compass-c",
+      "--db",
+      ".compass/v4-lifecycle-run-3.sqlite",
+      "brief",
+      "135fea85caae4b5e94eae5d093a33988"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

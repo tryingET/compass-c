@@ -25,7 +25,6 @@ done
 [ -n "$python_exec" ] || fail "missing dependency: python3 or python"
 
 AK_CMD="${AK_CMD:-ak}"
-command -v "$AK_CMD" >/dev/null 2>&1 || fail "missing ak command: $AK_CMD"
 
 helper="./scripts/lib/check-task-scope-snapshots.py"
 [ -f "$helper" ] || fail "missing required helper: $helper"

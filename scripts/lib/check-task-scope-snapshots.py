@@ -171,18 +171,18 @@ def main() -> None:
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve(strict=True)
-    ak_cmd = resolve_ak_command(args.ak)
     snapshots_dir = Path(args.snapshots_dir)
 
     if not snapshots_dir.is_dir():
-        print("ok: no task-scope snapshots")
+        print("ok: no task-scope snapshots to validate")
         return
 
     snapshots = iter_snapshots(snapshots_dir)
     if not snapshots:
-        print("ok: no task-scope snapshots")
+        print("ok: no task-scope snapshots to validate")
         return
 
+    ak_cmd = resolve_ak_command(args.ak)
     for snapshot_path in snapshots:
         validate_snapshot(repo_root, ak_cmd, snapshot_path)
 

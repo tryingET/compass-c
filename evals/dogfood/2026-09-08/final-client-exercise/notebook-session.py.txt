@@ -1,0 +1,16 @@
+import json
+from capture import BASE, run
+
+CLI = '/workspace/scratch/b6252d122d78/v0.5-core/bin/compass-c'
+DB = '/workspace/scratch/b6252d122d78/compass-c/.compass/final-client-exercise.sqlite'
+DID = json.loads((BASE / 'start-output.json').read_text())['data']['decision_id']
+
+def cli(*args, display=True):
+    result = run([CLI, '--db', DB, *args], display=display)
+    if result.returncode:
+        raise SystemExit(result.returncode)
+    return json.loads(result.stdout)['data']
+
+if __name__ == '__main__':
+    cli('get', DID)
+    cli('brief', DID)

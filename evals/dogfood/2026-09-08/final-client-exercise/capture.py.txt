@@ -1,0 +1,23 @@
+import datetime
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+BASE = Path(__file__).parent
+TRACE = BASE / 'command-trace.json'
+env = dict(os.environ)
+env.pop('PYTHONPATH', None)
+env['PYTHONDONTWRITEBYTECODE'] = '1'
+def run(argv, display=True):
+    result = subprocess.run(argv, env=env, cwd='/workspace/scratch/b6252d122d78', text=True, capture_output=True)
+    rows = json.loads(TRACE.read_text()) if TRACE.exists() else []
+    rows.append({'sequence': len(rows) + 1, 'timestamp_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'argv': argv, 'cwd': '/workspace/scratch/b6252d122d78', 'environment': {'PYTHONDONTWRITEBYTECODE': '1', 'PYTHONPATH': None}, 'exit_status': result.returncode, 'stdout': result.stdout, 'stderr': result.stderr})
+    TRACE.write_text(json.dumps(rows, indent=2) + '\n')
+    if display:
+        print(json.dumps(rows[-1], indent=2))
+    return result
+
+if __name__ == '__main__':
+    sys.exit(run(sys.argv[1:]).returncode)

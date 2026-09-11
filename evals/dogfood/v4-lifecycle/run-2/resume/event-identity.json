@@ -1,0 +1,7 @@
+{
+  "decision_id": "6274b21cddee461692b687992ccb8d69",
+  "plan_id": "8851a5935fd44ce3a21c4be95f360161",
+  "experiment_id": "installed-three-case-oracle",
+  "event_id": "run-2-installed-three-case-oracle-20260908T013715Z",
+  "observation_file": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/run-2/resume/observation.json"
+}

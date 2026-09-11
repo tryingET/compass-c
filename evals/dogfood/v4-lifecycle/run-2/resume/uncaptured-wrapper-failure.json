@@ -1,0 +1,9 @@
+{
+  "provenance": "Visible exec_command submission and returned tool result; helper never started and could not capture this failure.",
+  "cmd": "env -u PYTHONPATH PYTHONDONTWRITEBYTECODE=1 /workspace/scratch/b6252d122d78/v0.6-core/bin/python /workspace/scratch/b6252d122d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py --phase resume read /workspace/scratch/b6252d122d78/compass-c/skills/compass/SKILL.md",
+  "exit_code": 2,
+  "output": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python: can't open file '/workspace/scratch/b6252d122d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py': [Errno 2] No such file or directory\n",
+  "chunk_id": "1df6c5",
+  "wall_time_seconds": 0.000003153,
+  "timestamp": "Not exposed in tool reply"
+}

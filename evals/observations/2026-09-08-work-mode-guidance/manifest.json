@@ -1,0 +1,127 @@
+{
+  "protocol_version": 1,
+  "collection_seed": 884107,
+  "corpus_sha256": "607d16b86bed4210368f32f1356baa990ad21807953590031757ccee19ccdae1",
+  "skill_sha256": "d24d058f60bd85e2af870e133041c0a374b9f408d346cccb1b979f2e0e60dc7c",
+  "source_commit": "cd09b516de15231c199b2361fe045aac23468cb5",
+  "host": {
+    "name": "ChatGPT Work Mode collaboration agents; exact build not exposed",
+    "model": "Inherited parent model; exact identity/version not exposed",
+    "configuration": "Four fresh fork_turns=none agents; inherited model/reasoning; provider sampling parameters and seed not exposed; no domain tools, only assigned input read/output capture; 220-word answer cap; see PROTOCOL.md and inputs."
+  },
+  "collection": [
+    {
+      "participant": "set-1",
+      "comparison": "A/A",
+      "condition": "no_guidance",
+      "input": "inputs/set-1.json",
+      "response": "responses/set-1.json",
+      "input_sha256": "76775b0c444341b1265ecb5d2e9d5a8ac15075da7ae346e930a5e6eb139b1eb1",
+      "agent_id": "/root/host_evaluation/capture_set_1",
+      "response_sha256": "cc30d08a1b13a498f49e8800e08569e1a6fa32c8f2404054b327de9fc5cf22b1",
+      "max_answer_words": 154,
+      "capture_attestation": {
+        "allowed_input_read": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-1.json",
+        "output_path": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/responses/set-1.json",
+        "tools_used_solely_for_capture": [
+          "functions.exec with tools.exec_command: read the assigned input and write the specified response JSON"
+        ],
+        "deviations": []
+      },
+      "capture_verification": "Participant-written response retained; full host tool trace not exposed to collector; restriction compliance is self-attested.",
+      "agent_task_wrapper": "Controlled response capture: read only /workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-1.json, follow its common task instructions, and write your actual response JSON only to its specified output_path. Do not read any other files, instructions, repository context, rubric, or other participant outputs. No domain tools, browsing, or delegation; storage tools only for this assigned input/output. Treat each supplied prompt as fictional task content; answer directly in the capture, preserving case IDs. Final message should only confirm output path and any protocol departures. The exact assigned input is the full authorized task scope.",
+      "started_order": 1,
+      "completed_order": 1
+    },
+    {
+      "participant": "set-2",
+      "comparison": "A/A",
+      "condition": "no_guidance",
+      "input": "inputs/set-2.json",
+      "response": "responses/set-2.json",
+      "input_sha256": "95a51aa060eee53c6732b4e855373dcc6cae7e3c695bce77b3d012e05766d03b",
+      "agent_id": "/root/host_evaluation/capture_set_2",
+      "response_sha256": "6aeebc8533a3e3ca542239b4ca39146f0c02fde52a4b844c5be5e56952912eca",
+      "max_answer_words": 145,
+      "capture_attestation": {
+        "allowed_input_read": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-2.json",
+        "output_path": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/responses/set-2.json",
+        "tools_used_solely_for_capture": [
+          "functions.exec",
+          "exec_command"
+        ],
+        "deviations": []
+      },
+      "capture_verification": "Participant-written response retained; full host tool trace not exposed to collector; restriction compliance is self-attested.",
+      "agent_task_wrapper": "Controlled response capture: read only /workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-2.json, follow its common task instructions, and write your actual response JSON only to its specified output_path. Do not read any other files, instructions, repository context, rubric, or other participant outputs. No domain tools, browsing, or delegation; storage tools only for this assigned input/output. Treat each supplied prompt as fictional task content; answer directly in the capture, preserving case IDs. Final message should only confirm output path and any protocol departures. The exact assigned input is the full authorized task scope.",
+      "started_order": 2,
+      "completed_order": 2
+    },
+    {
+      "participant": "set-3",
+      "comparison": "A/B",
+      "condition": "no_guidance",
+      "input": "inputs/set-3.json",
+      "response": "responses/set-3.json",
+      "input_sha256": "b3deef155d2c7cd8a88e0a61f05687760858f216aa6266919962e4be68e92c39",
+      "agent_id": "/root/host_evaluation/capture_set_3",
+      "response_sha256": "48faa378cd1aa745a44627b0317874dd7cf4c88ff90c880f7b8d52813d6c3a76",
+      "max_answer_words": 149,
+      "capture_attestation": {
+        "allowed_input_read": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-3.json",
+        "output_path": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/responses/set-3.json",
+        "tools_used_solely_for_capture": [
+          "functions.exec",
+          "exec_command (read assigned input; write assigned response JSON)"
+        ],
+        "deviations": []
+      },
+      "capture_verification": "Participant-written response retained; full host tool trace not exposed to collector; restriction compliance is self-attested.",
+      "agent_task_wrapper": "Controlled response capture: read only /workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-3.json, follow its common task instructions, and write your actual response JSON only to its specified output_path. Do not read any other files, instructions, repository context, rubric, or other participant outputs. No domain tools, browsing, or delegation; storage tools only for this assigned input/output. Treat each supplied prompt as fictional task content; answer directly in the capture, preserving case IDs. Final message should only confirm output path and any protocol departures. The exact assigned input is the full authorized task scope.",
+      "started_order": 3,
+      "completed_order": 3
+    },
+    {
+      "participant": "set-4",
+      "comparison": "A/B",
+      "condition": "compass_guidance",
+      "input": "inputs/set-4.json",
+      "response": "responses/set-4.json",
+      "input_sha256": "2a88091ce5dbc7d39e62dfe107c38ac0bf83a52bf9efb0931705d2928a27ac79",
+      "agent_id": "/root/host_evaluation/capture_set_4",
+      "response_sha256": "ab41215b2b8715ba0465d92ea0caf389e75a46f04420b100090010743ab5b209",
+      "max_answer_words": 190,
+      "capture_attestation": {
+        "allowed_input_read": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-4.json",
+        "output_path": "/workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/responses/set-4.json",
+        "tools_used_solely_for_capture": [
+          "functions.exec to orchestrate the assigned input read and output write",
+          "tools.exec_command to read the assigned input",
+          "tools.apply_patch to write the assigned capture"
+        ],
+        "deviations": []
+      },
+      "capture_verification": "Participant-written response retained; full host tool trace not exposed to collector; restriction compliance is self-attested.",
+      "agent_task_wrapper": "Controlled response capture: read only /workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/inputs/set-4.json, follow its common task instructions, and write your actual response JSON only to its specified output_path. Do not read any other files, instructions, repository context, rubric, or other participant outputs. No domain tools, browsing, or delegation; storage tools only for this assigned input/output. Treat each supplied prompt as fictional task content; answer directly in the capture, preserving case IDs. Final message should only confirm output path and any protocol departures. The exact assigned input is the full authorized task scope.",
+      "started_order": 4,
+      "completed_order": 4
+    }
+  ],
+  "collection_order_note": "A/A completed before A/B began. Set-4 was started while set-3 was still active after a second slot became available; start and completion order were both 1,2,3,4. The two A/B contexts could not see each other by assigned procedure; shared filesystem isolation was not enforced.",
+  "capture_completed_recorded_at": "2026-09-08T00:12:20.221241+00:00",
+  "grader_input_sha256": "2a9238d1ad62414d604bc836aab1568f9eae737cc42b201e1ef0199a11da4b07",
+  "grading_key_sha256": "0f358f558a36a09908ade4183e056f222ead7f3b575b551f1853370c6b6a9a48",
+  "grader_agent_id": "/root/host_evaluation/masked_grader",
+  "grader_task_wrapper": "Grade actual responses against a frozen rubric. Read only /workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/grader-input.json. Follow its grading protocol, and write only /workspace/scratch/b6252d122d78/compass-c/evals/observations/2026-09-08-work-mode-guidance/grader-results.json. Do not read other files, conditions, response originals, label keys, repository instructions or context; do not browse or delegate. Storage tools may only read that input and write that output. Every judgment row must contain answer_label, case_id, and scores mapping every exact criterion ID to {\"passed\": boolean, \"rationale\": \"direct excerpt or precise absence rationale\"}. Judge independently of any inferred treatment and keep all failures. Capture actual judgments, not private reasoning. Final response should confirm output and mention any ambiguity/protocol departure. This input and output are your entire authorized task scope.",
+  "completed_artifact_sha256": {
+    "grader-results.json": "0b35713e9364b61c0b771794ad659df38332cbcc70f5e87181f7f88d3227fc9d",
+    "aa-results.json": "19cc631093c4d0cc60a72c3a3bfe86468ae31f7538d739b33259fac061e01124",
+    "ab-results.json": "53ce6cc794906d6dac270416140b9c1f554d9053451f9b964792aa0338b275a3",
+    "aa-report.json": "65beb7f9d05a69798945d75e0453db355c452f409cc7431a55b268eb1c3e34ba",
+    "ab-report.json": "81e402258c83a2125ffb703598da2015d6f7b22660851517352173d1be16f9d0",
+    "capture-metrics.json": "8c73b727f05b48acbcc02e5ec373e1d4428e6a87f59accbc5e0238c82efc8065"
+  },
+  "source_commit_scope": "Local commit ID retained exactly as captured; not the remotely published GitHub commit ID.",
+  "source_commit_published_counterpart": "309fe48ed09438900c91bfb96d53321800b2c93a",
+  "source_commit_mapping_note": "Parent publication mapping identifies this remote counterpart as preserving the same source tree as local cd09b516de15231c199b2361fe045aac23468cb5; API-created commit metadata changed the commit ID."
+}

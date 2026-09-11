@@ -11,7 +11,7 @@ import unittest
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from compass_c import CompassError, Notebook, calculate
+from compass_c import VERSION, CompassError, Notebook, calculate
 from compass_c.cli import main, parse_json
 from install_skill import install
 
@@ -352,7 +352,7 @@ class InterfaceTests(unittest.TestCase):
                 timeout=10,
             )
             self.assertEqual(p.returncode, 0, p.stderr)
-            self.assertEqual(p.stdout.strip(), "0.3.0")
+            self.assertEqual(p.stdout.strip(), VERSION)
 
     def test_install_does_not_overwrite(self):
         with tempfile.TemporaryDirectory() as t:

@@ -12,7 +12,7 @@ description: >-
   only when requested. Exclude questions about the physical compass instrument.
 compatibility: Markdown guidance; optional Python 3.11+ standard-library CLI. Host discovery is provisional.
 metadata:
-  version: "0.3.0"
+  version: "0.6.0"
   evidence_status: "provisional-behavior; local-tools-tested"
 ---
 
@@ -61,6 +61,12 @@ Load only what the task needs:
   competing criteria, complementary tests, feedback, or recovery.
 - [Calculators](references/calculators.md): before numerical helpers; check units
   and assumptions before interpreting results.
+- [Portfolios](references/portfolio.md): shared constraints, dependency order,
+  explicit deferral values and conflicting stakeholder preferences.
+- [Experiments](references/experiments.md): bounded information gathering under
+  supplied likelihoods and explicit result-conditioned model revision.
+- [Saved experiments](references/experiment-workflow.md): before persisting a
+  bounded experiment, handing it off, or incorporating an identified observation.
 - [Notebook operations](references/notebook.md): before saving, resuming,
   invalidating, or reconciling a possibly completed write.
 - [CLI entry point](scripts/compass.py): use --help for local computation or records;

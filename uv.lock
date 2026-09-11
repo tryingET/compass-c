@@ -174,7 +174,7 @@ wheels = [
 
 [[package]]
 name = "compass-c"
-version = "0.3.0"
+version = "0.6.0"
 source = { editable = "." }
 
 [package.optional-dependencies]
@@ -194,7 +194,7 @@ mcp = [
 requires-dist = [
     { name = "build", marker = "extra == 'dev'", specifier = ">=1.2" },
     { name = "hatchling", marker = "extra == 'dev'", specifier = ">=1.32,<2" },
-    { name = "mcp", marker = "extra == 'mcp'", specifier = ">=2.1.1,<3" },
+    { name = "mcp", marker = "extra == 'mcp'", specifier = "==2.1.1" },
     { name = "pydantic", marker = "extra == 'mcp'", specifier = ">=2,<3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
     { name = "pyyaml", marker = "extra == 'dev'", specifier = ">=6,<7" },

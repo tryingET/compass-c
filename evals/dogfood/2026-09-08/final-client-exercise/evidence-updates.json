@@ -1,0 +1,9 @@
+[
+  {
+    "note_id": "761580d8156540058f8acb85229c796b",
+    "content": "Readback of installed COMPASS-C 0.5.0 commands confirms portfolio exit=0 and ok=true, common optimum p00f with values 33/32 and zero remaining review minutes, and experiment proposal exit=0 and ok=true with prospective net information value 4.2. These are observed CLI outputs under caller assumptions. The 32 deterministic three-state oracle protocol was not executed; there is no pass/fail observation, and priors remain [0.7,0.3]. Dependency layers express precedence only; no timed or concurrent schedule or real stakeholder consensus was observed.",
+    "reason": "Expand the initial terse command observation after detailed output inspection; explicitly separate CLI success from the missing experiment observation and record the zero-margin/precedence limits. No model input or experiment outcome is changed.",
+    "status": "observed",
+    "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/command-trace.json#sequences=1,10,11"
+  }
+]

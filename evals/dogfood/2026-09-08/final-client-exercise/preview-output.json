@@ -1,0 +1,56 @@
+{
+  "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+  "revision": 14,
+  "applied": false,
+  "updates": [
+    {
+      "supersedes": "761580d8156540058f8acb85229c796b",
+      "content": "Readback of installed COMPASS-C 0.5.0 commands confirms portfolio exit=0 and ok=true, common optimum p00f with values 33/32 and zero remaining review minutes, and experiment proposal exit=0 and ok=true with prospective net information value 4.2. These are observed CLI outputs under caller assumptions. The 32 deterministic three-state oracle protocol was not executed; there is no pass/fail observation, and priors remain [0.7,0.3]. Dependency layers express precedence only; no timed or concurrent schedule or real stakeholder consensus was observed.",
+      "reason": "Expand the initial terse command observation after detailed output inspection; explicitly separate CLI success from the missing experiment observation and record the zero-margin/precedence limits. No model input or experiment outcome is changed.",
+      "status": "observed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/command-trace.json#sequences=1,10,11",
+      "kind": "evidence",
+      "depends_on": []
+    }
+  ],
+  "invalidated": [
+    "03c2fe442bd04ad492cc76ba650862e8",
+    "2803bfe295224327b01cc83a823af906",
+    "4ba09d4ce31142cfaa4b5be1cf3f6914",
+    "761580d8156540058f8acb85229c796b",
+    "7a30c3e290ef4240bfc034240a62e5a1",
+    "be6747c5bf504681b361b74a210bc9cc",
+    "c0c0ff4c7a6a4fc0ac53837eae7bfbf0",
+    "fe7a1d0f29ef40b6a94553da16ecf94d"
+  ],
+  "review": {
+    "status": "human_review_required",
+    "conditions_evaluated": false,
+    "reversal_conditions": [
+      {
+        "id": "4ba09d4ce31142cfaa4b5be1cf3f6914",
+        "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+        "kind": "reversal_condition",
+        "content": "Reopen the core portfolio if a prerequisite fails, required review effort exceeds the zero-margin 90-minute allowance, or an actual owner adds a usefulness/governance prerequisite or changes values/deferral assumptions. For the fixed arithmetic payoffs, acceptance requires P(meets invariants)>0.75; the tie is at 0.75. Only a properly sourced outcome from the stated protocol can justify the supplied Bayesian pass/fail update; no such outcome exists here.",
+        "status": "proposed",
+        "source": "",
+        "stale": false,
+        "created_at": "2026-09-08T00:23:03.588947+00:00",
+        "depends_on": [
+          "be6747c5bf504681b361b74a210bc9cc",
+          "0ca0dc25257647399ac2d201d7511130",
+          "14e1ff90c71848b3a5a2a2a76e72350c"
+        ]
+      }
+    ],
+    "outcomes": [],
+    "next_checks": [
+      "Compare the supplied observations with the recorded reversal conditions; COMPASS-C has not interpreted whether any condition occurred.",
+      "Reconsider affected reasoning and recommendations using current evidence.",
+      "Record observed outcomes with provenance and distinguish them from forecasts."
+    ]
+  },
+  "scope": "analysis_only",
+  "action_permission": "not_granted",
+  "source_verified": false
+}

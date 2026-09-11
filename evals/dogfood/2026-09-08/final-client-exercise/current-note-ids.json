@@ -1,0 +1,18 @@
+{
+  "command_evidence": "976254d6d65547c481bbded903c7db13",
+  "model_assumptions": "6a6e5f67eaa240789b154fcb48dd6591",
+  "portfolio_result": "4e8411aea94647829c09b1288899fc56",
+  "dissent": "58918e4b0a6c4134a154a4e3ac8ab61a",
+  "experiment_result": "0ca0dc25257647399ac2d201d7511130",
+  "core_alternative": "4d20427b250a4dd4afe354fd9f343c59",
+  "delay_alternative": "634689ae80914619a92514a92cd4a846",
+  "host_alternative": "dba44dfa3a9940a099673d34647e0f77",
+  "prospective_check": "2813945420e94244b806bd56221eb3c8",
+  "missing_observation": "14e1ff90c71848b3a5a2a2a76e72350c",
+  "effects": "d6c375121ffb45fcb893a18ee3b75b86",
+  "reversal": "42f50946d5454ecf90259f32c48c48a1",
+  "initial_recommendation": "fe7a1d0f29ef40b6a94553da16ecf94d",
+  "sensitivity": "12db1b11d7614c9ca1cb6c8e00ed4249",
+  "final_recommendation": "daeeb17a950d48c4abb3f962c96458b6",
+  "notebook_outcome": "aad043ec3a16414abe55a0600cda329e"
+}

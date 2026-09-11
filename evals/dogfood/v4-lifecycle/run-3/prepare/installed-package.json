@@ -1,0 +1,54 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "setup",
+  "cwd": "/workspace/scratch/b6252d122d78/compass-c",
+  "requested_argv": [
+    "installed-python",
+    "-c",
+    "import importlib.metadata, json, sys, compass_c; print(json.dumps({\"version\": importlib.metadata.version(\"compass-c\"), \"package_location\": compass_c.__file__, \"python\": sys.executable}, indent=2))"
+  ],
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import importlib.metadata, json, sys, compass_c; print(json.dumps({\"version\": importlib.metadata.version(\"compass-c\"), \"package_location\": compass_c.__file__, \"python\": sys.executable}, indent=2))"
+  ],
+  "target_resolution": {
+    "alias": "installed-python",
+    "manifest_key": "installed_python",
+    "manifest_sha256": "7dc69bf811ff2b3c7ae61097d345498365f6473d05bfc9277e6a09ee0e6657ca"
+  },
+  "started_at": "2026-09-08T01:49:42.550351+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"version\": \"0.6.0\",\n  \"package_location\": \"/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages/compass_c/__init__.py\",\n  \"python\": \"/workspace/scratch/b6252d122d78/v0.6-core/bin/python\"\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:49:42.625403+00:00",
+  "elapsed_seconds": 0.07505116399988765,
+  "stdout_utf8_bytes": 211,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "exposed_argv": [
+      "evals/dogfood/v4-lifecycle/capture-run-3.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "setup",
+      "--output",
+      "installed-package.json",
+      "--",
+      "installed-python",
+      "-c",
+      "import importlib.metadata, json, sys, compass_c; print(json.dumps({\"version\": importlib.metadata.version(\"compass-c\"), \"package_location\": compass_c.__file__, \"python\": sys.executable}, indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

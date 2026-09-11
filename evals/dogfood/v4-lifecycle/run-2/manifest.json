@@ -1,0 +1,72 @@
+{
+  "schema": "compass-c.v4-lifecycle-manifest.v1",
+  "status": "frozen_before_participant_execution",
+  "attempt": 2,
+  "frozen_at": "2026-09-08T01:31:16.493065+00:00",
+  "protocol": "v4-lifecycle.1",
+  "remediation_of": "../run-1/assessment.json",
+  "prospective_protocol_commit": "470c3dc929138bdf62e7678267b1ab7cb94250bf",
+  "source_commit": "23802e173d9d83784ace214e7d00c4a9965a731f",
+  "unchanged_runtime_source_commit": "9771c9eda32b50cc8f01a2e64d8f256b58f03c96",
+  "wheel": {
+    "path": "/workspace/scratch/b6252d122d78/v0.6-final-distributions/compass_c-0.6.0-py3-none-any.whl",
+    "sha256": "ed31585b6f3326b018874d8dcb47a5dfb6e8186cf0158141a4dd84657d9814ff"
+  },
+  "installed_python": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+  "installed_cli": "/workspace/scratch/b6252d122d78/v0.6-core/bin/compass-c",
+  "notebook": {
+    "path": "/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-2.sqlite",
+    "existed_before": false
+  },
+  "frozen_input_sha256": {
+    "protocol.md": "e22d005ab42d53e6ef11d06b16689fb4c8c66ff0d91119a92dfc6529b776f2be",
+    "parameters.json": "741262c396e582c2c4c1c945a97cff45eda2d785bb3b59d97779623ad3a2a3b9",
+    "check_installed.py": "cfcc15d3b305e0bd635b43762ada31062e83911a39dcd19bf6a107e783b69653",
+    "capture-run-2.py": "55ab30e8bedb8c3e7b9b342b53732cf4a1a04ccbb51614664ccbca5eb01ff7a8",
+    "prepare-task-run-2.json": "3e18519c670dc9c4935b6f634005f6e6bbca4029e1f7055a5e2e177d7be6cfd2",
+    "resume-task-run-2.json": "08f4cfe7bc6231c03506ef5a94efd2931a0bc437eb32a9934f26064b69bb65d2",
+    "remediation-2.md": "063b8c8cf74ba22b33201bcda26852e7be480ed11facd1801e78be4cd3bc31dd"
+  },
+  "complete_skill_package_sha256": "158a22a8e2546e28d9a60983165048e7a553f88a9db209323ea19e92a1eefe52",
+  "skill_fingerprint_definition": "Sorted relative paths and SHA-256 for all tracked canonical skill files; transient runtime caches are not package contents.",
+  "skill_package_file_sha256": {
+    "LICENSE": "b4f66cfae4f39ce29e1da0bc5ab1516af037e9dbc6b7f4eb531534ad50a4fc9a",
+    "SKILL.md": "768ea074b1b4e993b22877b7ccdda91407a57b976e861622bd0dcaa482733b83",
+    "evals/cases.json": "3e532ebd85c5be9bf09566163297918c7c5830fc677eadae69a6483862215153",
+    "openai.yaml": "6ff3e3c761b65db239a622de10578a2b0054609954939eea1464645dd04f8a69",
+    "references/calculators.md": "09424ad41d8fc3ee5c770b9f33882e10812d05982addfa63b1afc423529ad026",
+    "references/decision-checks.md": "71d32559f91a65ea5493069d608e48513db1d99883793a3e4cad9d7bd10f948a",
+    "references/experiment-workflow.md": "07317f62d7bf869d4b9d96e52077850c5cc2f92a04286048ba45ff028f108686",
+    "references/experiments.md": "83013a77830800567ec031874a8b377926b15b9a15ac95ec44f17572494c5762",
+    "references/notebook.md": "70f98a6a89f98ca9213ca2321add6f5788b002e09c295c6ab5f54ff3d160c1e2",
+    "references/portfolio.md": "cf6101ab98f32941ce8b1c72130acb2467fd4d22afea23c9c96a66bf11e7fe84",
+    "scripts/calculations.py": "a271a61cc872e1705aac14b03cd77017f1efba8274dc52ba5558346770bbff54",
+    "scripts/compass.py": "b5f607b576872c794472716e78190df1bed264d4eae3843009ad5299ec4fd065",
+    "scripts/core.py": "267e57d26bb9784c72536041c04d222a79ab2c8f1cb034b41bc8157c45ffa370",
+    "scripts/evaluation.py": "9450da2513097c5f30fc87a092505486b35d6b09769ac7c79358304a0eff0e43",
+    "scripts/evidence.py": "cd727b83bab0599a10102e4a97d7d407fdc2415e4bb4fdc32fc75b463e7cd0ee",
+    "scripts/experiments.py": "9b3644322cd2a817cd25aa3853c0f8f672e2ba854ee1345e25dc30ea395fd6b4",
+    "scripts/lifecycle.py": "9c288dfc2e1a6e1724455e0d22699aebfacea32762854b3cdf0bef9931c0de6c",
+    "scripts/portfolio.py": "54a3109bf8a56b28c90a1a5ff6d92db59fcfc576bd27f7590c7f571a6063a638"
+  },
+  "changed_guidance_paths": [
+    "references/experiment-workflow.md",
+    "references/notebook.md"
+  ],
+  "participants": {
+    "fresh_context": "two sequential fork_turns=none agents",
+    "model": "inherited parent model; exact identifier not exposed",
+    "provider": "OpenAI Work Mode",
+    "sampling_settings": "not exposed; no override requested",
+    "scope": "restricted by frozen task files"
+  },
+  "dynamic_handoff": "Only decision_id from the preparer is passed separately to the resumer; no model or prior output is passed.",
+  "task_change_boundary": "Only database/evidence/capture paths differ from run1; semantic tasks, input model/check and every rubric threshold unchanged.",
+  "evidence_limits": [
+    "author-visible local installed-client exercise",
+    "not native vendor discovery",
+    "not a holdout or comparative behavioral superiority study",
+    "illustrative priors and likelihoods, not calibrated reliability estimates",
+    "Repeated finite checks on the same artifact are not independent reliability evidence; do not combine posteriors."
+  ]
+}

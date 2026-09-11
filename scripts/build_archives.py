@@ -6,13 +6,71 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
+import re
+import subprocess
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from compass_c import VERSION
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "compass"
+MANIFEST = "MANIFEST_SHA256.txt"
+
+
+def source_paths() -> list[Path]:
+    """Resolve an explicit file allowlist, never an ambient directory sweep.
+
+    Git's index declares checkout sources, including staged additions and current
+    edits to tracked files. Extracted toolkits reuse their distribution manifest
+    as the source allowlist. Its hashes describe the original archive; edits to
+    declared sources are permitted and receive fresh hashes when rebuilt.
+    """
+    if (ROOT / ".git").exists():
+        environment = {
+            key: value for key, value in os.environ.items() if not key.startswith("GIT_")
+        }
+        try:
+            process = subprocess.run(
+                ["git", "-C", str(ROOT), "ls-files", "--cached", "-z"],
+                capture_output=True,
+                check=True,
+                timeout=30,
+                env=environment,
+            )
+            names = process.stdout.decode("utf-8").split("\0")
+            names = [name for name in names if name]
+        except (OSError, subprocess.SubprocessError, UnicodeError) as exc:
+            raise ValueError("Cannot read the Git source index for distribution") from exc
+    else:
+        manifest = ROOT / MANIFEST
+        if not manifest.is_file() or manifest.is_symlink():
+            raise ValueError("Archive sources require a Git index or toolkit manifest")
+        names = []
+        for line in manifest.read_text(encoding="utf-8").splitlines():
+            match = re.fullmatch(r"[0-9a-f]{64}  (.+)", line)
+            if match is None:
+                raise ValueError("Malformed distribution manifest entry")
+            names.append(match[1])
+    if not names or len(names) != len(set(names)):
+        raise ValueError("Source index or manifest must contain unique, nonempty paths")
+    paths = []
+    for name in names:
+        relative = PurePosixPath(name)
+        if (
+            relative.is_absolute()
+            or not relative.parts
+            or relative.as_posix() != name
+            or any(part in {".", ".."} for part in relative.parts)
+            or "\\" in name
+            or ":" in name
+            or any(ord(character) < 32 or ord(character) == 127 for character in name)
+        ):
+            raise ValueError("Source index or manifest contains an unsafe path")
+        if name != MANIFEST:
+            paths.append(ROOT / relative)
+    return paths
 
 
 def included(path: Path) -> bool:
@@ -21,32 +79,66 @@ def included(path: Path) -> bool:
         "__pycache__",
         ".git",
         ".compass",
+        ".ontology",
         ".venv",
         "dist",
         "build",
-        ".ontology",
         ".pytest_cache",
         ".ruff_cache",
+        ".mypy_cache",
+        ".tox",
+        "htmlcov",
+        "node_modules",
     }
-    sqlite_sidecars = tuple(
-        f"{extension}-{suffix}"
-        for extension in (".db", ".sqlite", ".sqlite3")
-        for suffix in ("wal", "shm", "journal")
-    )
+    if any((ROOT / parent).is_symlink() for parent in (relative, *relative.parents)):
+        return False
     return (
         path.is_file()
-        and not path.is_symlink()
-        and not any(part in excluded_parts or part.endswith(".egg-info") for part in relative.parts)
-        and path.suffix not in {".pyc", ".zip", ".db", ".sqlite", ".sqlite3"}
-        and not path.name.endswith(sqlite_sidecars)
+        and not any(
+            part in excluded_parts or part.endswith(".egg-info") or part.startswith("pytest-of-")
+            for part in relative.parts
+        )
+        and path.suffix.lower()
+        not in {
+            ".pyc",
+            ".zip",
+            ".db",
+            ".sqlite",
+            ".sqlite3",
+            ".pem",
+            ".key",
+            ".p12",
+            ".pfx",
+        }
+        and not re.search(r"\.(?:db|sqlite|sqlite3)-(?:wal|shm|journal)$", path.name)
         and not path.name.startswith(".env")
-        and path.name not in {"publication-receipt.json", "installation-receipt.json"}
+        and not path.name.startswith(".coverage")
+        and path.name
+        not in {
+            "publication-receipt.json",
+            "installation-receipt.json",
+            ".install-receipt.json",
+            ".DS_Store",
+        }
     )
+
+
+def source_files(prefix: str = "") -> dict[str, bytes]:
+    result = {}
+    for path in source_paths():
+        name = path.relative_to(ROOT).as_posix()
+        if (
+            name.startswith(prefix)
+            and included(path)
+            and not name.startswith("integrations/plugin/")
+        ):
+            result[name[len(prefix) :]] = path.read_bytes()
+    return result
 
 
 def archive(path: Path, top: str, files: dict[str, bytes]) -> None:
     payload = dict(files)
-    payload["MANIFEST_SHA256.txt"] = (
+    payload[MANIFEST] = (
         "\n".join(
             f"{hashlib.sha256(data).hexdigest()}  {name}" for name, data in sorted(payload.items())
         )
@@ -55,17 +147,14 @@ def archive(path: Path, top: str, files: dict[str, bytes]) -> None:
     with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as output:
         for name, data in sorted(payload.items()):
             info = zipfile.ZipInfo(f"{top}/{name}", date_time=(2026, 9, 5, 0, 0, 0))
+            info.create_system = 3  # Explicit Unix mode semantics on every build host.
             info.compress_type = zipfile.ZIP_DEFLATED
-            info.external_attr = (0o100755 if name.endswith(".py") else 0o100644) << 16
+            info.external_attr = (0o100755 if name.endswith((".py", ".sh")) else 0o100644) << 16
             output.writestr(info, data)
 
 
 def skill_files() -> dict[str, bytes]:
-    return {
-        path.relative_to(SKILL).as_posix(): path.read_bytes()
-        for path in SKILL.rglob("*")
-        if included(path)
-    }
+    return source_files("skills/compass/")
 
 
 def plugin_files() -> dict[str, bytes]:
@@ -79,7 +168,10 @@ def plugin_files() -> dict[str, bytes]:
         "license": "SEE LICENSE",
     }
     result[".codex-plugin/plugin.json"] = (json.dumps(manifest, indent=2) + "\n").encode()
-    result["LICENSE"] = (ROOT / "LICENSE").read_bytes()
+    license_path = ROOT / "LICENSE"
+    if license_path not in source_paths() or not included(license_path):
+        raise ValueError("Distribution requires a declared, regular LICENSE file")
+    result["LICENSE"] = license_path.read_bytes()
     result["README.md"] = (
         b"# COMPASS skills-only plugin\n\nGenerated from `skills/compass`. "
         b"It registers no external tools or MCP server. Review LICENSE before host installation.\n"
@@ -125,18 +217,14 @@ def main() -> int:
         print(json.dumps({"plugin_consistent": True, "installed": False}))
         return 0
 
-    arguments.output.mkdir(parents=True, exist_ok=True)
     skill = skill_files()
-    toolkit = {
-        path.relative_to(ROOT).as_posix(): path.read_bytes()
-        for path in ROOT.rglob("*")
-        if included(path) and "integrations/plugin" not in path.as_posix()
-    }
+    toolkit = source_files()
     products = [
         (f"COMPASS-C_toolkit_v{VERSION}.zip", "compass-c", toolkit),
         (f"COMPASS_skill_v{VERSION}.zip", "compass", skill),
         (f"COMPASS_plugin_v{VERSION}.zip", "compass", plugin_files()),
     ]
+    arguments.output.mkdir(parents=True, exist_ok=True)
     for filename, top, files in products:
         target = arguments.output / filename
         archive(target, top, files)

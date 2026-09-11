@@ -1,0 +1,177 @@
+[
+  {
+    "name": "portfolio_result",
+    "previous_note_id": "be6747c5bf504681b361b74a210bc9cc",
+    "new_note": {
+      "id": "4e8411aea94647829c09b1288899fc56",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "evidence",
+      "content": "Reconsidered after the command-evidence clarification: the unchanged input and captured output still establish p00f as the sole common/Pareto optimum among 24 feasible portfolios, with values 33/32 and all 90 review minutes used. This establishes a conditional allocation, not arithmetic correctness or an executable schedule. Prerequisite set {living_decisions, portfolio, experiments} must precede integrated_paths; order within the set is unspecified.",
+      "status": "computed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/portfolio-output.json",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:14.706448+00:00",
+      "depends_on": [
+        "976254d6d65547c481bbded903c7db13",
+        "6a6e5f67eaa240789b154fcb48dd6591"
+      ]
+    },
+    "revision": 16
+  },
+  {
+    "name": "sensitivity",
+    "previous_note_id": null,
+    "new_note": {
+      "id": "12db1b11d7614c9ca1cb6c8e00ed4249",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "evidence",
+      "content": "Installed calculate sensitivity, using the supplied fixed payoffs and a declared probability path from [0,1] to [1,0], returns the exact 3/4 boundary: more arithmetic review below P(meets invariants)=0.75, tie at 0.75, acceptance above. This is conditional arithmetic; no probability estimate has been changed or measured.",
+      "status": "computed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/sensitivity-output.json",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:14.827412+00:00",
+      "depends_on": [
+        "6a6e5f67eaa240789b154fcb48dd6591",
+        "0ca0dc25257647399ac2d201d7511130"
+      ]
+    },
+    "revision": 17
+  },
+  {
+    "name": "core_alternative",
+    "previous_note_id": "03c2fe442bd04ad492cc76ba650862e8",
+    "new_note": {
+      "id": "4d20427b250a4dd4afe354fd9f343c59",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "alternative",
+      "content": "Reconsidered p00f remains the model-preferred review target: living_decisions + portfolio + experiments, then integrated_paths; 90 minutes, values 33/32. The evidence clarification changes the confidence boundary, not the modeled ranking. Keep arithmetic acceptance pending the missing experiment evidence and defer host_usefulness/governance only for this review window.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:14.949204+00:00",
+      "depends_on": [
+        "4e8411aea94647829c09b1288899fc56",
+        "14e1ff90c71848b3a5a2a2a76e72350c"
+      ]
+    },
+    "revision": 18
+  },
+  {
+    "name": "delay_alternative",
+    "previous_note_id": "2803bfe295224327b01cc83a823af906",
+    "new_note": {
+      "id": "634689ae80914619a92514a92cd4a846",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "alternative",
+      "content": "Reconsidered conservative alternative p007 reviews the three prerequisites and defers integrated_paths: 70 modeled minutes and values 23/23, giving up 10/9 points versus p00f. The 20-minute remainder is modeled capacity, not a reservation or guaranteed allowance for overruns. Choosing this fallback while acceptance is unresolved is an explicit advisory judgment beyond the allocation calculation, not a constraint inferred by the CLI.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:15.076361+00:00",
+      "depends_on": [
+        "4e8411aea94647829c09b1288899fc56",
+        "0ca0dc25257647399ac2d201d7511130",
+        "14e1ff90c71848b3a5a2a2a76e72350c"
+      ]
+    },
+    "revision": 19
+  },
+  {
+    "name": "host_alternative",
+    "previous_note_id": "c0c0ff4c7a6a4fc0ac53837eae7bfbf0",
+    "new_note": {
+      "id": "dba44dfa3a9940a099673d34647e0f77",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "alternative",
+      "content": "Reconsidered p015 (living_decisions + experiments + host_usefulness) uses 90 minutes, values 21/26, and defers portfolio, integration and governance. It remains dominated under these inputs; retain it only as a concrete alternative if real owner constraints make host evidence prerequisite or the supplied values change. No actual stakeholder agreement or dissent has been elicited.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:15.206377+00:00",
+      "depends_on": [
+        "4e8411aea94647829c09b1288899fc56",
+        "58918e4b0a6c4134a154a4e3ac8ab61a"
+      ]
+    },
+    "revision": 20
+  },
+  {
+    "name": "effects",
+    "previous_note_id": "7a30c3e290ef4240bfc034240a62e5a1",
+    "new_note": {
+      "id": "d6c375121ffb45fcb893a18ee3b75b86",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "effect",
+      "content": "Reconsidered effect branch remains speculative: during and after this review window, core-first allocation may expose integration issues sooner while postponing host/governance learning for both modeled roles. If publication drops the missing-experiment limit, readers could treat CLI success as product validation and commit prematurely. Indicator: the limit disappears from an acceptance brief; disconfirmation: independently sourced host evidence addresses the actual acceptance need. Reopen sequence when that need becomes an owner constraint; no measured effect is claimed.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:15.333201+00:00",
+      "depends_on": [
+        "4e8411aea94647829c09b1288899fc56",
+        "14e1ff90c71848b3a5a2a2a76e72350c"
+      ]
+    },
+    "revision": 21
+  },
+  {
+    "name": "reversal",
+    "previous_note_id": "4ba09d4ce31142cfaa4b5be1cf3f6914",
+    "new_note": {
+      "id": "42f50946d5454ecf90259f32c48c48a1",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "reversal_condition",
+      "content": "The revision contains no observed prerequisite failure, overrun, changed owner constraint or finite-experiment result, so it does not itself reverse the portfolio ranking or justify acceptance. Reopen p00f if prerequisite review fails or modeled total effort exceeds 90 minutes, or real usefulness/governance prerequisites, values or waiting costs change. For the fixed arithmetic model, acceptance wins only above P(meets invariants)=0.75 (tie at 0.75). A sourced result from the stated independent oracle protocol would permit a conditional update: pass favors acceptance, fail retains more review; either remains limited to the modeled invariants.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:15.457313+00:00",
+      "depends_on": [
+        "4e8411aea94647829c09b1288899fc56",
+        "12db1b11d7614c9ca1cb6c8e00ed4249",
+        "14e1ff90c71848b3a5a2a2a76e72350c"
+      ]
+    },
+    "revision": 22
+  },
+  {
+    "name": "final_recommendation",
+    "previous_note_id": null,
+    "new_note": {
+      "id": "daeeb17a950d48c4abb3f962c96458b6",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "decision",
+      "content": "After explicit reconsideration, begin the core prerequisite reviews and retain p00f as the conditional 90-minute target, with integrated_paths following all three. The command-evidence revision supplies no oracle observation, so retain more arithmetic review for the acceptance decision and do not convert the prospective pass branch into evidence. Use p007 as the conservative deferral alternative while acceptance remains unresolved or capacity is insufficient; consider p015 only under revised owner constraints. Both modeled roles rank p00f first despite different supplied priorities; that is not real stakeholder consensus. No external action or experiment execution is authorized by this conclusion.",
+      "status": "proposed",
+      "source": "",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:15.582089+00:00",
+      "depends_on": [
+        "4e8411aea94647829c09b1288899fc56",
+        "0ca0dc25257647399ac2d201d7511130",
+        "14e1ff90c71848b3a5a2a2a76e72350c",
+        "42f50946d5454ecf90259f32c48c48a1",
+        "58918e4b0a6c4134a154a4e3ac8ab61a"
+      ]
+    },
+    "revision": 23
+  },
+  {
+    "name": "notebook_outcome",
+    "previous_note_id": null,
+    "new_note": {
+      "id": "aad043ec3a16414abe55a0600cda329e",
+      "decision_id": "5a85299b44644a99ba292b80383fd9dc",
+      "kind": "outcome",
+      "content": "Observed notebook exercise: preview at revision 14 returned applied=false; get readbacks were identical and database SHA-256 unchanged. Explicit apply advanced to revision 15, appended replacement evidence and marked eight prior notes stale. Readback retained the history. Dependent conclusions were then reconsidered and recorded against current evidence. This outcome concerns notebook commands, not the independent finite-model invariant experiment.",
+      "status": "observed",
+      "source": "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/preview-verification.json; /workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/apply-output.json; /workspace/scratch/b6252d122d78/compass-c/evals/dogfood/2026-09-08/final-client-exercise/after-apply-readback.json",
+      "stale": false,
+      "created_at": "2026-09-08T00:25:15.706197+00:00",
+      "depends_on": [
+        "976254d6d65547c481bbded903c7db13"
+      ]
+    },
+    "revision": 24
+  }
+]

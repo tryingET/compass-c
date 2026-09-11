@@ -7,6 +7,25 @@ type: "procedure"
 
 # Publication and installation are separate states
 
+## Standalone package
+
+Install the toolkit from a checkout with `python -m pip install .`, or install a
+verified built wheel. The core library and CLI use only Python's standard library.
+Agent Kernel, ROCS, Pi and other development coordination tools are not runtime
+requirements. A portable skill installation also works independently of those systems.
+
+MCP is opt-in: `python -m pip install '.[mcp]'` adds the pinned SDK. Keep the
+virtual environment's own interpreter path in client configuration; resolving its
+symlink to the base Python loses the environment's installed packages.
+
+## Publication sequence
+
+Archives include declared source only: tracked Git-index paths in a checkout,
+or the existing `MANIFEST_SHA256.txt` path list in an extracted toolkit. Stage
+intended new source files before building an archive. Workspace notes, caches,
+keys, notebook state, receipts and symlinks are excluded. The manifest is a build
+allowlist and checksum inventory, not a signature or proof of publication.
+
 Use this sequence:
 
 1. render the Softwareco project template;
@@ -39,10 +58,8 @@ uv run python install_skill.py \
   --dry-run
 ```
 
-A non-dry-run installation with `--repository` and `--commit` verifies that the repository is
-public, the commit is the current default-branch head, and every published `skills/compass/`
-blob matches the local source. `--dry-run` previews the destination and local preconditions;
-it returns before remote verification and must not be cited as public-head proof.
+The installer verifies that the named repository is public, that the commit is the current
+default-branch head, and that each published `skills/compass/` blob matches the local source.
 
 ## First local install
 
@@ -80,50 +97,15 @@ skills-only plugin archive, but archive creation is not account installation.
 
 ## MCP
 
-`integrations/mcp_server.py` uses SDK v2's `MCPServer`. `scripts/configure_mcp.py` prints a
-machine-specific local configuration without modifying a host. Its Python path preserves venv
-symlinks: resolving them to the base interpreter loses the installed package and SDK.
+`compass-c-mcp` and `python -m compass_c.mcp_server` run the optional local stdio
+adapter from the installed package. `integrations/mcp_server.py` is a compatibility
+wrapper. `scripts/configure_mcp.py` prints a machine-specific configuration; it
+does not modify a host or require a persistent checkout path at runtime.
 
-```bash
-just test-mcp
-```
-
-This explicitly installs the lockfile-selected MCP extra and launches the printed configuration
-through a real Python SDK stdio client. Eight cases exercise all six tools, read/calculation
-non-creation, invalid input, stale-write rejection, dependent-note invalidation, persisted
-readback after server restart, and rejection of boolean/string/float revision coercion on both
-write endpoints. Verified on Linux with Python 3.13.12, MCP 2.1.1 and Pydantic 2.13.5.
-The dedicated check runs in CI; ordinary tests can skip MCP when its extra is absent.
-
-This proves the local SDK transport profile, not an agent choosing MCP tools, account settings,
-other SDK versions, or shared-service authentication/tenant isolation.
-
-## Model-free host dogfooding
-
-```bash
-# Review the installed Pi SDK; substitute its actual package directory.
-PI_CODING_AGENT_PACKAGE=/absolute/path/to/node_modules/@earendil-works/pi-coding-agent \
-  just dogfood-hosts
-```
-
-Requires Linux user/network namespaces (`unshare`), Node, Git, Pi and Codex. The opt-in suite
-uses disposable HOME/config directories under `TMPDIR` and disables network access for host
-processes. It invokes no model and reads no normal host credentials. No existing installation
-is replaced. If namespaces or a required client are unavailable, the opted-in check fails;
-there is no fallback to an unrestricted host process.
-
-Observed on 2026-09-11 (AK task 5641, evidence 9026):
-
-| Path | Observed proof | Not proved |
-|---|---|---|
-| Local installer CLI | Exact skill file hashes, receipt, isolated standalone calculator; no-overwrite guard retained | Published-head verification, managed replacement permission, permanent install |
-| Pi 0.84.4 | Fresh `DefaultResourceLoader` processes discover global and trusted-project `.agents/skills/compass`; untrusted project excluded; actual host read tool loads skill and calculator reference; withdrawal removes discovery | Model-triggered loading, abstention, decisions, repo-maintainer skill behavior |
-| Codex CLI 0.128.0 | Local app-server `skills/list` reports the installed project skill enabled; fresh process no longer discovers it after withdrawal | Model turn, automatic selection, resource use, MCP host connection |
-| Python MCP SDK 2.1.1 | Live stdio client/server lifecycle and safety checks above | ChatGPT or other agent-host installation |
-
-The host suite has three opt-in cases, skipped by default CI and run explicitly for this receipt.
-A test-controlled resource read is not model selection. No new model provider permission was
-supplied; restricted-provider evaluation and ChatGPT upload were not attempted. Controlled
-behavioral A/A and paired A/B comparisons require an approved model, cost limit, frozen criteria,
-independent scoring and variance/regression reporting. Account installation additionally needs
-target UI/API access and post-install readback. These remain open under AK 5641.
+`tests/test_mcp_integration.py` uses the actual pinned SDK 2.1.1 client and server:
+initialize, discover seventeen tools, calculate, preview and apply evidence batches,
+save and resume experiments, incorporate observations once, reconnect, revise, inspect and
+fail cleanly. CI repeats these scenarios against an isolated built wheel. This
+establishes the local SDK path; vendor-host installation and discovery still need
+a fresh-session canary against that actual client. The adapter is not a shared,
+authenticated or multi-tenant service.

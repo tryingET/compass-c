@@ -1,0 +1,43 @@
+{
+  "phase": "prepare",
+  "operation": "subprocess",
+  "kind": "setup",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import importlib.metadata,json,sys,compass_c; print(json.dumps({\"version\":importlib.metadata.version(\"compass-c\"),\"package_file\":compass_c.__file__,\"python_executable\":sys.executable}))"
+  ],
+  "started_at": "2026-09-08T01:33:15.544427+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\"version\": \"0.6.0\", \"package_file\": \"/workspace/scratch/b6252d122d78/v0.6-core/lib/python3.12/site-packages/compass_c/__init__.py\", \"python_executable\": \"/workspace/scratch/b6252d122d78/v0.6-core/bin/python\"}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:33:15.606116+00:00",
+  "elapsed_seconds": 0.06168816999888804,
+  "stdout_utf8_bytes": 210,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture-run-2.py",
+      "--phase",
+      "prepare",
+      "run",
+      "--kind",
+      "setup",
+      "--output",
+      "02-installed-identity.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "-c",
+      "import importlib.metadata,json,sys,compass_c; print(json.dumps({\"version\":importlib.metadata.version(\"compass-c\"),\"package_file\":compass_c.__file__,\"python_executable\":sys.executable}))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

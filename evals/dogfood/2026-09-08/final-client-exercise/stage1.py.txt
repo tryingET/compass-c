@@ -1,0 +1,21 @@
+import json
+from pathlib import Path
+from capture import BASE, run
+
+CLI = '/workspace/scratch/b6252d122d78/v0.5-core/bin/compass-c'
+DB = Path('/workspace/scratch/b6252d122d78/compass-c/.compass/final-client-exercise.sqlite')
+for kind, filename in [('portfolio', 'portfolio-model.json'), ('experiment', 'experiment-inputs.json')]:
+    parameters = json.loads((BASE / 'inputs' / filename).read_text())
+    result = run([CLI, 'calculate', kind, '--parameters', json.dumps(parameters)], display=False)
+    (BASE / (kind + '-output.json')).write_text(result.stdout)
+    envelope = json.loads(result.stdout)
+    print(kind, json.dumps(envelope, indent=2))
+    if result.returncode:
+        raise SystemExit(result.returncode)
+
+print('new_database_absent_before_start:', not DB.exists())
+if DB.exists():
+    raise SystemExit('Refusing to open an existing database')
+DB.parent.mkdir(parents=True, exist_ok=True)
+result = run([CLI, '--db', str(DB), 'start', '--objective', 'Choose the next integration-review sequence under the supplied 90-minute model, preserving modeled stakeholder disagreement and the unobserved finite-model experiment.', '--stakes', 'medium', '--constraints', json.dumps(['Only the supplied sanitized models and installed command observations', '90 modeled review minutes; all deferred work remains required eventually', 'No external actions or execution of the proposed independent oracle experiment', 'Author assumptions are not elicited preferences or calibrated probabilities'])])
+(BASE / 'start-output.json').write_text(result.stdout)

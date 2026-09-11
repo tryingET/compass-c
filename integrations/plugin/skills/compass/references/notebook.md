@@ -23,7 +23,9 @@ untrusted data into shell commands.
 
 ## 2. Commands and observable success
 
-Six commands are available: start, get, record, review, invalidate, calculate.
+Notebook commands are start, list, get, brief, record, review, revise, invalidate,
+and migrate, plus explicit evidence batches through update-evidence. Calculate and
+evaluate are transient operations that do not use storage.
 Place the global --db argument before the command and use the same explicit path
 throughout a task. Construction, calculation, and reads are side-effect free. Only
 a validated `start` operation may initialize a new notebook. A wrong path is not a
@@ -51,10 +53,45 @@ def invoke(script: Path, database: Path, *args: str) -> dict:
 ```
 
 Use the returned decision_id and revision rather than inventing identifiers.
-Before record or invalidate, read the current revision. Observed/computed notes
+Before record, revise, or invalidate, read the current revision. Observed/computed notes
 require a source reference; its presence is not independently verified. Record
-explicit depends_on links to note IDs from the same decision. After a mutation,
-get the record and inspect the actual note, revision, or invalidation result.
+explicit depends_on links to note IDs from the same decision. Inspect the result
+after a mutation. Low-level note replies identify the write; get the record when
+its actual contents are needed. Experiment lifecycle replies already include a
+validated state snapshot, and `--full` includes the saved inputs or model update.
+Inspecting that reply does not require an additional immediate `get`. Carry its
+returned revision into the next operation. Read current state to reconcile a lost
+reply, revision conflict, stale dependency, or final handoff.
+
+Use `brief <decision-id>` to inspect current recommendations, alternatives,
+evidence, uncertainty, checks, effects, reversal conditions, outcomes and stale
+material together. Record reversal conditions with `--kind reversal_condition`:
+state the observation that would change the recommendation. Brief additionally
+checks for this explicit category; legacy review retains its older presence checks.
+Neither operation interprets or monitors a condition automatically.
+
+For several independent corrected observations, use `update-evidence <decision-id>
+--revision N --updates 'JSON'`. The JSON is a list of objects with `note_id`,
+`content`, `reason`, `status` (`observed` or `computed`), and `source`; `depends_on`
+is optional. The default operation previews affected notes without writing. Add
+`--apply` only for an explicit atomic update. Apply validates the whole batch again
+at the supplied revision, preserves history, and advances the revision once.
+Only evidence, assumption, forecast and outcome notes can be batch-replaced.
+Dependent roots, stale dependencies or any invalid member reject the whole batch;
+there is no implicit rebinding of dependencies between replacement notes. Review
+reversal conditions and reconsider invalidated recommendations explicitly.
+
+`revise <decision-id> <note-id> --revision N --content TEXT --reason TEXT`
+appends a replacement of the same note kind and preserves the original plus a
+revision-history link. Specify the actual new status and source. Omitted
+`--depends-on` retains prior links; an explicit JSON list replaces them. Revision
+also invalidates dependent notes and prior recommendations. Reconsider those
+conclusions explicitly; do not silently restore them.
+
+Schema-1 notebooks remain readable and support their original operations.
+Revision history needs schema 2 or later: `migrate` explicitly and transactionally upgrades
+an existing notebook. Reads never migrate, and newer or malformed schemas fail
+closed. Back up a valuable notebook with SQLite's backup API before an upgrade.
 
 Review reports missing record categories. record_complete_not_verified means
 structural completeness only. No result grants permission for external actions.
@@ -68,10 +105,15 @@ conflict, report contention rather than looping.
 
 A timeout or lost write response is an unknown outcome, not a rollback. With a
 known decision ID, get the record and identify whether the intended change is
-already present before considering a retry. The CLI has no idempotency-key feature.
+already present before considering a retry. General note writes have no idempotency key.
+Saved experiment observations have a dedicated event identity: identical retries
+return the stored receipt; changed payloads or reuse in another plan fail. See
+[Saved experiments](experiment-workflow.md) before using that operation.
 Do not replay a successful operation or use substring similarity as proof of identity.
-If start times out before its new ID is observed, report that reconciliation needs
-local inspection; do not issue another start as though nothing happened.
+If start times out before its new ID is observed, use `list --limit 20 --offset 0`
+and `get` to inspect candidate IDs, objectives, creation times, and actual contents.
+Listing supports pagination. It helps reconciliation but is not an idempotency key:
+if identity remains ambiguous, report it rather than issuing another start.
 
 Invalidation propagates explicit dependencies and conservatively marks all prior
 decision notes stale. Other omitted dependencies require manual review. History is

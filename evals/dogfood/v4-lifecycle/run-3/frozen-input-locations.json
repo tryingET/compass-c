@@ -1,0 +1,9 @@
+{
+  "protocol.md": "../run-2/frozen-inputs/protocol.md",
+  "parameters.json": "../run-2/frozen-inputs/parameters.json",
+  "check_installed.py": "../run-2/frozen-inputs/check_installed.py",
+  "capture-run-3.py": "frozen-inputs/capture-run-3.py",
+  "prepare-task-run-3.json": "frozen-inputs/prepare-task-run-3.json",
+  "resume-task-run-3.json": "frozen-inputs/resume-task-run-3.json",
+  "remediation-3.md": "frozen-inputs/remediation-3.md"
+}

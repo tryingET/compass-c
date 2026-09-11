@@ -18,6 +18,7 @@ def test_configuration_preserves_venv_interpreter_and_has_no_storage_effect(tmp_
     )
     config = json.loads(result.stdout)["mcpServers"]["compass"]
     assert config["command"] == str(Path(sys.executable).absolute())
+    assert config["args"] == ["-m", "compass_c.mcp_server"]
     assert config["env"] == {"COMPASS_DB": str(db)}
     assert not db.parent.exists()
 

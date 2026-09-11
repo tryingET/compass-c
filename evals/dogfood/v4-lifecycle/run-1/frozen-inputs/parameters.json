@@ -1,0 +1,45 @@
+{
+  "model": {
+    "actions": [
+      "accept the bounded installed arithmetic for integration review",
+      "seek additional arithmetic review"
+    ],
+    "scenarios": [
+      "installed arithmetic satisfies the inspected finite invariants",
+      "installed arithmetic has an inspected invariant defect"
+    ],
+    "payoffs": [[10, -20], [0, 0]],
+    "probabilities": [0.6, 0.4],
+    "value_unit": "illustrative development utility points",
+    "provenance": [
+      "Author-supplied development decision model frozen before v4-lifecycle.1 participant execution."
+    ],
+    "assumptions": [
+      "Priors, payoffs, test likelihoods and costs are illustrative judgments, not calibrated reliability measurements.",
+      "A favorable finite check can support integration review only; it cannot authorize publication or prove the product vision.",
+      "Reconsider the recommendation if a retained assertion fails, the installed artifact changes, or the finite model omits a material defect."
+    ]
+  },
+  "experiments": [
+    {
+      "id": "installed-three-case-oracle",
+      "question": "Do all three frozen finite-model checks agree with an independent Fraction oracle against the installed candidate?",
+      "protocol": "Run /workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/check_installed.py exactly once using the isolated installed Python supplied with the task, PYTHONDONTWRITEBYTECODE=1 and no PYTHONPATH. Use a 30-second parent timeout. The script launches no child process, writes no files, and checks three fixed finite models through the public package API. Stop at its first failure. Retain exact argv, exit status, stdout, stderr and timestamps. Observe pass only if the script exits 0 and its JSON outcome is pass with all three cases present; observe fail for a completed failing check. A timeout or unavailable check remains an unavailable observation and cannot be turned into pass. The retained check output is the observation source; a successful plan or notebook command is not the observation.",
+      "outcomes": ["pass", "fail"],
+      "likelihoods": [[0.9, 0.1], [0.2, 0.8]],
+      "cost": 0.5,
+      "duration": 30,
+      "provenance": [
+        "Frozen author-visible v4-lifecycle.1 protocol and check_installed.py; likelihoods and utility costs are caller assumptions."
+      ],
+      "assumptions": [
+        "One completed execution produces one pass/fail observation; execution failure or timeout is not fabricated evidence.",
+        "The three finite examples test bounded arithmetic only; a pass does not establish general software correctness or usability.",
+        "This plan incorporates at most one observation. Any later plan requires likelihoods appropriate to evidence already incorporated."
+      ]
+    }
+  ],
+  "budget": 1,
+  "max_duration": 30,
+  "duration_unit": "seconds"
+}

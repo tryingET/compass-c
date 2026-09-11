@@ -1,0 +1,43 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "verification",
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "from pathlib import Path; import hashlib,json; from datetime import datetime,UTC; p=Path(\"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite\"); paths=[p,Path(str(p)+\"-wal\"),Path(str(p)+\"-shm\")]; print(json.dumps({\"observed_at\":datetime.now(UTC).isoformat(),\"files\":[{\"path\":str(q),\"exists\":q.exists(),\"sha256\":hashlib.sha256(q.read_bytes()).hexdigest() if q.exists() else None,\"bytes\":q.stat().st_size if q.exists() else None} for q in paths]},indent=2))"
+  ],
+  "started_at": "2026-09-08T01:21:55.456081+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \"observed_at\": \"2026-09-08T01:21:55.475978+00:00\",\n  \"files\": [\n    {\n      \"path\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite\",\n      \"exists\": true,\n      \"sha256\": \"b7a05395e4f374faeb3244f29a6c93c10f87647413d745cccf5af903a3b0e317\",\n      \"bytes\": 77824\n    },\n    {\n      \"path\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite-wal\",\n      \"exists\": false,\n      \"sha256\": null,\n      \"bytes\": null\n    },\n    {\n      \"path\": \"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite-shm\",\n      \"exists\": false,\n      \"sha256\": null,\n      \"bytes\": null\n    }\n  ]\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:21:55.479397+00:00",
+  "elapsed_seconds": 0.02330685299966717,
+  "stdout_utf8_bytes": 659,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "exposed_argv": [
+      "/workspace/scratch/b6252d122d78/compass-c/evals/dogfood/v4-lifecycle/capture.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "verification",
+      "--output",
+      "08-before-preview-hashes.json",
+      "--",
+      "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+      "-c",
+      "from pathlib import Path; import hashlib,json; from datetime import datetime,UTC; p=Path(\"/workspace/scratch/b6252d122d78/compass-c/.compass/v4-lifecycle-run-1.sqlite\"); paths=[p,Path(str(p)+\"-wal\"),Path(str(p)+\"-shm\")]; print(json.dumps({\"observed_at\":datetime.now(UTC).isoformat(),\"files\":[{\"path\":str(q),\"exists\":q.exists(),\"sha256\":hashlib.sha256(q.read_bytes()).hexdigest() if q.exists() else None,\"bytes\":q.stat().st_size if q.exists() else None} for q in paths]},indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "mask_seed": 772031,
+  "mapping": [
+    {
+      "answer_label": "answer-127",
+      "case_id": "launch_scope",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-114",
+      "case_id": "launch_scope",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-120",
+      "case_id": "launch_scope",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-131",
+      "case_id": "launch_scope",
+      "participant": "set-4"
+    },
+    {
+      "answer_label": "answer-117",
+      "case_id": "withdrawn_evidence",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-111",
+      "case_id": "withdrawn_evidence",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-123",
+      "case_id": "withdrawn_evidence",
+      "participant": "set-4"
+    },
+    {
+      "answer_label": "answer-112",
+      "case_id": "withdrawn_evidence",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-132",
+      "case_id": "arithmetic",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-130",
+      "case_id": "arithmetic",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-106",
+      "case_id": "arithmetic",
+      "participant": "set-4"
+    },
+    {
+      "answer_label": "answer-109",
+      "case_id": "arithmetic",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-101",
+      "case_id": "source_only",
+      "participant": "set-4"
+    },
+    {
+      "answer_label": "answer-119",
+      "case_id": "source_only",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-118",
+      "case_id": "source_only",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-115",
+      "case_id": "source_only",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-103",
+      "case_id": "implementation_owner",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-122",
+      "case_id": "implementation_owner",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-124",
+      "case_id": "implementation_owner",
+      "participant": "set-4"
+    },
+    {
+      "answer_label": "answer-128",
+      "case_id": "implementation_owner",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-104",
+      "case_id": "source_reader_owner",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-116",
+      "case_id": "source_reader_owner",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-102",
+      "case_id": "source_reader_owner",
+      "participant": "set-4"
+    },
+    {
+      "answer_label": "answer-108",
+      "case_id": "source_reader_owner",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-129",
+      "case_id": "timeout_after_write",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-110",
+      "case_id": "timeout_after_write",
+      "participant": "set-4"
+    },
+    {
+      "answer_label": "answer-107",
+      "case_id": "timeout_after_write",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-126",
+      "case_id": "timeout_after_write",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-125",
+      "case_id": "expert_prestige",
+      "participant": "set-1"
+    },
+    {
+      "answer_label": "answer-113",
+      "case_id": "expert_prestige",
+      "participant": "set-2"
+    },
+    {
+      "answer_label": "answer-105",
+      "case_id": "expert_prestige",
+      "participant": "set-3"
+    },
+    {
+      "answer_label": "answer-121",
+      "case_id": "expert_prestige",
+      "participant": "set-4"
+    }
+  ]
+}

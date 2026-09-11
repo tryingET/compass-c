@@ -1,0 +1,90 @@
+{
+  "ok": true,
+  "data": {
+    "calculation": "sensitivity",
+    "result": {
+      "probability_path": "p(t) = (1 - t) * probability_start + t * probability_end",
+      "rows": [
+        {
+          "action": "accept arithmetic implementation for integration review",
+          "expected_start": -30.0,
+          "expected_end": 10.0
+        },
+        {
+          "action": "seek more arithmetic review",
+          "expected_start": 0.0,
+          "expected_end": 0.0
+        }
+      ],
+      "endpoints": {
+        "start": {
+          "t": 0.0,
+          "t_exact": "0",
+          "probabilities": [
+            0.0,
+            1.0
+          ],
+          "expected_value_winners": [
+            "seek more arithmetic review"
+          ]
+        },
+        "end": {
+          "t": 1.0,
+          "t_exact": "1",
+          "probabilities": [
+            1.0,
+            0.0
+          ],
+          "expected_value_winners": [
+            "accept arithmetic implementation for integration review"
+          ]
+        }
+      },
+      "breakpoints": [
+        {
+          "t": 0.75,
+          "t_exact": "3/4",
+          "probabilities": [
+            0.75,
+            0.25
+          ],
+          "expected_value_winners": [
+            "accept arithmetic implementation for integration review",
+            "seek more arithmetic review"
+          ]
+        }
+      ],
+      "intervals": [
+        {
+          "start": 0.0,
+          "end": 0.75,
+          "start_exact": "0",
+          "end_exact": "3/4",
+          "expected_value_winners": [
+            "seek more arithmetic review"
+          ]
+        },
+        {
+          "start": 0.75,
+          "end": 1.0,
+          "start_exact": "3/4",
+          "end_exact": "1",
+          "expected_value_winners": [
+            "accept arithmetic implementation for integration review"
+          ]
+        }
+      ],
+      "criterion_chosen_by_tool": false,
+      "assumptions": [
+        "Payoffs are fixed and comparable; larger values are preferable.",
+        "Both probability endpoints are supplied by the caller; only their convex path is tested.",
+        "Expected value is examined conditionally, without selecting the owner's criterion.",
+        "Interval winners apply to open interiors; endpoint and breakpoint ties are separate.",
+        "Probability sums allow absolute rounding error up to 1e-10; inputs are not normalized.",
+        "Decimal representations of validated numbers define exact rational comparisons; numeric output is rounded, while *_exact fields preserve rational path coordinates."
+      ]
+    },
+    "limitations": "Conditional arithmetic, not empirical validation or action authorization. Tests expected-value preference only along the supplied probability path with fixed payoffs and already-admissible actions. Hard constraints, omitted scenarios, other probability paths, and payoff uncertainty are not evaluated.",
+    "action_permission": "not_granted"
+  }
+}

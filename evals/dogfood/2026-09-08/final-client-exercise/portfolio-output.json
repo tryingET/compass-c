@@ -1,0 +1,1166 @@
+{
+  "ok": true,
+  "data": {
+    "calculation": "portfolio",
+    "result": {
+      "input_model": {
+        "stakeholders": [
+          "delivery_owner",
+          "evidence_reviewer"
+        ],
+        "resources": {
+          "review_minutes": 90
+        },
+        "source": "Current COMPASS-C v2-v4 implementation tasks. All numeric capacities, effort, commitment values and zero deferral values are author assumptions for one next review window. These are modeled roles, not claims about actual stakeholder preferences. All work remains required eventually.",
+        "decisions": [
+          {
+            "id": "living_decisions",
+            "resources": {
+              "review_minutes": 25
+            },
+            "values": {
+              "delivery_owner": 8,
+              "evidence_reviewer": 8
+            },
+            "defer_values": {
+              "delivery_owner": 0,
+              "evidence_reviewer": 0
+            },
+            "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+          },
+          {
+            "id": "portfolio",
+            "resources": {
+              "review_minutes": 20
+            },
+            "values": {
+              "delivery_owner": 7,
+              "evidence_reviewer": 7
+            },
+            "defer_values": {
+              "delivery_owner": 0,
+              "evidence_reviewer": 0
+            },
+            "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+          },
+          {
+            "id": "experiments",
+            "resources": {
+              "review_minutes": 25
+            },
+            "values": {
+              "delivery_owner": 8,
+              "evidence_reviewer": 8
+            },
+            "defer_values": {
+              "delivery_owner": 0,
+              "evidence_reviewer": 0
+            },
+            "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+          },
+          {
+            "id": "integrated_paths",
+            "resources": {
+              "review_minutes": 20
+            },
+            "values": {
+              "delivery_owner": 10,
+              "evidence_reviewer": 9
+            },
+            "defer_values": {
+              "delivery_owner": 0,
+              "evidence_reviewer": 0
+            },
+            "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+            "requires": [
+              "living_decisions",
+              "portfolio",
+              "experiments"
+            ]
+          },
+          {
+            "id": "host_usefulness",
+            "resources": {
+              "review_minutes": 40
+            },
+            "values": {
+              "delivery_owner": 5,
+              "evidence_reviewer": 10
+            },
+            "defer_values": {
+              "delivery_owner": 0,
+              "evidence_reviewer": 0
+            },
+            "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+          },
+          {
+            "id": "organization_governance",
+            "resources": {
+              "review_minutes": 40
+            },
+            "values": {
+              "delivery_owner": 4,
+              "evidence_reviewer": 9
+            },
+            "defer_values": {
+              "delivery_owner": 0,
+              "evidence_reviewer": 0
+            },
+            "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes."
+          }
+        ]
+      },
+      "candidate_count": 64,
+      "feasible_count": 24,
+      "feasible_portfolios": [
+        {
+          "portfolio_id": "p000",
+          "selected": [],
+          "deferred": [
+            "living_decisions",
+            "portfolio",
+            "experiments",
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [],
+          "resources_used": {
+            "review_minutes": 0.0
+          },
+          "resources_remaining": {
+            "review_minutes": 90.0
+          },
+          "committed_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "0",
+            "evidence_reviewer": "0"
+          }
+        },
+        {
+          "portfolio_id": "p001",
+          "selected": [
+            "living_decisions"
+          ],
+          "deferred": [
+            "portfolio",
+            "experiments",
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 25.0
+          },
+          "resources_remaining": {
+            "review_minutes": 65.0
+          },
+          "committed_values": {
+            "delivery_owner": 8.0,
+            "evidence_reviewer": 8.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 8.0,
+            "evidence_reviewer": 8.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "8",
+            "evidence_reviewer": "8"
+          }
+        },
+        {
+          "portfolio_id": "p002",
+          "selected": [
+            "portfolio"
+          ],
+          "deferred": [
+            "living_decisions",
+            "experiments",
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "portfolio"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 20.0
+          },
+          "resources_remaining": {
+            "review_minutes": 70.0
+          },
+          "committed_values": {
+            "delivery_owner": 7.0,
+            "evidence_reviewer": 7.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 7.0,
+            "evidence_reviewer": 7.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "7",
+            "evidence_reviewer": "7"
+          }
+        },
+        {
+          "portfolio_id": "p003",
+          "selected": [
+            "living_decisions",
+            "portfolio"
+          ],
+          "deferred": [
+            "experiments",
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "portfolio"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 45.0
+          },
+          "resources_remaining": {
+            "review_minutes": 45.0
+          },
+          "committed_values": {
+            "delivery_owner": 15.0,
+            "evidence_reviewer": 15.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 15.0,
+            "evidence_reviewer": 15.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "15",
+            "evidence_reviewer": "15"
+          }
+        },
+        {
+          "portfolio_id": "p004",
+          "selected": [
+            "experiments"
+          ],
+          "deferred": [
+            "living_decisions",
+            "portfolio",
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "experiments"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 25.0
+          },
+          "resources_remaining": {
+            "review_minutes": 65.0
+          },
+          "committed_values": {
+            "delivery_owner": 8.0,
+            "evidence_reviewer": 8.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 8.0,
+            "evidence_reviewer": 8.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "8",
+            "evidence_reviewer": "8"
+          }
+        },
+        {
+          "portfolio_id": "p005",
+          "selected": [
+            "living_decisions",
+            "experiments"
+          ],
+          "deferred": [
+            "portfolio",
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "experiments"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 50.0
+          },
+          "resources_remaining": {
+            "review_minutes": 40.0
+          },
+          "committed_values": {
+            "delivery_owner": 16.0,
+            "evidence_reviewer": 16.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 16.0,
+            "evidence_reviewer": 16.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "16",
+            "evidence_reviewer": "16"
+          }
+        },
+        {
+          "portfolio_id": "p006",
+          "selected": [
+            "portfolio",
+            "experiments"
+          ],
+          "deferred": [
+            "living_decisions",
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "portfolio",
+              "experiments"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 45.0
+          },
+          "resources_remaining": {
+            "review_minutes": 45.0
+          },
+          "committed_values": {
+            "delivery_owner": 15.0,
+            "evidence_reviewer": 15.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 15.0,
+            "evidence_reviewer": 15.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "15",
+            "evidence_reviewer": "15"
+          }
+        },
+        {
+          "portfolio_id": "p007",
+          "selected": [
+            "living_decisions",
+            "portfolio",
+            "experiments"
+          ],
+          "deferred": [
+            "integrated_paths",
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "portfolio",
+              "experiments"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 70.0
+          },
+          "resources_remaining": {
+            "review_minutes": 20.0
+          },
+          "committed_values": {
+            "delivery_owner": 23.0,
+            "evidence_reviewer": 23.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 23.0,
+            "evidence_reviewer": 23.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "23",
+            "evidence_reviewer": "23"
+          }
+        },
+        {
+          "portfolio_id": "p00f",
+          "selected": [
+            "living_decisions",
+            "portfolio",
+            "experiments",
+            "integrated_paths"
+          ],
+          "deferred": [
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "portfolio",
+              "experiments"
+            ],
+            [
+              "integrated_paths"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 90.0
+          },
+          "resources_remaining": {
+            "review_minutes": 0.0
+          },
+          "committed_values": {
+            "delivery_owner": 33.0,
+            "evidence_reviewer": 32.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 33.0,
+            "evidence_reviewer": 32.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "33",
+            "evidence_reviewer": "32"
+          }
+        },
+        {
+          "portfolio_id": "p010",
+          "selected": [
+            "host_usefulness"
+          ],
+          "deferred": [
+            "living_decisions",
+            "portfolio",
+            "experiments",
+            "integrated_paths",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "host_usefulness"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 40.0
+          },
+          "resources_remaining": {
+            "review_minutes": 50.0
+          },
+          "committed_values": {
+            "delivery_owner": 5.0,
+            "evidence_reviewer": 10.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 5.0,
+            "evidence_reviewer": 10.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "5",
+            "evidence_reviewer": "10"
+          }
+        },
+        {
+          "portfolio_id": "p011",
+          "selected": [
+            "living_decisions",
+            "host_usefulness"
+          ],
+          "deferred": [
+            "portfolio",
+            "experiments",
+            "integrated_paths",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "host_usefulness"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 65.0
+          },
+          "resources_remaining": {
+            "review_minutes": 25.0
+          },
+          "committed_values": {
+            "delivery_owner": 13.0,
+            "evidence_reviewer": 18.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 13.0,
+            "evidence_reviewer": 18.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "13",
+            "evidence_reviewer": "18"
+          }
+        },
+        {
+          "portfolio_id": "p012",
+          "selected": [
+            "portfolio",
+            "host_usefulness"
+          ],
+          "deferred": [
+            "living_decisions",
+            "experiments",
+            "integrated_paths",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "portfolio",
+              "host_usefulness"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 60.0
+          },
+          "resources_remaining": {
+            "review_minutes": 30.0
+          },
+          "committed_values": {
+            "delivery_owner": 12.0,
+            "evidence_reviewer": 17.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 12.0,
+            "evidence_reviewer": 17.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "12",
+            "evidence_reviewer": "17"
+          }
+        },
+        {
+          "portfolio_id": "p013",
+          "selected": [
+            "living_decisions",
+            "portfolio",
+            "host_usefulness"
+          ],
+          "deferred": [
+            "experiments",
+            "integrated_paths",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "portfolio",
+              "host_usefulness"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 85.0
+          },
+          "resources_remaining": {
+            "review_minutes": 5.0
+          },
+          "committed_values": {
+            "delivery_owner": 20.0,
+            "evidence_reviewer": 25.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 20.0,
+            "evidence_reviewer": 25.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "20",
+            "evidence_reviewer": "25"
+          }
+        },
+        {
+          "portfolio_id": "p014",
+          "selected": [
+            "experiments",
+            "host_usefulness"
+          ],
+          "deferred": [
+            "living_decisions",
+            "portfolio",
+            "integrated_paths",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "experiments",
+              "host_usefulness"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 65.0
+          },
+          "resources_remaining": {
+            "review_minutes": 25.0
+          },
+          "committed_values": {
+            "delivery_owner": 13.0,
+            "evidence_reviewer": 18.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 13.0,
+            "evidence_reviewer": 18.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "13",
+            "evidence_reviewer": "18"
+          }
+        },
+        {
+          "portfolio_id": "p015",
+          "selected": [
+            "living_decisions",
+            "experiments",
+            "host_usefulness"
+          ],
+          "deferred": [
+            "portfolio",
+            "integrated_paths",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "experiments",
+              "host_usefulness"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 90.0
+          },
+          "resources_remaining": {
+            "review_minutes": 0.0
+          },
+          "committed_values": {
+            "delivery_owner": 21.0,
+            "evidence_reviewer": 26.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 21.0,
+            "evidence_reviewer": 26.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "21",
+            "evidence_reviewer": "26"
+          }
+        },
+        {
+          "portfolio_id": "p016",
+          "selected": [
+            "portfolio",
+            "experiments",
+            "host_usefulness"
+          ],
+          "deferred": [
+            "living_decisions",
+            "integrated_paths",
+            "organization_governance"
+          ],
+          "dependency_layers": [
+            [
+              "portfolio",
+              "experiments",
+              "host_usefulness"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 85.0
+          },
+          "resources_remaining": {
+            "review_minutes": 5.0
+          },
+          "committed_values": {
+            "delivery_owner": 20.0,
+            "evidence_reviewer": 25.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 20.0,
+            "evidence_reviewer": 25.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "20",
+            "evidence_reviewer": "25"
+          }
+        },
+        {
+          "portfolio_id": "p020",
+          "selected": [
+            "organization_governance"
+          ],
+          "deferred": [
+            "living_decisions",
+            "portfolio",
+            "experiments",
+            "integrated_paths",
+            "host_usefulness"
+          ],
+          "dependency_layers": [
+            [
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 40.0
+          },
+          "resources_remaining": {
+            "review_minutes": 50.0
+          },
+          "committed_values": {
+            "delivery_owner": 4.0,
+            "evidence_reviewer": 9.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 4.0,
+            "evidence_reviewer": 9.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "4",
+            "evidence_reviewer": "9"
+          }
+        },
+        {
+          "portfolio_id": "p021",
+          "selected": [
+            "living_decisions",
+            "organization_governance"
+          ],
+          "deferred": [
+            "portfolio",
+            "experiments",
+            "integrated_paths",
+            "host_usefulness"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 65.0
+          },
+          "resources_remaining": {
+            "review_minutes": 25.0
+          },
+          "committed_values": {
+            "delivery_owner": 12.0,
+            "evidence_reviewer": 17.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 12.0,
+            "evidence_reviewer": 17.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "12",
+            "evidence_reviewer": "17"
+          }
+        },
+        {
+          "portfolio_id": "p022",
+          "selected": [
+            "portfolio",
+            "organization_governance"
+          ],
+          "deferred": [
+            "living_decisions",
+            "experiments",
+            "integrated_paths",
+            "host_usefulness"
+          ],
+          "dependency_layers": [
+            [
+              "portfolio",
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 60.0
+          },
+          "resources_remaining": {
+            "review_minutes": 30.0
+          },
+          "committed_values": {
+            "delivery_owner": 11.0,
+            "evidence_reviewer": 16.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 11.0,
+            "evidence_reviewer": 16.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "11",
+            "evidence_reviewer": "16"
+          }
+        },
+        {
+          "portfolio_id": "p023",
+          "selected": [
+            "living_decisions",
+            "portfolio",
+            "organization_governance"
+          ],
+          "deferred": [
+            "experiments",
+            "integrated_paths",
+            "host_usefulness"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "portfolio",
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 85.0
+          },
+          "resources_remaining": {
+            "review_minutes": 5.0
+          },
+          "committed_values": {
+            "delivery_owner": 19.0,
+            "evidence_reviewer": 24.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 19.0,
+            "evidence_reviewer": 24.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "19",
+            "evidence_reviewer": "24"
+          }
+        },
+        {
+          "portfolio_id": "p024",
+          "selected": [
+            "experiments",
+            "organization_governance"
+          ],
+          "deferred": [
+            "living_decisions",
+            "portfolio",
+            "integrated_paths",
+            "host_usefulness"
+          ],
+          "dependency_layers": [
+            [
+              "experiments",
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 65.0
+          },
+          "resources_remaining": {
+            "review_minutes": 25.0
+          },
+          "committed_values": {
+            "delivery_owner": 12.0,
+            "evidence_reviewer": 17.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 12.0,
+            "evidence_reviewer": 17.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "12",
+            "evidence_reviewer": "17"
+          }
+        },
+        {
+          "portfolio_id": "p025",
+          "selected": [
+            "living_decisions",
+            "experiments",
+            "organization_governance"
+          ],
+          "deferred": [
+            "portfolio",
+            "integrated_paths",
+            "host_usefulness"
+          ],
+          "dependency_layers": [
+            [
+              "living_decisions",
+              "experiments",
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 90.0
+          },
+          "resources_remaining": {
+            "review_minutes": 0.0
+          },
+          "committed_values": {
+            "delivery_owner": 20.0,
+            "evidence_reviewer": 25.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 20.0,
+            "evidence_reviewer": 25.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "20",
+            "evidence_reviewer": "25"
+          }
+        },
+        {
+          "portfolio_id": "p026",
+          "selected": [
+            "portfolio",
+            "experiments",
+            "organization_governance"
+          ],
+          "deferred": [
+            "living_decisions",
+            "integrated_paths",
+            "host_usefulness"
+          ],
+          "dependency_layers": [
+            [
+              "portfolio",
+              "experiments",
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 85.0
+          },
+          "resources_remaining": {
+            "review_minutes": 5.0
+          },
+          "committed_values": {
+            "delivery_owner": 19.0,
+            "evidence_reviewer": 24.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 19.0,
+            "evidence_reviewer": 24.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "19",
+            "evidence_reviewer": "24"
+          }
+        },
+        {
+          "portfolio_id": "p030",
+          "selected": [
+            "host_usefulness",
+            "organization_governance"
+          ],
+          "deferred": [
+            "living_decisions",
+            "portfolio",
+            "experiments",
+            "integrated_paths"
+          ],
+          "dependency_layers": [
+            [
+              "host_usefulness",
+              "organization_governance"
+            ]
+          ],
+          "resources_used": {
+            "review_minutes": 80.0
+          },
+          "resources_remaining": {
+            "review_minutes": 10.0
+          },
+          "committed_values": {
+            "delivery_owner": 9.0,
+            "evidence_reviewer": 19.0
+          },
+          "deferred_values": {
+            "delivery_owner": 0.0,
+            "evidence_reviewer": 0.0
+          },
+          "stakeholder_values": {
+            "delivery_owner": 9.0,
+            "evidence_reviewer": 19.0
+          },
+          "stakeholder_values_exact": {
+            "delivery_owner": "9",
+            "evidence_reviewer": "19"
+          }
+        }
+      ],
+      "pareto_frontier": [
+        "p00f"
+      ],
+      "stakeholder_optima": {
+        "delivery_owner": [
+          "p00f"
+        ],
+        "evidence_reviewer": [
+          "p00f"
+        ]
+      },
+      "common_optima": [
+        "p00f"
+      ],
+      "preference_conflict": false,
+      "unavailable_decisions": [],
+      "decision_assumptions": [
+        {
+          "id": "living_decisions",
+          "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+          "reversal_condition": null
+        },
+        {
+          "id": "portfolio",
+          "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+          "reversal_condition": null
+        },
+        {
+          "id": "experiments",
+          "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+          "reversal_condition": null
+        },
+        {
+          "id": "integrated_paths",
+          "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+          "reversal_condition": null
+        },
+        {
+          "id": "host_usefulness",
+          "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+          "reversal_condition": null
+        },
+        {
+          "id": "organization_governance",
+          "source": "Author-visible numeric planning assumptions for this build; not elicited stakeholder preferences or measured outcomes.",
+          "reversal_condition": null
+        }
+      ],
+      "criterion_chosen_by_tool": false,
+      "action_permission": "not_granted",
+      "assumptions": [
+        "The caller supplies all capacities, values, deferral values and source references; the tool does not verify that these assumptions are observed or reliable.",
+        "Values are additive across decisions within each stakeholder; larger is preferable. No values are aggregated or compared across stakeholders.",
+        "Deferral values explicitly model retained options or waiting costs for this horizon; unused resources do not automatically receive option value. Future learning, interactions and expiration require revised caller models.",
+        "Shared resources are total budgets. Dependency layers express precedence, not a timed or concurrent resource schedule.",
+        "A one-sided exclusion prohibits selecting both decisions. Dependencies require commitment to the prerequisite within the same portfolio.",
+        "Pareto dominance requires no stakeholder to be worse off and at least one to be better off. All tied portfolios and stakeholder-specific optima are retained.",
+        "Decimal representations of validated numbers define exact arithmetic and comparisons. Numeric output is rounded; stakeholder_values_exact preserves totals.",
+        "Sources and reversal conditions are retained as caller statements, not verified evidence or guarantees that commitment can be reversed."
+      ],
+      "limitations": "Conditional arithmetic, not empirical validation or action authorization. Omitted constraints, nonadditive effects, uncertain input estimates, and external owners' permissions are not resolved. No portfolio or moral weights are selected."
+    },
+    "limitations": "Conditional arithmetic, not empirical validation or action authorization. Supplied additive stakeholder and deferral values are not elicited preferences. Precedence layers are not a resource schedule; no stakeholder criterion is selected.",
+    "action_permission": "not_granted"
+  }
+}

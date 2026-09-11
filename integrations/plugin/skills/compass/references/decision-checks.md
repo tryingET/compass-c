@@ -12,7 +12,7 @@
 
 This is an operational reference for the COMPASS advisory skill, not a report of
 an experiment. The package provides Markdown guidance, a local decision notebook,
-and seven conditional arithmetic helpers. It does not contain an action gate,
+and bounded calculations for individual, portfolio and experimental decisions. It does not contain an action gate,
 protected audit service, resource reservation system, online shift detector, or
 independent specialist agents. Earlier COMPASS gate experiments are separate
 artifacts and are not evidence that those capabilities exist here.

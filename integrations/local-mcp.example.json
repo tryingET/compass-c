@@ -2,7 +2,7 @@
   "mcpServers": {
     "compass": {
       "command": "/absolute/path/to/venv/bin/python",
-      "args": ["/absolute/path/to/compass-c/integrations/mcp_server.py"],
+      "args": ["-m", "compass_c.mcp_server"],
       "env": {"COMPASS_DB": "/absolute/path/to/private-workspace/decisions.sqlite3"}
     }
   }

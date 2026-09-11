@@ -1,0 +1,54 @@
+{
+  "phase": "resume",
+  "operation": "subprocess",
+  "kind": "verification",
+  "cwd": "/workspace/scratch/b6252d122d78/compass-c",
+  "requested_argv": [
+    "installed-python",
+    "-c",
+    "import hashlib,json; from pathlib import Path; root=Path(\".compass/v4-lifecycle-run-3.sqlite\"); print(json.dumps({str(p): {\"exists\":p.exists(),\"size_bytes\":p.stat().st_size if p.exists() else None,\"sha256\":hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None} for p in [root,Path(str(root)+\"-wal\"),Path(str(root)+\"-shm\"),Path(str(root)+\"-journal\")]},indent=2))"
+  ],
+  "argv": [
+    "/workspace/scratch/b6252d122d78/v0.6-core/bin/python",
+    "-c",
+    "import hashlib,json; from pathlib import Path; root=Path(\".compass/v4-lifecycle-run-3.sqlite\"); print(json.dumps({str(p): {\"exists\":p.exists(),\"size_bytes\":p.stat().st_size if p.exists() else None,\"sha256\":hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None} for p in [root,Path(str(root)+\"-wal\"),Path(str(root)+\"-shm\"),Path(str(root)+\"-journal\")]},indent=2))"
+  ],
+  "target_resolution": {
+    "alias": "installed-python",
+    "manifest_key": "installed_python",
+    "manifest_sha256": "7dc69bf811ff2b3c7ae61097d345498365f6473d05bfc9277e6a09ee0e6657ca"
+  },
+  "started_at": "2026-09-08T01:53:00.810008+00:00",
+  "timeout_seconds": 30,
+  "environment_controls": {
+    "PYTHONPATH": "removed",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_status": 0,
+  "stdout": "{\n  \".compass/v4-lifecycle-run-3.sqlite\": {\n    \"exists\": true,\n    \"size_bytes\": 77824,\n    \"sha256\": \"85080be75b1e0c34bc84497a00e17827dbc623b4409dca5674d8128e379c7acf\"\n  },\n  \".compass/v4-lifecycle-run-3.sqlite-wal\": {\n    \"exists\": false,\n    \"size_bytes\": null,\n    \"sha256\": null\n  },\n  \".compass/v4-lifecycle-run-3.sqlite-shm\": {\n    \"exists\": false,\n    \"size_bytes\": null,\n    \"sha256\": null\n  },\n  \".compass/v4-lifecycle-run-3.sqlite-journal\": {\n    \"exists\": false,\n    \"size_bytes\": null,\n    \"sha256\": null\n  }\n}\n",
+  "stderr": "",
+  "timed_out": false,
+  "finished_at": "2026-09-08T01:53:00.836667+00:00",
+  "elapsed_seconds": 0.026651614000002155,
+  "stdout_utf8_bytes": 525,
+  "stderr_utf8_bytes": 0,
+  "capture_driver_process": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+    "exposed_argv": [
+      "evals/dogfood/v4-lifecycle/capture-run-3.py",
+      "--phase",
+      "resume",
+      "run",
+      "--kind",
+      "verification",
+      "--output",
+      "preview-storage-before.json",
+      "--",
+      "installed-python",
+      "-c",
+      "import hashlib,json; from pathlib import Path; root=Path(\".compass/v4-lifecycle-run-3.sqlite\"); print(json.dumps({str(p): {\"exists\":p.exists(),\"size_bytes\":p.stat().st_size if p.exists() else None,\"sha256\":hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else None} for p in [root,Path(str(root)+\"-wal\"),Path(str(root)+\"-shm\"),Path(str(root)+\"-journal\")]},indent=2))"
+    ],
+    "pid": 4,
+    "parent_pid": 1
+  }
+}
