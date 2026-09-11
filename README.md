@@ -20,8 +20,10 @@ permission to spend, deploy, send, delete, or otherwise act outside the user's a
 
 Version **0.3.0** is a provisional release. Local software and packaging checks are executable.
 The included 24-case skill corpus is author-visible development material, not a completed A/B
-behavioral evaluation. Cross-client discovery, live MCP round-trips, and ChatGPT account
-installation are not established by repository tests.
+behavioral evaluation. Model-free Pi/Codex discovery and local Python MCP SDK stdio
+round-trips have been dogfooded. Automatic skill selection, behavioral improvement,
+and ChatGPT account installation remain unproven; see the bounded host evidence in
+[installation](docs/project/installation.md).
 
 `LICENSE` exactly matches `tryingET/pi-extensions`, including its provider rider. It is **not
 standard MIT**. Review the license before distributing or installing the skill in a restricted
@@ -74,8 +76,9 @@ just ci
 just build
 ```
 
-`just ci` verifies generated-file drift, lint, tests, skill structure, template policy, and
-archive reproducibility. It does not prove improved reasoning behavior or production readiness.
+`just ci` verifies generated-file drift, lint, tests, live local MCP transport, skill structure,
+template policy, and archive reproducibility. Archives exclude known runtime caches and SQLite
+sidecars. These checks do not prove improved reasoning behavior or production readiness.
 
 The repo-local maintainer skill adopts `agent-skill-engineer` with explicit handoffs,
 not a copied universal workflow. `scripts/validate_skill.py` checks both packages.
@@ -115,8 +118,9 @@ uv sync --extra mcp
 uv run python scripts/configure_mcp.py --db "$PWD/.compass/decisions.sqlite3"
 ```
 
-The command prints configuration; it does not edit host settings. The adapter remains
-provisional until tested against the target MCP client and SDK version.
+The command prints configuration; it does not edit host settings. `just test-mcp` runs real
+stdio round-trips with the lockfile-selected SDK (verified with MCP 2.1.1). Agent-host MCP
+configuration and shared-service deployment remain separate, unverified integration paths.
 
 ## Provenance
 

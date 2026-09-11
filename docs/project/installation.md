@@ -39,8 +39,10 @@ uv run python install_skill.py \
   --dry-run
 ```
 
-The installer verifies that the named repository is public, that the commit is the current
-default-branch head, and that each published `skills/compass/` blob matches the local source.
+A non-dry-run installation with `--repository` and `--commit` verifies that the repository is
+public, the commit is the current default-branch head, and every published `skills/compass/`
+blob matches the local source. `--dry-run` previews the destination and local preconditions;
+it returns before remote verification and must not be cited as public-head proof.
 
 ## First local install
 
@@ -78,6 +80,50 @@ skills-only plugin archive, but archive creation is not account installation.
 
 ## MCP
 
-`integrations/mcp_server.py` is optional and provisional. `scripts/configure_mcp.py` prints a
-machine-specific local configuration; it does not modify a host. Do not claim MCP connectivity
-until the target client completes a live round-trip against the selected SDK version.
+`integrations/mcp_server.py` uses SDK v2's `MCPServer`. `scripts/configure_mcp.py` prints a
+machine-specific local configuration without modifying a host. Its Python path preserves venv
+symlinks: resolving them to the base interpreter loses the installed package and SDK.
+
+```bash
+just test-mcp
+```
+
+This explicitly installs the lockfile-selected MCP extra and launches the printed configuration
+through a real Python SDK stdio client. Eight cases exercise all six tools, read/calculation
+non-creation, invalid input, stale-write rejection, dependent-note invalidation, persisted
+readback after server restart, and rejection of boolean/string/float revision coercion on both
+write endpoints. Verified on Linux with Python 3.13.12, MCP 2.1.1 and Pydantic 2.13.5.
+The dedicated check runs in CI; ordinary tests can skip MCP when its extra is absent.
+
+This proves the local SDK transport profile, not an agent choosing MCP tools, account settings,
+other SDK versions, or shared-service authentication/tenant isolation.
+
+## Model-free host dogfooding
+
+```bash
+# Review the installed Pi SDK; substitute its actual package directory.
+PI_CODING_AGENT_PACKAGE=/absolute/path/to/node_modules/@earendil-works/pi-coding-agent \
+  just dogfood-hosts
+```
+
+Requires Linux user/network namespaces (`unshare`), Node, Git, Pi and Codex. The opt-in suite
+uses disposable HOME/config directories under `TMPDIR` and disables network access for host
+processes. It invokes no model and reads no normal host credentials. No existing installation
+is replaced. If namespaces or a required client are unavailable, the opted-in check fails;
+there is no fallback to an unrestricted host process.
+
+Observed on 2026-09-11 (AK task 5641, evidence 9026):
+
+| Path | Observed proof | Not proved |
+|---|---|---|
+| Local installer CLI | Exact skill file hashes, receipt, isolated standalone calculator; no-overwrite guard retained | Published-head verification, managed replacement permission, permanent install |
+| Pi 0.84.4 | Fresh `DefaultResourceLoader` processes discover global and trusted-project `.agents/skills/compass`; untrusted project excluded; actual host read tool loads skill and calculator reference; withdrawal removes discovery | Model-triggered loading, abstention, decisions, repo-maintainer skill behavior |
+| Codex CLI 0.128.0 | Local app-server `skills/list` reports the installed project skill enabled; fresh process no longer discovers it after withdrawal | Model turn, automatic selection, resource use, MCP host connection |
+| Python MCP SDK 2.1.1 | Live stdio client/server lifecycle and safety checks above | ChatGPT or other agent-host installation |
+
+The host suite has three opt-in cases, skipped by default CI and run explicitly for this receipt.
+A test-controlled resource read is not model selection. No new model provider permission was
+supplied; restricted-provider evaluation and ChatGPT upload were not attempted. Controlled
+behavioral A/A and paired A/B comparisons require an approved model, cost limit, frozen criteria,
+independent scoring and variance/regression reporting. Account installation additionally needs
+target UI/API access and post-install readback. These remain open under AK 5641.

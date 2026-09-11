@@ -17,12 +17,28 @@ SKILL = ROOT / "skills" / "compass"
 
 def included(path: Path) -> bool:
     relative = path.relative_to(ROOT)
-    excluded_parts = {"__pycache__", ".git", ".compass", ".venv", "dist", "build"}
+    excluded_parts = {
+        "__pycache__",
+        ".git",
+        ".compass",
+        ".venv",
+        "dist",
+        "build",
+        ".ontology",
+        ".pytest_cache",
+        ".ruff_cache",
+    }
+    sqlite_sidecars = tuple(
+        f"{extension}-{suffix}"
+        for extension in (".db", ".sqlite", ".sqlite3")
+        for suffix in ("wal", "shm", "journal")
+    )
     return (
         path.is_file()
         and not path.is_symlink()
         and not any(part in excluded_parts or part.endswith(".egg-info") for part in relative.parts)
         and path.suffix not in {".pyc", ".zip", ".db", ".sqlite", ".sqlite3"}
+        and not path.name.endswith(sqlite_sidecars)
         and not path.name.startswith(".env")
         and path.name not in {"publication-receipt.json", "installation-receipt.json"}
     )

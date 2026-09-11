@@ -16,7 +16,9 @@ def main() -> int:
     parser.add_argument("--db", type=Path, required=True)
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     arguments = parser.parse_args()
-    interpreter = arguments.python.expanduser().resolve()
+    # Resolving a venv's Python symlink selects the base interpreter and loses
+    # the environment's installed compass_c and MCP packages.
+    interpreter = arguments.python.expanduser().absolute()
     if not interpreter.is_file():
         parser.error("Python interpreter does not exist")
     print(

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Optional local stdio MCP adapter for COMPASS-C.
 
-This adapter is provisional until a live SDK round-trip passes. Do not expose it as
-a shared service without authentication, tenant isolation, quotas, and retention policy.
+Local SDK stdio behavior is covered by tests/test_mcp_live.py. That is not proof of
+agent-host integration. Do not expose it as a shared service without authentication,
+tenant isolation, quotas, and retention policy.
 """
 
 from __future__ import annotations
@@ -15,11 +16,12 @@ from typing import Any
 from compass_c import VERSION, CompassError, Notebook, calculate
 
 try:
-    from mcp.server.fastmcp import FastMCP
+    from mcp.server import MCPServer
+    from pydantic import StrictInt
 except ImportError as exc:  # pragma: no cover - optional dependency
     raise SystemExit("Install the optional dependency: uv sync --extra mcp") from exc
 
-mcp = FastMCP(
+mcp = MCPServer(
     "COMPASS-C",
     instructions=(
         f"COMPASS-C {VERSION}. Advisory records and conditional calculations only; "
@@ -61,7 +63,7 @@ def compass_get(decision_id: str) -> dict[str, Any]:
 @mcp.tool()
 def compass_record(
     decision_id: str,
-    expected_revision: int,
+    expected_revision: StrictInt,
     kind: str,
     content: str,
     status: str = "proposed",
@@ -89,7 +91,7 @@ def compass_review(decision_id: str) -> dict[str, Any]:
 
 @mcp.tool()
 def compass_invalidate(
-    decision_id: str, expected_revision: int, note_id: str, reason: str
+    decision_id: str, expected_revision: StrictInt, note_id: str, reason: str
 ) -> dict[str, Any]:
     """Mark a note and dependent conclusions stale while retaining history."""
     return result(notebook().invalidate, decision_id, expected_revision, note_id, reason)

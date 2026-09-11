@@ -11,4 +11,5 @@ uv run --extra dev ruff check .
 uv run --extra dev python scripts/build_skill.py --check
 uv run --extra dev python scripts/validate_skill.py
 uv run --extra dev python -m pytest tests/ -q
+uv run --frozen --extra dev --extra mcp python -m pytest tests/test_mcp_live.py -q
 ./scripts/check-document-policy.sh
