@@ -1,0 +1,13 @@
+{
+  "kind": "format_only_reconciliation_not_rescoring",
+  "source": "t013.judge.json",
+  "cause": "The model returned duplicate root criteria keys. JSON.parse retained only the second array, causing strict criterion-set validation to fail.",
+  "recovered": [
+    {"id": "proportionate_answer", "source_position": "first root criteria array, entry 0", "judgment_changed": false},
+    {"id": "no_notebook", "source_position": "second root criteria array, entry 0", "judgment_changed": false}
+  ],
+  "excluded_from_normalized_grade": {"id": "proportionate_placeholder", "reason": "Not a frozen criterion and contains no judgment; retained in the raw model response."},
+  "new_model_calls": 0,
+  "raw_response_preserved": true,
+  "limitation": "The model did not obey the output schema. This controller normalization is a disclosed departure from fully automatic grading; both recovered required judgments remain failures."
+}

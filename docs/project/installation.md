@@ -95,6 +95,14 @@ installation requires the target host's current upload/registration UI or API, a
 permissions, license clearance, and direct post-install verification. This repository emits a
 skills-only plugin archive, but archive creation is not account installation.
 
+OpenAI's current [skills](https://learn.chatgpt.com/docs/build-skills) and
+[plugins](https://learn.chatgpt.com/docs/build-plugins) guides distinguish local
+skills from installable plugins. ChatGPT explicit invocation uses `@`; Codex uses
+`$` or `/skills`. The guides recognize the `.codex-plugin/plugin.json` compatibility
+manifest used here. Confirm the actual account/app surface before prescribing an
+installation click path. No account upload or fresh ChatGPT conversation was verified
+by the 2026-09-11 local work.
+
 ## MCP
 
 `compass-c-mcp` and `python -m compass_c.mcp_server` run the optional local stdio
@@ -109,3 +117,31 @@ fail cleanly. CI repeats these scenarios against an isolated built wheel. This
 establishes the local SDK path; vendor-host installation and discovery still need
 a fresh-session canary against that actual client. The adapter is not a shared,
 authenticated or multi-tenant service.
+
+`STORAGE_NOT_FOUND` now explicitly describes only the configured notebook. It does
+not establish whether an earlier write committed elsewhere or before state changed,
+and it grants no retry permission. The existing error code/message envelope remains
+compatible. Recover the original notebook and operation identity before retrying.
+This clarification is not a host approval gate and cannot guarantee model compliance.
+
+## Bounded local dogfood, 2026-09-11
+
+- `just dogfood-hosts` (set `PI_CODING_AGENT_PACKAGE` to the reviewed installed Pi
+  package directory): opt-in Linux tests, disposable homes, network-disabled host
+  processes. Pi 0.84.4 global/trusted-project discovery, resource reads and withdrawal;
+  Codex 0.128.0 local discovery and withdrawal. No model or permanent host changes.
+- `just test-mcp`: actual configuration-driven SDK stdio checks. The separate
+  incoming integration/interface suite also passed 43 scenarios against an isolated
+  v0.6.0 wheel; this is distinct from account integration.
+- Public-head-verified installation of skill commit
+  `92f80c6b20e8cb82e144db96662e45873fac7add` succeeded. A disposable 0.3.0 to 0.6.0
+  managed replacement retained a runnable backup and the operator-permission digest.
+- An actual fresh GLM-5.3-flash/Pi session used six core operations through the
+  seventeen-tool MCP catalog and returned the observed calculation, record ID and
+  revision. This was a custom Pi SDK integration, not default installed Pi support.
+
+See the [retained study and limitations](../../evals/observations/2026-09-11-glm-native/README.md).
+The operator supplied limited provider permission under AK 9075; this does not
+change `LICENSE`, authenticate other users' permission, or verify provider training
+settings. Behavioral improvement, safe unattended recovery and actual personal
+OpenAI account installation remain separate, unresolved claims under AK 5641.

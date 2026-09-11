@@ -88,6 +88,13 @@ def test_stdio_read_calculate_and_invalid_start_do_not_create_storage(tmp_path):
                 error = await call(session, tool, decision_id="a" * 32)
                 assert not error["ok"]
                 assert error["error"]["code"] == "STORAGE_NOT_FOUND"
+                assert set(error["error"]) == {"code", "message"}
+                assert "only the configured notebook" in error["error"]["message"]
+                assert "remains unknown from this check" in error["error"]["message"]
+                assert "does not grant retry permission" in error["error"]["message"]
+            listed = await call(session, "compass_list")
+            assert "remains unknown" in listed["error"]["message"]
+            assert "original notebook" in listed["error"]["message"]
             error = await call(session, "compass_start", objective="")
             assert not error["ok"]
             assert error["error"]["code"] == "INVALID_INPUT"

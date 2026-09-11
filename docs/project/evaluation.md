@@ -210,3 +210,25 @@ holdout must use `status: "frozen_independent_holdout"`, nonempty authorship and
 `split: "holdout"` for every case, but the report still cannot verify its
 independence. Honest host evidence, protocol review and independent evaluation
 remain necessary outside this summarizer.
+
+## Later native Pi/GLM observations
+
+The [2026-09-11 study](../../evals/observations/2026-09-11-glm-native/README.md)
+retains 96 actual fresh-session observations with the unchanged 24-case development
+corpus. A/A ran first, then counterbalanced A/B; all failures remained in the data.
+Native skill acquisition and a real Pi/MCP workflow were observed. Answer-rubric
+passes were 20/24 with skill versus 19/24 without it, with two improvements, one
+regression and p=1.0. This does not establish reliable decision-quality improvement.
+Do not interpret the larger availability/routing gain as improved reasoning.
+
+`scripts/report_glm_dogfood.py` reuses this module's report contract. It also checks
+raw-to-grade preservation, including duplicate-key lossless inspection and actual
+execution overrides. Two malformed model judgments required disclosed format-only
+normalization; every required judgment/evidence value was retained, without a new
+model call. Raw captures remain local and are referenced by path and digest.
+Neither normalization checks nor those references authenticate the original host.
+
+The live capture drivers are archival text snapshots, not reusable commands. Their
+cross-process budget ownership was not hardened; future live execution belongs behind
+an execution-owner custody gate. Do not run the snapshots or infer platform-wide
+budget enforcement from this controller-serialized experiment.

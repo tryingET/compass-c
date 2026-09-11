@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "discoveredTools": 17,
+  "successfulCoreTools": [
+    "compass_start",
+    "compass_get",
+    "compass_record",
+    "compass_review",
+    "compass_invalidate",
+    "compass_calculate"
+  ],
+  "decisionId": "1435a5638abc448c95077b01e92c23da",
+  "revision": 4,
+  "actionPermission": "not_granted"
+}

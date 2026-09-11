@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "task": 5641,
+  "raw_capture_root": ".compass/evaluations/2026-09-11-glm-v06",
+  "raw_capture_storage": "local_only_not_distributed",
+  "snapshots": [
+    {
+      "study": "study",
+      "original_path": "scripts/dogfood_glm.mjs",
+      "snapshot": "harness/study/scripts/dogfood_glm.mjs.txt",
+      "sha256": "9d80b9a1c3da66030b6603b7d24c0be256c4166d9ffa00305bcca638a323fd77"
+    },
+    {
+      "study": "study",
+      "original_path": "scripts/glm_dogfood_support.mjs",
+      "snapshot": "harness/study/scripts/glm_dogfood_support.mjs.txt",
+      "sha256": "ec84e193bfa3cd9c9cfb36b9f5302046d191cb9b1550573b574c1ac99820600f"
+    },
+    {
+      "study": "study",
+      "original_path": "scripts/mcp_call.py",
+      "snapshot": "harness/study/scripts/mcp_call.py.txt",
+      "sha256": "c9b43035bdcdfc5a4429fd0350356dc5cb92963efa32095a4f241e296d95ebc2"
+    },
+    {
+      "study": "study",
+      "original_path": "scripts/configure_mcp.py",
+      "snapshot": "harness/study/scripts/configure_mcp.py.txt",
+      "sha256": "496bf80a4341f2a5cf4295c87ff40504b85457de7155d92fff8d2713e8cf4e95"
+    },
+    {
+      "study": "study",
+      "original_path": "src/compass_c/mcp_server.py",
+      "snapshot": "harness/study/src/compass_c/mcp_server.py.txt",
+      "sha256": "dde1c91f39a3e5bf398dd8a262e004921e08e9e8807e0c893d9823e79962c065"
+    },
+    {
+      "study": "recovery",
+      "original_path": "scripts/dogfood_recovery.mjs",
+      "snapshot": "harness/recovery/scripts/dogfood_recovery.mjs.txt",
+      "sha256": "4b1d831e44815dede19bf334e0db859fcb5aae1a1f8fb594efe7d67ead73dda9"
+    },
+    {
+      "study": "recovery",
+      "original_path": "scripts/mcp_call.py",
+      "snapshot": "harness/recovery/scripts/mcp_call.py.txt",
+      "sha256": "c9b43035bdcdfc5a4429fd0350356dc5cb92963efa32095a4f241e296d95ebc2"
+    },
+    {
+      "study": "recovery",
+      "original_path": "src/compass_c/mcp_server.py",
+      "snapshot": "harness/recovery/src/compass_c/mcp_server.py.txt",
+      "sha256": "fa735c51c7420e3ae9d5e6a5c8e08107ab3be30604782737f7e464122b51c8ab"
+    }
+  ]
+}

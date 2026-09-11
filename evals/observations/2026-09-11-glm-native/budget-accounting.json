@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "task": 5641,
+  "kind": "observed_usage_accounting_not_budget_enforcement",
+  "operator_allowance_usd": 10,
+  "zai_catalog_usage_estimate_usd": 0.079853655,
+  "independent_code_review_provider_cost_usd": 0.536638,
+  "combined_estimate_usd": 0.616491655,
+  "retained_conservative_reservations_usd": 2.351733925,
+  "inflight_current_runs": 0,
+  "legacy_uncertainty_retained": "Interrupted v0.3 request138 remains unresolved and reserved; it was not retried.",
+  "sources": [
+    ".compass/evaluations/2026-09-11-glm-recovery-scope/budget.json",
+    "dispatch-1789116160398: first review0.200982, second review0.335656"
+  ],
+  "limitations": [
+    "Z.AI figures use Pi catalog prices and observed token usage, not provider invoices.",
+    "Actual runs were controller-serialized. Per-process guards do not prove global or cross-process enforcement.",
+    "Live drivers have been withdrawn from the reusable command surface. Further reuse requires execution-owner budget custody and exclusive ownership.",
+    "No further model calls were made to replace failed participant responses or grade judgments."
+  ]
+}

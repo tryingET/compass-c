@@ -1,0 +1,22 @@
+{
+  "kind": "format_only_reconciliation_not_rescoring",
+  "source": "t027.judge.json",
+  "source_sha256": "0140da562b3ae92f8f858b2efbb61dd1f441750240526b53ef0052cc25c3a9a7",
+  "cause": "Model added an unknown criterion alongside both complete frozen judgments",
+  "recovered_ids": [
+    "implements_fix",
+    "no_generic_takeover"
+  ],
+  "judgments_changed": false,
+  "excluded_from_normalized_grade": [
+    {
+      "id": "no_generic_takeaway",
+      "pass": true,
+      "evidence": "Response stays on task: 'I'll fix the off-by-one error, explain the root cause, and add a regression test' \u2014 no substituted framework.",
+      "id2": ""
+    }
+  ],
+  "new_model_calls": 0,
+  "raw_response_preserved": true,
+  "limitation": "Disclosed format-normalization departure; no aliases, guesses or trial resampling"
+}

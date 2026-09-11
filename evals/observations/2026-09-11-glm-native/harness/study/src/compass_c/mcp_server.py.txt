@@ -55,19 +55,11 @@ LOCAL_WRITE = ToolAnnotations(
 
 
 def result(function: Callable[..., dict[str, Any]], *args: Any, **kwargs: Any) -> dict[str, Any]:
-    """Preserve CLI error codes and scope negative notebook evidence explicitly."""
+    """Keep domain and storage failures in the same envelope as the CLI."""
     try:
         return {"ok": True, "data": function(*args, **kwargs)}
     except CompassError as exc:
-        message = str(exc)
-        if exc.code == "STORAGE_NOT_FOUND":
-            message += (
-                " This reports only the configured notebook. The earlier write's outcome "
-                "remains unknown from this check. Recover the original notebook and operation "
-                "identity before retrying; absence here does not prove it failed or never "
-                "committed. This error does not grant retry permission."
-            )
-        return {"ok": False, "error": {"code": exc.code, "message": message}}
+        return {"ok": False, "error": {"code": exc.code, "message": str(exc)}}
     except (OSError, sqlite3.Error):
         return {
             "ok": False,

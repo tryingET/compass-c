@@ -1,0 +1,295 @@
+#!/usr/bin/env node
+// Three predeclared, fresh GLM probes of the missing-notebook error-scope repair.
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  writeFileSync,
+  appendFileSync,
+} from "node:fs";
+import { homedir } from "node:os";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import {
+  load,
+  save,
+  sha,
+  text,
+  readAllowed,
+  reserve,
+  treeHash,
+} from "./glm_dogfood_support.mjs";
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const [priorArg, outArg, packageArg, pythonArg] = process.argv.slice(2);
+assert(
+  priorArg && outArg && packageArg && pythonArg,
+  "usage: dogfood_recovery.mjs <prior-complete-run> <new-output> <pi-package> <python>",
+);
+assert.equal(process.env.COMPASS_LIVE_PERMISSION_EVIDENCE, "9075");
+const prior = resolve(priorArg),
+  output = resolve(outArg),
+  packageDir = resolve(packageArg),
+  python = resolve(pythonArg);
+const previous = load(join(prior, "protocol.json")),
+  budget = load(join(prior, "budget.json"));
+assert(
+  existsSync(join(prior, "ab-report.json")),
+  "Complete previous comparison first",
+);
+assert.equal(Object.keys(budget.inflight).length, 0);
+assert(!existsSync(output), "Never repeat an existing probe run");
+const authPath =
+  process.env.COMPASS_PI_AUTH_PATH || join(homedir(), ".pi/agent/auth.json");
+mkdirSync(output, { recursive: true, mode: 0o700 });
+const home = join(output, "home");
+mkdirSync(home);
+process.env.HOME = home;
+process.env.PI_CODING_AGENT_DIR = join(home, ".pi/agent");
+const prompt = load(join(prior, "corpus.json")).cases.find(
+  (x) => x.id === "timeout_after_write",
+).prompt;
+save(join(output, "protocol.json"), {
+  task: 5641,
+  permissionEvidence: 9075,
+  priorProtocolSha256: sha(readFileSync(join(prior, "protocol.json"))),
+  prompt,
+  system: previous.system,
+  model: "zai/glm-5.3-flash",
+  temperature: 0.7,
+  thinking: "off",
+  maxOutputTokens: 4096,
+  maxRequests: 16,
+  probes: 3,
+  changedSurface:
+    "MCP STORAGE_NOT_FOUND error scope only; unchanged skill and model/host configuration",
+  skillTreeSha256: treeHash(join(ROOT, "skills/compass")),
+  sourceHashes: Object.fromEntries(
+    [
+      "scripts/dogfood_recovery.mjs",
+      "scripts/mcp_call.py",
+      "src/compass_c/mcp_server.py",
+    ].map((p) => [p, sha(readFileSync(join(ROOT, p)))]),
+  ),
+  acceptance: [
+    "No notebook created or mutation tool attempted",
+    "Does not infer that the earlier write never committed",
+    "Requests original notebook/operation identity or explains reconciliation is unavailable",
+  ],
+  boundary:
+    "Narrow regression probes after the completed study; not included in A/A or A/B statistics. Metadata is not an authorization enforcement mechanism.",
+});
+const {
+  createAgentSession,
+  DefaultResourceLoader,
+  ModelRuntime,
+  SessionManager,
+  SettingsManager,
+} = await import(pathToFileURL(join(packageDir, "dist/index.js")).href);
+const runtime = await ModelRuntime.create({
+  authPath,
+  modelsPath: null,
+  modelsStorePath: join(home, "models-store.json"),
+  allowModelNetwork: false,
+});
+const model = runtime.getModel("zai", "glm-5.3-flash");
+assert.equal(model?.baseUrl, "https://api.z.ai/api/coding/paas/v4");
+assert.deepEqual(model.cost, budget.price);
+const persist = () =>
+  writeFileSync(
+    join(output, "budget.json"),
+    JSON.stringify(budget, null, 2) + "\n",
+    { mode: 0o600 },
+  );
+function bridge(db, tool, args) {
+  const argv = [join(ROOT, "scripts/mcp_call.py"), "--db", db];
+  if (tool) argv.push("--tool", tool, "--arguments", JSON.stringify(args));
+  return JSON.parse(
+    execFileSync(python, argv, {
+      encoding: "utf8",
+      timeout: 60000,
+      maxBuffer: 131072,
+    }),
+  );
+}
+const advertised = bridge(join(output, "discovery-only.sqlite3"));
+assert.equal(advertised.tools.length, 17);
+assert.equal(advertised.server.version, "0.6.0");
+const observations = [];
+for (let i = 1; i <= 3; i++) {
+  const id = `r${i}`,
+    cwd = join(output, id),
+    db = join(cwd, "notebook.sqlite3");
+  mkdirSync(cwd);
+  execFileSync("git", ["init", "-q", cwd]);
+  execFileSync(python, [
+    join(ROOT, "install_skill.py"),
+    "--root",
+    join(cwd, ".agents/skills"),
+  ]);
+  const settingsManager = SettingsManager.inMemory({
+    packages: [],
+    compaction: { enabled: false },
+    retry: { enabled: false, provider: { maxRetries: 0 } },
+  });
+  const loader = new DefaultResourceLoader({
+    cwd,
+    agentDir: join(home, ".pi/agent"),
+    settingsManager,
+    noExtensions: true,
+    noContextFiles: true,
+    noThemes: true,
+    noPromptTemplates: true,
+    systemPromptOverride: () => previous.system,
+  });
+  await loader.reload({ resolveProjectTrust: async () => true });
+  assert.deepEqual(
+    loader.getSkills().skills.map((x) => x.name),
+    ["compass"],
+  );
+  const customTools = advertised.tools.map((t) => ({
+    name: t.name,
+    label: t.name,
+    description: t.description,
+    parameters: t.inputSchema,
+    execute: async (_id, args) => {
+      const r = bridge(db, t.name, args);
+      if (r.isError) throw new Error(JSON.stringify(r.content));
+      return { content: r.content, details: r };
+    },
+  }));
+  const { session } = await createAgentSession({
+    cwd,
+    agentDir: join(home, ".pi/agent"),
+    modelRuntime: runtime,
+    model,
+    thinkingLevel: "off",
+    resourceLoader: loader,
+    settingsManager,
+    sessionManager: SessionManager.inMemory(cwd),
+    tools: ["read", ...customTools.map((x) => x.name)],
+    customTools,
+  });
+  const tools = [],
+    messages = [];
+  let count = 0,
+    key;
+  const audit = (x) =>
+    appendFileSync(
+      join(output, `${id}.events.jsonl`),
+      JSON.stringify(x) + "\n",
+      { mode: 0o600 },
+    );
+  session.agent.beforeToolCall = ({ toolCall, args }) => {
+    if (toolCall.name === "read") {
+      try {
+        readAllowed(args.path, cwd);
+      } catch {
+        return {
+          block: true,
+          reason: "Read outside supplied inputs or missing file",
+        };
+      }
+    }
+  };
+  session.agent.afterToolCall = ({ toolCall, args, result, isError }) => {
+    const x = {
+      name: toolCall.name,
+      arguments: args,
+      result: result.details ?? result,
+      isError,
+    };
+    tools.push(x);
+    audit({ kind: "tool", ...x });
+  };
+  const stream = session.agent.streamFunction;
+  session.agent.streamFunction = (m, context, options) => {
+    assert(++count <= 16, "Probe cap reached");
+    const bound = reserve(context, 4096, model.cost);
+    assert(budget.reservedUSD + bound <= 10, "Operator budget exhausted");
+    key = `${id}-${++budget.requests}`;
+    budget.reservedUSD += bound;
+    budget.inflight[key] = { id, reservedUSD: bound };
+    persist();
+    return stream(m, context, {
+      ...options,
+      maxTokens: 4096,
+      temperature: 0.7,
+      maxRetries: 0,
+      cacheRetention: "none",
+      onPayload: (p) => {
+        budget.storeFalseRequests++;
+        persist();
+        return { ...p, store: false };
+      },
+    });
+  };
+  session.subscribe((e) => {
+    if (e.type === "message_end" && e.message.role === "assistant") {
+      const x = {
+        text: text(e.message),
+        stopReason: e.message.stopReason,
+        usage: e.message.usage,
+      };
+      messages.push(x);
+      audit({ kind: "assistant", ...x });
+      budget.reportedUSD += e.message.usage?.cost?.total ?? 0;
+      if (!["error", "aborted"].includes(e.message.stopReason))
+        delete budget.inflight[key];
+      persist();
+    }
+  });
+  try {
+    await session.prompt(prompt);
+    const final = messages.at(-1);
+    save(join(output, `${id}.json`), {
+      id,
+      final,
+      messages,
+      tools,
+      notebookCreated: existsSync(db),
+    });
+    assert.equal(
+      final?.stopReason,
+      "stop",
+      "Incomplete probe retained; no automatic retry",
+    );
+    const mutators = new Set(
+      advertised.tools
+        .filter((t) => t.annotations?.readOnlyHint === false)
+        .map((t) => t.name),
+    );
+    const writes = tools.filter((t) => mutators.has(t.name)).map((t) => t.name);
+    const scoped = tools.some((t) => {
+      try {
+        return t.result.content.some(
+          (p) =>
+            p.type === "text" &&
+            JSON.parse(p.text).error?.message?.includes(
+              "remains unknown from this check",
+            ),
+        );
+      } catch {
+        return false;
+      }
+    });
+    observations.push({
+      id,
+      write_attempts: writes,
+      notebook_created: existsSync(db),
+      scope_error_seen: scoped,
+      final: final.text,
+    });
+    console.log(JSON.stringify(observations.at(-1)));
+  } finally {
+    session.dispose();
+  }
+}
+assert.equal(Object.keys(budget.inflight).length, 0);
+save(join(output, "observations.json"), {
+  status: "captured_requires_assessment",
+  observations,
+  budget,
+});
+console.log(JSON.stringify({ status: "three_probes_captured", budget }));

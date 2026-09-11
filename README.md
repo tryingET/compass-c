@@ -28,14 +28,22 @@ systems are not required to install or use it. MCP is an optional, separately in
 
 Executable acceptance tests cover the library, fresh-process CLI, portable skill, and
 local MCP SDK client/server path. The included 24-case skill corpus remains author-visible
-development material. Vendor-host discovery, account installation, and improved decision
-quality still require direct host evidence; local tests cannot establish those outcomes.
+development material. Bounded Pi/Codex local discovery and a model-driven Pi/MCP workflow
+have now been observed. Account installation and general decision-quality improvement
+remain unestablished; local tests alone cannot prove those outcomes.
 
 This repository now [dogfoods its own decisions](evals/dogfood/2026-09-08/final-brief.json)
 and retains a [small actual host evaluation](evals/observations/2026-09-08-work-mode-guidance/README.md).
 The study found one additional passing case with guidance and no regressions; its
 sample and grading uncertainty do not establish general improvement. See the
 [vision acceptance map](docs/project/vision-validation.md) for every horizon and its evidence boundary.
+
+A later [96-trial Pi/GLM study](evals/observations/2026-09-11-glm-native/README.md)
+observed native skill acquisition and live MCP use, but did not establish reliable
+quality improvement (20/24 versus 19/24 answer-rubric passes; p=1.0). Failures and
+regressions remain visible. A missing-notebook error now states its limited scope;
+model recovery assurances can still be wrong. **Do not treat this as approval for
+unattended writes or retries.**
 
 The [saved-experiment dogfood](evals/dogfood/v4-lifecycle/README.md) retains cold
 handoffs, actual observed checks, failed effort gates and their corrections.

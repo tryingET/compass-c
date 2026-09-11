@@ -1,0 +1,195 @@
+// Bounded consumer-side capture helpers; COMPASS-C owns paired report semantics.
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import {
+  readFileSync,
+  writeFileSync,
+  realpathSync,
+  readdirSync,
+} from "node:fs";
+import { resolve, join, relative, sep } from "node:path";
+export function invocation(args) {
+  const [mode, output, packageDir, python] = args;
+  assert(
+    ["freeze", "aa", "ab", "score", "canary"].includes(mode) &&
+      output &&
+      packageDir &&
+      python,
+    "usage: dogfood_glm.mjs <freeze|aa|ab|score|canary> <run-dir> <installed-pi-package> <python>",
+  );
+  return {
+    mode,
+    output: resolve(output),
+    packageDir: resolve(packageDir),
+    python: resolve(python),
+  };
+}
+export const sha = (x) => createHash("sha256").update(x).digest("hex");
+export const load = (path) => JSON.parse(readFileSync(path, "utf8"));
+export const save = (path, x) =>
+  writeFileSync(path, JSON.stringify(x, null, 2) + "\n", {
+    flag: "wx",
+    mode: 0o600,
+  });
+export const text = (m) =>
+  (m.content ?? [])
+    .filter((x) => x.type === "text")
+    .map((x) => x.text)
+    .join("\n");
+export function treeHash(root) {
+  const files = [];
+  function visit(dir) {
+    for (const e of readdirSync(dir, { withFileTypes: true }).sort((a, b) =>
+      a.name.localeCompare(b.name),
+    )) {
+      if (
+        e.name === "__pycache__" ||
+        e.name.endsWith(".pyc") ||
+        e.name === ".install-receipt.json"
+      )
+        continue;
+      assert(!e.isSymbolicLink());
+      const p = join(dir, e.name);
+      if (e.isDirectory()) visit(p);
+      else files.push([relative(root, p), sha(readFileSync(p))]);
+    }
+  }
+  visit(root);
+  return sha(JSON.stringify(files));
+}
+export function readAllowed(path, cwd) {
+  const p = realpathSync(resolve(cwd, path)),
+    root = realpathSync(cwd);
+  assert(
+    p.startsWith(root + sep) && !p.includes(`${sep}.git${sep}`),
+    "Read outside supplied trial inputs",
+  );
+}
+export function reserve(context, maxTokens, cost) {
+  for (const key of ["input", "output", "cacheRead", "cacheWrite"])
+    assert(Number.isFinite(cost[key]) && cost[key] >= 0);
+  assert(cost.input > 0 && cost.output > 0, "Unknown billing bound");
+  return (
+    ((Buffer.byteLength(JSON.stringify(context)) + 4096) *
+      Math.max(cost.input, cost.cacheRead, cost.cacheWrite) +
+      maxTokens * cost.output) /
+    1e6
+  );
+}
+export function gradeShape(case_, value) {
+  assert.deepEqual(
+    value.criteria.map((x) => x.id).sort(),
+    case_.expected_output.criteria.map((x) => x.id).sort(),
+  );
+  for (const c of value.criteria)
+    assert(
+      typeof c.pass === "boolean" &&
+        typeof c.evidence === "string" &&
+        c.evidence.trim(),
+    );
+  return value;
+}
+export function mcpFacts(trial) {
+  return {
+    status: trial.status,
+    notebookCreated: trial.notebookCreated,
+    tools: trial.tools.filter((x) => x.name !== "read"),
+  };
+}
+export function executedOutputs(trial, name) {
+  return trial.tools
+    .filter((x) => x.name === name && !x.isError)
+    .flatMap((x) => {
+      try {
+        return [
+          JSON.parse(x.result.content.find((p) => p.type === "text").text),
+        ];
+      } catch {
+        return [];
+      }
+    });
+}
+export function executionChecks(grade, trial) {
+  const calculations = executedOutputs(trial, "compass_calculate");
+  for (const c of grade.criteria) {
+    let observed;
+    if (c.id === "correct_computation")
+      observed = calculations.some(
+        (x) => x.ok && Math.abs(x.data?.result?.pair_value - 20.25) < 1e-8,
+      );
+    if (c.id === "computes_radius")
+      observed = calculations.some(
+        (x) =>
+          x.ok &&
+          Math.abs(x.data?.result?.spectral_radius - Math.sqrt(0.5)) < 1e-8,
+      );
+    if (
+      ["no_notebook", "no_persistence"].includes(c.id) &&
+      trial.notebookCreated
+    )
+      observed = false;
+    if (observed !== undefined) {
+      c.judgePass = c.pass;
+      c.pass = observed;
+      c.executionOverride = true;
+    }
+  }
+  return grade;
+}
+
+export function makeSchedule(corpus) {
+  const schedule = [];
+  for (const c of corpus.cases)
+    for (const arm of ["baseline", "candidate"])
+      schedule.push({ phase: "aa", caseId: c.id, arm, skill: true });
+  for (const [i, c] of corpus.cases.entries())
+    for (const arm of i % 2
+      ? ["candidate", "baseline"]
+      : ["baseline", "candidate"])
+      schedule.push({
+        phase: "ab",
+        caseId: c.id,
+        arm,
+        skill: arm === "candidate",
+      });
+  schedule.forEach((x, i) => (x.id = `t${String(i + 1).padStart(3, "0")}`));
+  return schedule;
+}
+
+export function verifyCanary(result, readbackFor) {
+  assert.equal(result.status, "executed");
+  const required = [
+    "compass_start",
+    "compass_get",
+    "compass_record",
+    "compass_review",
+    "compass_invalidate",
+    "compass_calculate",
+  ];
+  assert(
+    required.every((name) => executedOutputs(result, name).some((x) => x.ok)),
+    "All six core MCP operations must succeed",
+  );
+  assert(
+    executedOutputs(result, "compass_calculate").some(
+      (x) => x.ok && Math.abs(x.data.result.pair_value - 20.25) < 1e-8,
+    ),
+  );
+  const id = executedOutputs(result, "compass_start").find((x) => x.ok).data
+    .decision_id;
+  const readback = readbackFor(id);
+  assert(
+    readback.revision >= 4 &&
+      readback.invalidations.length >= 1 &&
+      readback.action_permission === "not_granted",
+  );
+  assert(result.final.includes(id) && result.final.includes("20.25"));
+  return {
+    status: "passed",
+    discoveredTools: 17,
+    successfulCoreTools: required,
+    decisionId: id,
+    revision: readback.revision,
+    actionPermission: readback.action_permission,
+  };
+}
