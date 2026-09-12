@@ -118,3 +118,84 @@ request, rubric and protocol hashes; private evidence lives in
 conservative reservation: $7.944760125, not an invoice. Original grades remain intact.
 Do not reset its one-shot marker. A replacement pilot requires explicit owner approval
 and a revised frozen token/reasoning/budget protocol, retaining this failed attempt.
+
+## September 12: subscription correction and retained-response continuation
+
+The operator challenged the dollar gate: the route uses their subscription. The
+controller acknowledged the erroneous metered-billing assumption. The operator then
+explicitly said to proceed with all work. AK9311 records the revised authorization:
+no monetary admission gate, 131,072 output-token ceiling from the installed GLM-5.3
+catalog, one unchanged shared rubric, and existing inference-only permission9075.
+Technical context/response limits and provider rate/quota failures still apply.
+
+The live path exposed multiple representational assumptions missed by credential-free
+success fixtures. Each stopped run remains failed under its original acceptance rules;
+completed responses were preserved rather than resampled. The continuation log is:
+
+- v2: complete first juror used the shortened outer role `juror_1_`. Its exact inner
+  string validated unchanged. AK9314 admits only finite role aliases and records
+  outer-key reconciliation separately from raw wire/output bytes.
+- v3: the third juror quoted a literal newline in a tool-result string. Exact matching
+  against decoded JSON string-value leaves fixed a serialized-byte/text mismatch,
+  without quote editing, key matching or concatenating unrelated leaves (AK9320).
+- v4: first adjudicator returned an actual object and used the same short role labels.
+  Lossless object serialization and alias lookup preserve the entire decoded judgment,
+  including original labels; duplicate/missing/unknown jurors still fail (AK9333).
+- v5: a t060 juror quoted the exact visible sentence without bold Markdown delimiters.
+  Exact CommonMark inline-block rendering supports that representation; fuzzy matching,
+  whitespace normalization, cross-block joining and HTML/image erasure remain excluded.
+  Parser metadata pins `markdown-it-py`4.0.0 (AK9345).
+- v6: reconstructs the six completed responses locally after source, request, response,
+  generated-graph and unchanged-judgment checks; then permits eighteen new HTTP attempts.
+  No completed opinion is discarded in favor of a new sample. The original truncated
+  attempt remains separate, and the six original participant answers are never rerun.
+
+These are explicit post-observation validation revisions, not an unchanged prospective
+parser contract. They resolve encoding/display identity only, not semantic correctness.
+All original responses, quotations, substantive reasoning and verdicts remain intact.
+All prior roots and stopped-run markers remain immutable.
+
+Readback review `dispatch-1789192810975` reproduced four verifier gaps with scratch-only
+tampering: prepared inputs not rebound to source bytes; incomplete full-request checks;
+contradictory scheduler traces; missing companion-receipt checks. The reporter now
+rebuilds frozen inputs, verifies complete DSPy messages and all wire controls, replays
+the generated scheduler offline with retained outputs, and checks raw/output/validated/
+usage/envelope companions and each original lineage. These fixes did not invoke models.
+Required owner-stack tests passed455 with zero skips; repo-default tests passed675
+with385 explicit optional-dependency/installed-host skips and17 subtests. Required
+LM/parser verification is separate from the default dependency-free runtime gate.
+
+Full live result/readback and committed-state gates are recorded separately below;
+these offline passes are not jury completion or quality proof.
+
+### Completed live review and bounded interpretation
+
+The v6 live process exited0. Twenty-four unique completed GLM-5.3 review responses
+comprise eighteen jurors and six separate adjudicators: six pinned retained responses
+plus eighteen new HTTP calls in the final invocation. Fresh readback reproduced
+`evals/dspx-jury/subscription-result.json` byte-equivalent data, checked all290 original
+capture/grade files unchanged, and all stopped-root SHA manifests passed preservation
+checks. AK9361 records this completed execution/readback, not semantic correctness.
+
+Original-criterion outcomes match within every pair. Both code answers are adjudicated
+as non-implementation; both timeout answers fail effect honesty. The adjudicator
+does not rescue the old apparent improvements. Independent interpretation audit
+`dispatch-1789197385920` covered all six cases and found a clear t075 reasoning error:
+empty tool-use history does not establish tool unavailability. Other cautions include
+focus versus delivery wording, global absence overclaims, and narrow timeout-related
+passes that must not be read as blanket recovery-safety proof. AK9362 records this
+semantic-assurance failure separately; all model opinions remain unchanged.
+
+Public interpretation is in `evals/dspx-jury/subscription-review.md`. There is no new
+headline win rate, held-out study, source-grade replacement, release, provider-policy
+verification, or unattended-write approval. Final committed-state gates and provenance
+notes remain separate execution evidence.
+
+Final staged review `dispatch-1789200909429` caught private-file dependencies in default
+regression tests. A source-only index projection reproduced `FileNotFoundError`;
+the first repair exposed a second Markdown-conditional private read. Both default
+regressions now use synthetic inputs. Private capture tests explicitly require
+`COMPASS_JURY_PRIVATE_EVIDENCE=1`, and opt-in fails if required files are missing.
+The source-only projection then passed277 jury tests with180 explicit private-evidence
+skips in the owner environment, without a `.compass/` tree. These test-only repairs
+leave all frozen runtime bytes, actual model responses and verified report unchanged.

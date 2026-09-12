@@ -111,7 +111,7 @@ Adjudication must retain and assess each juror's actual verdict and correctly fl
 verdict disagreement. These checks validate structure and citation membership,
 **not the truth or quality of the model's explanation**.
 
-## One-shot live pilot and retained failure
+## Historical first pilot and retained failure
 
 `scripts/compass_jury_live.py` now binds the maintained `dspy_lm_auth.LM` route
 using the owner environment, without modifying DSPx or implementing authentication.
@@ -121,7 +121,7 @@ attempt even if higher layers try to retry. The runner disables caches/retries,
 uses fresh formatted messages per stage, and retains request bodies, raw responses,
 usage and failures without logging credentials. Jurors never receive peer judgments.
 
-The fixed private root is `.compass/evaluations/glm53-jury-AK5673`. Exclusive locking
+The first private root was `.compass/evaluations/glm53-jury-AK5673`. Exclusive locking
 and a durable, never-removed one-shot marker prevent ordinary repeated invocation,
 including after a crash. There is no resume, output-root or budget override. These
 are local custody controls, not protection against an actor modifying the runner,
@@ -143,9 +143,46 @@ facts. One request reserved $0.0802442. No complete juror judgment, adjudicator 
 retry, grade replacement or quality-improvement result followed (AK evidence9267).
 The 8,192-token cap was insufficient for this observed reasoning-enabled request.
 
-Do **not** rerun `--execute`, remove the marker, or relabel the partial response as
-an accepted judgment. A separately approved replacement pilot needs a revised frozen
-token/reasoning/budget protocol and must retain this failed attempt unchanged.
+Do **not** remove that marker or relabel the partial response as an accepted judgment.
+The operator subsequently corrected the billing assumption and authorized the subscription
+continuation below. This historical failure and its original cost estimates remain intact;
+those estimates are not a subscription admission gate.
+
+## Subscription continuation and readback
+
+The operator confirmed subscription use and removed the metered-dollar gate. The
+runner now uses the installed GLM-5.3 catalog's 131,072-token output ceiling and
+1,000,000-token context capacity, with provider rate/quota errors stopping execution.
+There is no dollar allowance or reservation calculation. Byte/context bounds, a
+one-hour transport inactivity timeout, and single-use stage custody remain technical
+controls, not cost-saving output restrictions. Actual responses have exceeded the
+old 8,192-token ceiling without truncation.
+
+The current fixed root is `.compass/evaluations/glm53-jury-AK5673-subscription-v6`.
+It carries six pinned, completed responses forward and permits eighteen new HTTP
+attempts, yielding twenty-four unique review responses if all stages finish. Replay
+reconstructs the generated graph locally; it does not request replacement opinions.
+Every source response and original failed run remains unchanged. See
+[subscription-review.md](subscription-review.md) for interpretation and readback status.
+
+The live responses exposed representation mismatches that synthetic-only tests missed.
+Each correction was recorded before continuing, never silently applied to source data:
+
+- Accept the exact output role or its explicit trailing-`json` omission alias.
+- A sole output value can be a JSON string or object. Object serialization is lossless;
+  decoded judgments, including original role labels, are unchanged. Alias lookup must
+  still identify all three distinct jurors and their actual verdicts.
+- Citations match exact raw source text, exact decoded JSON string-value leaves in
+  `tools`/`messages`, or exact rendered CommonMark inline-block text in `final`.
+  No fuzzy matching, whitespace normalization, cross-block joining or quote edits.
+  Unsupported HTML/image blocks do not gain a rendered-text match.
+
+`envelope.json` records representation, observed/expected keys and serialized/semantic
+hashes. `response.raw` and `output.txt` preserve provider data. `validated.json` and
+usage receipts remain separate. Genuine malformed judgments or unsupported citations
+still stop; known completed responses are not resampled to obtain different verdicts.
+These are explicit, evidence-informed pilot validation revisions—not a claim that the
+original strict transport contract passed prospectively without amendments.
 
 Offline preflight (no LM construction or credential resolution):
 
@@ -155,12 +192,25 @@ Offline preflight (no LM construction or credential resolution):
 
 Required integration verification uses the owner environment; the default repo suite
 explicitly skips tests whose optional LM dependencies are absent:
+Private-capture integration tests additionally require explicit opt-in and the retained
+local evidence. With opt-in set, absent captures fail instead of silently skipping.
+Default source-only tests must not depend on ignored `.compass/` data.
+
 
 ```bash
-/path/to/dspy-lm-auth/.venv/bin/python -c 'import dspy_lm_auth, dspy, httpx, openai'
-/path/to/dspy-lm-auth/.venv/bin/python -m pytest tests/test_compass_jury_live.py tests/test_compass_jury.py -q
+/path/to/dspy-lm-auth/.venv/bin/python -c 'import dspy_lm_auth, dspy, httpx, openai, markdown_it'
+COMPASS_JURY_PRIVATE_EVIDENCE=1 /path/to/dspy-lm-auth/.venv/bin/python -m pytest tests/test_compass_jury*.py -q
 ```
 
-The actual maintained LM/DSPy/client stack passed 72 offline tests, including a
-synthetic 24-call complete pilot and first-failure stops. These tests establish
-plumbing and failure containment, **not live completion or grading quality**.
+The owner environment supplies `markdown-it-py` 4.0.0 for the recorded CommonMark
+interpretation; it is not a new core-runtime dependency. The read-only reporter
+rebuilds frozen inputs, verifies exact full DSPy requests and scheduler replay,
+checks raw/companion receipts and original-file hashes, and distinguishes retained
+responses from new HTTP calls. It makes no provider call or grade mutation:
+
+```bash
+/path/to/dspy-lm-auth/.venv/bin/python scripts/compass_jury_report.py --output /new/report.json
+```
+
+The reporter rejects incomplete runs. Its synthetic tamper tests establish readback
+behavior, **not live completion, authenticated model identity, or grading truth**.

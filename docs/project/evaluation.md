@@ -251,8 +251,19 @@ adapter checks criterion coverage, source quotations and explicit handling of ju
 disagreement, with separate delivery/correctness/safety dimensions. Same-model
 agreement remains correlated; structural validity does not prove truthful judging.
 
-AK5673 owns the candidate program. Its generated graph and negative paths have run
-with DSPx's credential-free stub, and six disputed captures have been prepared as
-inputs. No live GLM jury/adjudicator calls or replacement historical grades are
-claimed. Live provider configuration, exact rubric acceptance and spending/call
-bounds remain explicit prerequisites, not effects of generating a program.
+AK5673 owns the program and its completed subscription-backed diagnostic review:
+eighteen GLM-5.3 juror responses and six separate GLM-5.3 adjudications. The operator
+removed the erroneous metered-dollar gate; the runner uses the installed model's
+131,072-token output ceiling. The initial truncated attempt remains separate.
+Completed responses were carried forward without resampling through explicitly
+recorded, lossless representation corrections. This is not an unchanged prospective
+parser contract. No original answer or historical grade was replaced.
+
+The [subscription review](../../evals/dspx-jury/subscription-review.md) records results,
+lineage, exact readback and limitations. Original-criterion outcomes match within all
+three pairs; both timeout answers fail the added effect-honesty criterion. However,
+controller audit found an unsupported t075 adjudicator inference from empty tool-use
+history to unavailable browsing capability, plus a focus-versus-delivery ambiguity.
+These results are advisory diagnostics, not verified efficacy or trustworthy new
+headline quality measurements. AK9361 records completed execution/readback; AK9362
+keeps semantic-assurance failure distinct from successful transport and validation.

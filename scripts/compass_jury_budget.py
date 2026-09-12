@@ -1,38 +1,29 @@
-"""Fixed AK5673 conservative reservations, not invoices or account-spend proof."""
+"""Fixed AK5673 subscription request/attempt accounting and technical limits."""
 
-from decimal import Decimal
-
-ALLOWANCE = Decimal("10")
-PRIOR = Decimal("2.351733925") + Decimal("5.512782")
 MAX_CALLS = 24
-MAX_TOKENS = 8192
-REQUEST_LIMIT = 160_000
-RESPONSE_LIMIT = 2_000_000
-# Bound escaped juror strings before they can enter adjudication prompts.
-JUDGMENT_LIMIT = 12_000
+MAX_TOKENS = 131072
+MODEL_CONTEXT = 1_000_000
+FRAMING_TOKENS = 4096
+MESSAGE_LIMIT = MODEL_CONTEXT - MAX_TOKENS - FRAMING_TOKENS
+REQUEST_LIMIT = 1_000_000
+RESPONSE_LIMIT = 8_000_000
+JUDGMENT_LIMIT = 512_000
 
 
-def reservation(message_bytes):
-    if type(message_bytes) is not int or not 0 <= message_bytes <= REQUEST_LIMIT:
-        raise ValueError("message byte bound")
-    return (
-        Decimal(message_bytes + 4096) * Decimal("1.4") + Decimal(MAX_TOKENS) * Decimal("4.4")
-    ) / Decimal(1_000_000)
+def validate_capacity(message_bytes):
+    # One token per ASCII-escaped message byte, plus framing and full output.
+    if type(message_bytes) is not int or not 0 <= message_bytes <= MESSAGE_LIMIT:
+        raise ValueError("technical context capacity exceeded")
 
 
-class Budget:
+class AttemptLedger:
     def __init__(self):
-        self.total = PRIOR
         self.calls = 0
+        self.message_bytes = 0
 
-    @property
-    def remaining(self):
-        return ALLOWANCE - self.total
-
-    def reserve(self, message_bytes):
-        amount = reservation(message_bytes)
-        if self.calls >= MAX_CALLS or amount > self.remaining:
-            raise ValueError("pilot reservation cap reached")
-        self.total += amount
+    def record(self, message_bytes):
+        validate_capacity(message_bytes)
+        if self.calls >= MAX_CALLS:
+            raise ValueError("pilot attempt cap reached")
         self.calls += 1
-        return amount
+        self.message_bytes += message_bytes

@@ -1,7 +1,7 @@
 """Fixed, non-resumable AK5673 pilot. --preflight is offline; only --execute calls LM.
 
 Run with the maintained dspy-lm-auth owner interpreter. No auth implementation,
-CLI budget/root overrides, automatic replay, or account-level billing claims.
+CLI limit/root overrides, automatic replay, or backend-capacity claims.
 """
 
 from __future__ import annotations
@@ -16,54 +16,33 @@ import sys
 from pathlib import Path
 
 import compass_jury as jury
+import compass_jury_envelope as envelope
 from compass_jury_budget import (
-    ALLOWANCE,
     JUDGMENT_LIMIT,
     MAX_CALLS,
     MAX_TOKENS,
-    PRIOR,
+    MESSAGE_LIMIT,
+    MODEL_CONTEXT,
     REQUEST_LIMIT,
     RESPONSE_LIMIT,
-    Budget,
-    reservation,
+    AttemptLedger,
+    validate_capacity,
 )
+from compass_jury_envelope import durable, encoded, save, sync_directory
 
 ROOT = jury.ROOT
 SOURCE = ROOT / ".compass/evaluations/2026-09-11-glm-v06"
-DEST = ROOT / ".compass/evaluations/glm53-jury-AK5673"
+DEST = ROOT / ".compass/evaluations/glm53-jury-AK5673-subscription-v6"
+PRIOR_ATTEMPT_ROOT = ROOT / ".compass/evaluations/glm53-jury-AK5673"
+PRIOR_RESPONSE_SHA256 = "c5d4edaf611b5d693b1afb96158ac7b781d553433b04b9d010098d556c222112"
 CAPTURES = ("t059", "t060", "t075", "t076", "t089", "t090")
 RUBRIC = ROOT / "evals/dspx-jury/rubric.json"
 BASE = "https://api.z.ai/api/coding/paas/v4"
 ENDPOINT = BASE + "/chat/completions"
-TIMEOUT = 600
+TIMEOUT = 3600
 _program = None
 _program_hash = None
 _original_load = jury.load_program
-
-
-def encoded(value):
-    # ASCII-escaped JSON is a conservative bound on UTF-8 message bytes.
-    return json.dumps(value, ensure_ascii=True, allow_nan=False).encode()
-
-
-def durable(path, raw):
-    with path.open("xb") as stream:
-        stream.write(raw)
-        stream.flush()
-        os.fsync(stream.fileno())
-    sync_directory(path.parent)
-
-
-def sync_directory(path):
-    fd = os.open(path, os.O_RDONLY | os.O_DIRECTORY)
-    try:
-        os.fsync(fd)
-    finally:
-        os.close(fd)
-
-
-def save(path, value):
-    durable(path, encoded(value) + b"\n")
 
 
 @contextlib.contextmanager
@@ -141,13 +120,19 @@ def preflight():
             jury.OUTPUTS, ("juror_1", "juror_2", "juror_3", "adjudicator"), strict=True
         ):
             signature = getattr(program, node).predict.signature
-            values = {**inputs, **{j: "x" * JUDGMENT_LIMIT for j in jury.JURORS}}
+            values = {**inputs, **{j: "" for j in jury.JURORS}}
             messages = adapter.format(signature, [], {k: values[k] for k in signature.input_fields})
             size = len(encoded(messages))
+            validate_capacity(size)
             if len(encoded(request_body(messages))) > REQUEST_LIMIT:
                 raise ValueError("projected request byte bound")
-            bounds[capture][field] = size
-    projected = sum(reservation(n) for row in bounds.values() for n in row.values())
+            bounds[capture][field] = size if field in jury.JURORS else MESSAGE_LIMIT
+    prior_raw = PRIOR_ATTEMPT_ROOT / "t059--juror_1_json/response.raw"
+    if jury.sha(prior_raw.read_bytes()) != PRIOR_RESPONSE_SHA256:
+        raise ValueError("prior response hash mismatch")
+    seed = envelope.load_seed()
+    if seed is not None:
+        seed.verify_inputs(prepared, copies)
     protocol = {
         "task": "AK5673",
         "captures": CAPTURES,
@@ -156,22 +141,47 @@ def preflight():
         "endpoint": ENDPOINT,
         "temperature": 0.7,
         "max_tokens": MAX_TOKENS,
+        "model_context": MODEL_CONTEXT,
         "max_attempts": MAX_CALLS,
+        "attempts_basis": "stage_attempts_including_retained_response",
+        "planned_new_http_attempts": MAX_CALLS - len(envelope.SEED_STAGES),
+        "planned_reused_responses": len(envelope.SEED_STAGES),
+        "planned_cumulative_unique_review_responses": MAX_CALLS,
+        "unique_response_basis": "completed responses only; v1 truncated response excluded",
+        "citation_matching": jury.CITATION_MATCHING,
+        "representation_parser": jury.citation_parser_metadata(),
+        "envelope_aliases": envelope.ALIASES,
+        "juror_role_lookup_aliases": jury.JUROR_ALIASES,
+        "envelope_policy": {
+            "outer": "one string-or-object field; canonical key or its explicit alias only",
+            "finish_reason": "stop",
+            "inner": "validate frozen bindings/schema/citations and prior jurors before rename",
+            "repair": False,
+            "original_bytes": "response.raw and output.txt remain unchanged",
+            "receipt": "envelope.json records representation, keys, serialized and semantic hashes",
+        },
+        "seed_root": str(envelope.SEED_ROOT.relative_to(ROOT)),
+        "retained_prefix": seed.receipts if seed is not None else [],
         "timeout_seconds": TIMEOUT,
         "request_limit": REQUEST_LIMIT,
         "response_limit": RESPONSE_LIMIT,
-        "escaped_juror_limit": JUDGMENT_LIMIT,
+        "judgment_limit": JUDGMENT_LIMIT,
         "cache": False,
         "retries": 0,
         "store": False,
         "store_wire_via_extra_body": True,
         "response_format": "json_object",
         "thinking_override": None,
-        "prior_reservations": str(PRIOR),
-        "allowance": str(ALLOWANCE),
-        "remaining": str(ALLOWANCE - PRIOR),
-        "projected_reservation": str(projected),
-        "fits": projected <= ALLOWANCE - PRIOR,
+        "billing_basis": "operator-confirmed subscription",
+        "monetary_gate": False,
+        "limits_source": "installed Pi local pi-ai/dist/providers/data/zai.json "
+        "['openai-completions']['glm-5.3'] metadata; not provider-verified backend limits",
+        "prior_attempt_root": str(PRIOR_ATTEMPT_ROOT.relative_to(ROOT)),
+        "prior_response_sha256": PRIOR_RESPONSE_SHA256,
+        "original_sha256": {
+            str(p.relative_to(ROOT)): jury.sha(p.read_bytes())
+            for p in sorted(SOURCE.glob("t*.json"))
+        },
         "message_bounds": bounds,
         "input_sha256": {k: jury.sha(v) for k, v in copies.items()},
         "code_sha256": {
@@ -181,21 +191,27 @@ def preflight():
                 jury.PROGRAM / "generation.json",
                 Path(__file__),
                 ROOT / "scripts/compass_jury_budget.py",
+                ROOT / "scripts/compass_jury_envelope.py",
                 ROOT / "scripts/compass_jury.py",
             )
         },
-        "limitations": "catalog reservations not invoice/account spend; historical inputs "
+        "limitations": "byte-based context bound is conservative; historical inputs "
         "not authenticated; structural checks not semantic correctness; advisory only",
     }
     return protocol, prepared, copies
 
 
 class GuardTransport:
-    """Synchronous httpx transport wrapper. Consume stage BEFORE any network operation."""
+    """Consume each stage once; first six responses are retained, not a new HTTP attempt."""
 
     def __init__(self, inner, root, bounds):
         self.inner, self.root, self.bounds = inner, root, bounds
-        self.ledger = Budget()
+        self.ledger = AttemptLedger()
+        self.inputs = envelope.FrozenInputs(root, CAPTURES)
+        self.seed = envelope.load_seed()
+        if self.seed is not None:
+            self.seed.verify_inputs(self.inputs.prepared, self.inputs.copies)
+        self.new_http_attempts, self.reused_responses = 0, 0
         self.sequence = [(c, f) for c in CAPTURES for f in jury.OUTPUTS]
         self.index, self.active, self.spent, self.failed = 0, None, True, False
 
@@ -213,7 +229,16 @@ class GuardTransport:
         self.spent = False
         self.stage_dir.mkdir()
         sync_directory(self.root)
-        save(self.stage_dir / "stage.json", {"capture": capture, "field": field})
+        save(
+            self.stage_dir / "stage.json",
+            {
+                "capture": capture,
+                "field": field,
+                "origin": "retained_v5_response"
+                if self.seed is not None and self.index <= len(envelope.SEED_STAGES)
+                else "live_http",
+            },
+        )
 
     @property
     def stage_dir(self):
@@ -239,18 +264,20 @@ class GuardTransport:
                 or len(raw) > REQUEST_LIMIT
             ):
                 raise ValueError("request envelope rejected")
-            body = jury.strict_json(raw.decode("utf-8"))
+            body = jury.strict_json(raw.decode("utf-8"), max_bytes=REQUEST_LIMIT)
             self.validate_body(body)
             size = len(encoded(body["messages"]))
+            validate_capacity(size)
             if size > self.bounds[self.active[0]][self.active[1]]:
                 raise ValueError("projected message bound exceeded")
             durable(self.stage_dir / "request.body.json", raw)  # Never headers/client/LM kwargs.
-            amount = self.ledger.reserve(size)
+            self.inputs.check()
+            self.ledger.record(size)
             save(
-                self.stage_dir / "reservation.json",
+                self.stage_dir / "attempt.json",
                 {
-                    "amount": str(amount),
-                    "total_reserved": str(self.ledger.total),
+                    "message_bytes": size,
+                    "total_message_bytes": self.ledger.message_bytes,
                     "attempt": self.ledger.calls,
                 },
             )
@@ -258,8 +285,17 @@ class GuardTransport:
             request.extensions["timeout"] = dict.fromkeys(
                 ("connect", "read", "write", "pool"), TIMEOUT
             )
-            response = self.inner.handle_request(request)
-            return self.capture_response(response, request)
+            if self.seed is not None and self.index <= len(envelope.SEED_STAGES):
+                response = self.seed.response(self.active, self.index, body, request)
+                self.reused_responses += 1
+            else:
+                if self.seed is not None and (
+                    self.seed.failed or self.seed.consumed != len(envelope.SEED_STAGES)
+                ):
+                    raise ValueError("required seed not consumed")
+                self.new_http_attempts += 1
+                response = self.inner.handle_request(request)
+            return envelope.capture_response(self, response, request)
         except BaseException as error:
             self.record_error(error)
             raise
@@ -273,7 +309,7 @@ class GuardTransport:
             body.get("model") != "glm-5.3"
             or body.get("store") is not False
             or type(tokens) is not int
-            or not 0 < tokens <= MAX_TOKENS
+            or tokens != MAX_TOKENS
             or body.get("temperature") != 0.7
             or type(body.get("n")) is not int
             or body["n"] != 1
@@ -292,53 +328,6 @@ class GuardTransport:
                 or not isinstance(message["content"], str)
             ):
                 raise ValueError("message rejected")
-
-    def capture_response(self, response, request):
-        import httpx
-
-        raw = bytearray()
-        try:
-            save(self.stage_dir / "http.json", {"status": response.status_code})
-            chunks = [response.content] if response.is_stream_consumed else response.iter_raw()
-            for chunk in chunks:
-                remaining = RESPONSE_LIMIT - len(raw)
-                raw.extend(chunk[:remaining])
-                if len(chunk) > remaining:
-                    raise ValueError("response byte limit exceeded; retained prefix only")
-        finally:
-            durable(self.stage_dir / "response.raw", bytes(raw))
-            response.close()
-        if not 200 <= response.status_code < 300:
-            raise ValueError("HTTP failure; no redirects/retries")
-        if response.headers.get("content-encoding", "identity") != "identity":
-            raise ValueError("encoded response rejected")
-        # Read up to the HTTP cap, separately from the smaller judgment-input cap.
-        value = json.loads(raw)
-        save(
-            self.stage_dir / "usage.json",
-            {
-                "usage": value.get("usage"),
-                "reported_model": value.get("model"),
-                "provider_identity_authenticated": False,
-            },
-        )
-        choices = value["choices"]
-        if len(choices) != 1 or choices[0]["finish_reason"] != "stop":
-            raise ValueError("incomplete response")
-        content = choices[0]["message"]["content"]
-        durable(self.stage_dir / "output.txt", content.encode("utf-8"))
-        outer = jury.strict_json(content)
-        field = self.active[1]
-        if set(outer) != {field} or not isinstance(outer[field], str):
-            raise ValueError("output field mismatch")
-        if field in jury.JURORS and len(encoded(outer[field])) > JUDGMENT_LIMIT:
-            raise ValueError("juror output exceeds adjudication input bound")
-        return httpx.Response(
-            response.status_code,
-            content=bytes(raw),
-            request=request,
-            headers={"content-type": "application/json"},
-        )
 
     def close(self):
         self.inner.close()
@@ -389,6 +378,9 @@ def make_lm(guard):
 
 
 def run_captures(prepared, lm, guard):
+    guard.inputs.check()
+    if prepared != guard.inputs.prepared:
+        raise ValueError("execution inputs differ from frozen inputs")
     # Scope the loader substitution to this single runner's already verified module.
     with contextlib.ExitStack() as stack:
         old = jury.load_program
@@ -405,7 +397,13 @@ def run_captures(prepared, lm, guard):
             except BaseException as error:
                 guard.record_error(error)
                 raise
-    if guard.ledger.calls != MAX_CALLS or guard.failed:
+    reused = len(envelope.SEED_STAGES) if guard.seed is not None else 0
+    if (
+        guard.ledger.calls != MAX_CALLS
+        or guard.failed
+        or guard.reused_responses != reused
+        or guard.new_http_attempts != MAX_CALLS - reused
+    ):
         raise ValueError("incomplete pilot")
 
 
@@ -428,8 +426,6 @@ def execute():
                 durable(frozen / name, raw)
             for capture, inputs in prepared.items():
                 save(frozen / f"{capture}.inputs.json", inputs)
-            if not protocol["fits"]:
-                raise ValueError("projected reservations exceed remaining allowance")
             guard = GuardTransport(
                 httpx.HTTPTransport(retries=0, trust_env=False), DEST, protocol["message_bounds"]
             )
@@ -448,7 +444,13 @@ def execute():
                 DEST / "complete.json",
                 {
                     "attempts": guard.ledger.calls,
-                    "reserved_total": str(guard.ledger.total),
+                    "attempts_basis": "stage_attempts_including_retained_response",
+                    "stages": guard.ledger.calls,
+                    "new_http_attempts": guard.new_http_attempts,
+                    "reused_responses": guard.reused_responses,
+                    "cumulative_unique_review_responses": guard.new_http_attempts
+                    + guard.reused_responses,
+                    "message_bytes": guard.ledger.message_bytes,
                     "action_permission": "not_granted",
                 },
             )
@@ -475,7 +477,7 @@ def main(argv=None):
         if args.preflight:
             protocol, _, _ = preflight()
             print(json.dumps(protocol, indent=2))
-            return 0 if protocol["fits"] else 1
+            return 0
         execute()
         print("Pilot completed; retained evidence is advisory, not grade replacement.")
         return 0

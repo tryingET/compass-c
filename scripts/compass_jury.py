@@ -28,7 +28,7 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
-def strict_json(raw):
+def strict_json(raw, *, max_bytes=LIMIT):
     def pairs(items):
         result = {}
         for key, value in items:
@@ -40,7 +40,7 @@ def strict_json(raw):
     def reject_constant(value):
         raise ValueError(f"non-finite JSON value: {value}")
 
-    if len(raw.encode("utf-8")) > LIMIT:
+    if len(raw.encode("utf-8")) > max_bytes:
         raise ValueError("JSON byte limit exceeded; no truncation")
     result = json.loads(raw, object_pairs_hook=pairs, parse_constant=reject_constant)
     canonical(result)  # Reject overflowing floats and unencodable values.
@@ -142,6 +142,65 @@ def prepare_inputs(corpus_path, capture_path, rubric_path):
     return result
 
 
+CITATION_MATCHING = (
+    "exact raw source substring, exact decoded JSON string value leaf for tools/messages, "
+    "or exact rendered CommonMark inline-block text substring for final only; "
+    "no quote edits, whitespace normalization, fuzzy matching, or cross-block joining"
+)
+
+
+def citation_matches(source, text, quote):
+    if quote in text:
+        return True
+    if source == "final":
+        return rendered_final_matches(text, quote)
+    if source not in ("messages", "tools"):
+        return False
+    pending = [strict_json(text)]
+    while pending:
+        value = pending.pop()
+        if isinstance(value, str) and quote in value:
+            return True
+        if isinstance(value, dict):
+            pending.extend(value.values())  # Never keys or concatenated leaves.
+        elif isinstance(value, list):
+            pending.extend(value)
+    return False
+
+
+def rendered_final_matches(text, quote):
+    try:
+        from markdown_it import MarkdownIt
+    except ImportError:
+        return False
+    delimiters = {"em_open", "em_close", "strong_open", "strong_close", "link_open", "link_close"}
+    for block in MarkdownIt("commonmark").parse(text):
+        if block.type != "inline":
+            continue
+        parts = []
+        for token in block.children or []:
+            if token.type in ("text", "code_inline"):
+                parts.append(token.content)
+            elif token.type in ("softbreak", "hardbreak"):
+                parts.append("\n")
+            elif token.type not in delimiters:
+                break  # Reject this block: never erase HTML, images, or unknown constructs.
+        else:
+            if quote in "".join(parts):
+                return True
+    return False
+
+
+def citation_parser_metadata():
+    from importlib.metadata import PackageNotFoundError, version
+
+    try:
+        installed = version("markdown-it-py")
+    except PackageNotFoundError:
+        installed = None
+    return {"package": "markdown-it-py", "version": installed, "preset": "commonmark"}
+
+
 def validate_judgment(raw, inputs, previous=None):
     value = strict_json(raw)
     contract = strict_json(inputs["judgment_contract_json"])
@@ -176,7 +235,7 @@ def validate_judgment(raw, inputs, previous=None):
             source, quote = citation["source"], citation["quote"]
             if not isinstance(source, str) or not isinstance(quote, str) or not quote.strip():
                 raise ValueError("citation text required")
-            if source not in sources or quote not in sources[source]:
+            if source not in sources or not citation_matches(source, sources[source], quote):
                 raise ValueError("unsupported citation")
         if key == "final_delivery" and not sources["final"].strip() and row["verdict"] != "fail":
             raise ValueError("empty final must fail delivery")
@@ -185,6 +244,13 @@ def validate_judgment(raw, inputs, previous=None):
     if seen != expected:
         raise ValueError("criterion omission")
     return value
+
+
+JUROR_ALIASES = {
+    "juror_1_": "juror_1_json",
+    "juror_2_": "juror_2_json",
+    "juror_3_": "juror_3_json",
+}
 
 
 def _validate_disagreement(row, previous):
@@ -206,7 +272,10 @@ def _validate_disagreement(row, previous):
         if not isinstance(item, dict) or set(item) != {"juror", "verdict", "assessment"}:
             raise ValueError("addressed juror schema mismatch")
         name = item["juror"]
-        if not isinstance(name, str) or name in seen or name not in original:
+        if not isinstance(name, str):
+            raise ValueError("unknown/duplicate juror")
+        name = JUROR_ALIASES.get(name, name)  # Lookup only; preserve original role labels.
+        if name in seen or name not in original:
             raise ValueError("unknown/duplicate juror")
         if (
             item["verdict"] != original[name]
