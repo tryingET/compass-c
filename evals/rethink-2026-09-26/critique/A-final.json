@@ -1,0 +1,350 @@
+{
+ "models": [
+  [
+   "openai-codex-2",
+   "gpt-6-astra"
+  ]
+ ],
+ "assistant_tool_calls": 79,
+ "usage": {
+  "input": 109197,
+  "output": 13126
+ },
+ "final_chars": 30088,
+ "json": {
+  "p1": [
+   {
+    "commit": "33d2c90",
+    "confirmed": true,
+    "stale_claim": "AK-5641's exported entity_version was 5.",
+    "superseding_evidence": "Live entity_version was 7 after resumption: git/33d2c90.txt; ak/task-5641.json; ak/evidence-9173.json.",
+    "caught_by": "Existing task-scope CI check explicitly rejected 5 versus 7: ak/evidence-9173.json.",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "false",
+    "notes": "M0 compares normalized exports including entity_version (repo/scripts/lib/check-task-scope-snapshots.py). M1-used: no qualifying notebook linkage evidenced. M1-ideal: administrative version synchronization is not decision-shaped. M2's specified triggers omit live task-version changes; correcting the snapshot afterward is not advance detection. Exact invalidation time: insufficient_evidence."
+   },
+   {
+    "commit": "35b2007",
+    "confirmed": true,
+    "stale_claim": "The living posture still withheld remote-publication and remote-CI claims because writes had failed.",
+    "superseding_evidence": "Verified public source and successful Actions run: git/35b2007.txt; repo/docs/project/verified-publication.json; repo/diary/2026-09-07--publication-v0.4.0-readback.md.",
+    "caught_by": "Operator enabled access; controller performed API/git/CI readbacks. Which check first identified the stale posture: insufficient_evidence.",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "M0: previously declared release.json changed at 1bb2382, triggering posture freshness (git/log.txt; repo/scripts/check-document-policy.sh). M1-used: no matching linked notes evidenced. M1-ideal: conditional publication/readiness assessment can depend on publication evidence. M2: committed publication receipts are path-detectable. Evidence-commit-to-correction lag: 0 days, one commit transition, 3m04s; not necessarily observation-to-correction lag."
+   },
+   {
+    "commit": "56066fc",
+    "confirmed": true,
+    "stale_claim": "The current maturity assessment omitted the newly implemented repo-maintainer skill and revised validator.",
+    "superseding_evidence": "Implementation 9726d10 added those capabilities: git/56066fc.txt; ak/evidence-8326.json.",
+    "caught_by": "CI blocked uncommitted posture/evidence, prompting the two-commit workflow: ak/evidence-8327.json.",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "M0: declared README/tests evidence changed (repo/scripts/check-document-policy.sh). M1-used: no qualifying linked notes evidenced. M1-ideal: bounded adoption/readiness posture is decision-shaped. M2: implementation and validation paths expose the change. git/log.txt gives a 44-second, one-transition evidence-commit lag. This is incompleteness of a living assessment, not invalidation of every older test result."
+   },
+   {
+    "commit": "5e41b4f",
+    "confirmed": true,
+    "stale_claim": "Current posture lacked native discovery/live-host evidence and still treated AK/ontology access failures as current boundaries.",
+    "superseding_evidence": "GLM captures, host/MCP observations and working local governance gates: git/5e41b4f.txt; ak/evidence-9166.json; ak/evidence-9027.json.",
+    "caught_by": "Controller reconciliation and document-policy CI; the uncommitted-posture rejection is recorded in ak/evidence-9173.json.",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "M0: declared README/runtime/evals paths changed (repo/scripts/check-document-policy.sh). M1-used: no linked posture/evidence notes evidenced. M1-ideal: readiness and continuation boundaries are decision-shaped. M2: both committed paths and AK evidence qualify. git/log.txt gives 6m30s and one transition after 2c01da9; some underlying observations were earlier."
+   },
+   {
+    "commit": "73f6c79",
+    "confirmed": true,
+    "stale_claim": "Living posture still described the earlier calculator/record surface and no live SDK round-trip.",
+    "superseding_evidence": "v0.4 implementation, migrations, briefs and isolated-wheel SDK verification: git/73f6c79.txt; repo/diary/2026-09-07--implementation-standalone-decision-instrument.md.",
+    "caught_by": "Controller implementation/validation workflow; first detector of this particular stale assessment: insufficient_evidence.",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "M0: existing declared runtime/tests paths changed (repo/scripts/check-document-policy.sh). M1-used: no qualifying linked notes evidenced. M1-ideal: conditional product readiness can depend on implementation evidence. M2: changed source/test paths qualify. git/log.txt shows one second and one transition after the evidence commit; actual observation lag is not established."
+   },
+   {
+    "commit": "80716ca",
+    "confirmed": false,
+    "stale_claim": "",
+    "superseding_evidence": "",
+    "caught_by": "Initial document-policy failure: repo/diary/2026-09-05--implementation-compass-c-bootstrap.md.",
+    "M0": "not_applicable",
+    "M1_used": "not_applicable",
+    "M1_ideal": "not_applicable",
+    "M2": "not_applicable",
+    "notes": "git/80716ca.txt adds initial validation metadata, without changing a claim because later evidence invalidated it. A gate failure alone is not a drift event."
+   },
+   {
+    "commit": "91aab1a",
+    "confirmed": false,
+    "stale_claim": "",
+    "superseding_evidence": "",
+    "caught_by": "The motivating stale-checkout discovery is documented in ak/evidence-9094.json.",
+    "M0": "not_applicable",
+    "M1_used": "not_applicable",
+    "M1_ideal": "not_applicable",
+    "M2": "not_applicable",
+    "notes": "insufficient_evidence for a separately confirmed claim-correction event. git/91aab1a.txt supplies combined conflict diffs, principally integration changes; git/91aab1a-vs-first-parent.stat.txt and git/91aab1a-vs-second-parent.stat.txt supply only statistics. Neither statistics nor the merge subject establish the requisite old/new claim pair."
+   },
+   {
+    "commit": "92f80c6",
+    "confirmed": true,
+    "stale_claim": "Living posture still described v0.5 transient experiments, twelve MCP tools and the earlier first-consumer exercise.",
+    "superseding_evidence": "Saved v0.6 lifecycle, seventeen tools and three retained handoff runs: git/92f80c6.txt; repo/diary/2026-09-08--implementation-v4-experiment-lifecycle.md.",
+    "caught_by": "Controller's cumulative implementation/dogfood reconciliation; first automatic detector: insufficient_evidence.",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "M0: declared source/evals paths changed (repo/scripts/check-document-policy.sh). M1-used: repo/evals/dogfood/v4-lifecycle/continuing-build-record.json records outcomes but no dependency path invalidating this posture. M1-ideal: readiness assessment is decision-shaped. M2: lifecycle and assessment paths qualify. git/log.txt gives one second and one transition after cc81e32."
+   },
+   {
+    "commit": "9c3dc80",
+    "confirmed": true,
+    "stale_claim": "Committed AK-5641 scope/version omitted newly authorized upstream-reconciliation paths.",
+    "superseding_evidence": "Expanded scope and version 2-to-5 update: git/9c3dc80.txt; ak/evidence-9094.json.",
+    "caught_by": "Controller's public-baseline reconciliation led to scope expansion. The publication-verified installer separately refused the mismatched tree (git/9c3dc80.txt).",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "true",
+    "notes": "Confirmed event is the existing scope record, not the newly added diary. M0: normalized live/export comparison fails on changed scope (repo/scripts/lib/check-task-scope-snapshots.py). M1-used: no qualifying linked notes evidenced. M1-ideal: reproducing authoritative scope is administrative synchronization, not a recommendation. M2: AK9094 records the scope-changing prerequisite on the declared task. Exact scope-change lag: insufficient_evidence; its evidence receipt precedes this commit by about 41 seconds."
+   },
+   {
+    "commit": "bec7f11",
+    "confirmed": true,
+    "stale_claim": "Living posture said no controlled host observations existed and treated v2-v4 functionality as future ambition.",
+    "superseding_evidence": "v0.5 implementation, actual guidance observations and build dogfood: git/bec7f11.txt; repo/diary/2026-09-08--implementation-full-vision-dogfood.md.",
+    "caught_by": "Operator challenged the earlier stopping point; controller implemented and reconciled the posture (same diary).",
+    "M0": "true",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "M0: declared runtime/tests/README paths changed (repo/scripts/check-document-policy.sh). M1-used: the notebook invalidated a related build recommendation, not this posture claim; see repo/evals/dogfood/2026-09-08/final-brief.json. M1-ideal: bounded completion/readiness is decision-shaped. M2: implementation/study paths qualify. git/log.txt gives one second and one transition after c89e6d2."
+   },
+   {
+    "commit": "cb3c54b",
+    "confirmed": true,
+    "stale_claim": "Generic guidance required an additional get after mutations, unnecessarily including lifecycle replies already containing validated state.",
+    "superseding_evidence": "Fresh participants exposed redundant reads and failed the effort gate: repo/evals/dogfood/v4-lifecycle/run-1/assessment.json; git/cb3c54b.txt.",
+    "caught_by": "Fresh dogfood participants identified conflicting guidance; controller assessment retained the failure (repo/diary/2026-09-08--implementation-v4-experiment-lifecycle.md).",
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "M0: structural validation/generated-script comparison does not reject semantically redundant instructions (repo/scripts/validate_skill.py; repo/scripts/build_skill.py). M1-used: recorded failure has no dependency path to the guidance claim (repo/evals/dogfood/v4-lifecycle/continuing-build-record.json). M1-ideal: choosing mandatory versus conditional readbacks is a workflow decision. M2: the failed assessment is path-detectable. Assessment-to-correction lag approximately 6m05s; retained-evidence-commit lag one second/one transition (git/log.txt)."
+   },
+   {
+    "commit": "d67c0ea",
+    "confirmed": false,
+    "stale_claim": "",
+    "superseding_evidence": "",
+    "caught_by": "Independent review reproduced a software defect (repo/diary/2026-09-08--implementation-v4-experiment-lifecycle.md).",
+    "M0": "not_applicable",
+    "M1_used": "not_applicable",
+    "M1_ideal": "not_applicable",
+    "M2": "not_applicable",
+    "notes": "git/d67c0ea.txt adds a prospective BDD scenario. It does not revise a previously committed real claim/record because of later evidence."
+   },
+   {
+    "commit": "dc04e93",
+    "confirmed": false,
+    "stale_claim": "",
+    "superseding_evidence": "",
+    "caught_by": "Independent review, followed by regression tests (repo/diary/2026-09-08--implementation-v4-experiment-lifecycle.md).",
+    "M0": "not_applicable",
+    "M1_used": "not_applicable",
+    "M1_ideal": "not_applicable",
+    "M2": "not_applicable",
+    "notes": "git/dc04e93.txt creates synthetic corrected-evidence cases and reformats tests; it does not correct a previously committed real decision record. Counting this and d67c0ea would count test development as two historical drift events."
+   }
+  ],
+  "p2": [
+   {
+    "item": 1,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "Qualified confirmation: repo/evals/dogfood/v4-lifecycle/continuing-build-record.json already contains later v0.6 outcomes but retains the v0.5 recommendation as nonstale; this is incomplete continuing reasoning, not proof that historical v0.5 acceptance was false. Live DB state is insufficient_evidence. M0 has no recommendation-consistency check. M1-used: later outcome notes are unlinked. M1-ideal: explicit acceptance decision. M2: subsequent implementation/assessment paths could invalidate its declared basis. Last file update is cc81e32 on September 8 (git/file-change-dates.tsv)."
+   },
+   {
+    "item": 2,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "true",
+    "notes": "repo/README.md retains 20/24 versus 19/24 without the later grading-invalid findings in ak/evidence-9198.json. Counts remain historical outputs, not corrected quality estimates. git/file-change-dates.tsv places the README update before that evidence. M0 does not check semantic AK caveats; M1-used has no demonstrated linked notes; M1-ideal: reporting a score is not itself a decision; M2: later AK5641 evidence triggers review."
+   },
+   {
+    "item": 3,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "true",
+    "notes": "repo/evals/observations/2026-09-11-glm-native/README.md describes two improvements/one regression without ak/evidence-9198.json's inconsistent-grading findings. Its generic same-model caveats do not disclose those concrete defects. Last update precedes AK9198 (git/file-change-dates.tsv). M0: no semantic grading-validity gate; M1-used: no linked notes evidenced; M1-ideal: descriptive scoring report, not recommendation; M2: later evidence on AK5641 qualifies."
+   },
+   {
+    "item": 4,
+    "stale_at_head": false,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "false",
+    "notes": "Misdescribed. repo/docs/project/vision-validation.md defines acceptance boundaries and delegates current assessment to product_posture.md; it does not promise an exhaustive study inventory. Its native-discovery sentence describes the explicitly historical diagnostic. Zero dogfood deferrals are disclosed in repo/evals/dogfood/2026-09-08/portfolio-model.json, and the same row cites repo/tests/test_portfolio.py, which tests nonzero deferrals and disagreement. September 8 age alone (git/file-change-dates.tsv) establishes no false claim. All scores false mean no substantiated stale target, not failed detection."
+   },
+   {
+    "item": 5,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "true",
+    "notes": "Partly misdescribed: repo/release.json's unqualified host_installation:not_performed is superseded by ak/evidence-9174.json and ak/evidence-9182.json; prior_verified_public_commit is expressly historical, not a latest-head assertion. File last changed September 8 (git/file-change-dates.tsv). M0: no manifest-to-installation check; M1-used: no linked notes evidenced; M1-ideal: installation metadata is factual, not decision-shaped; M2: subsequent AK5641 installation evidence qualifies."
+   },
+   {
+    "item": 6,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "repo/next_session_prompt.md presents AK/ontology unavailability and no snapshots as current, but repo/governance/task-scopes/AK-5641.snapshot.json exists and ak/evidence-9027.json plus ak/evidence-9173.json record passing local AK/ROCS gates. This does not establish universal ontology availability. Last handoff update was September 8 (git/file-change-dates.tsv). M0 validates snapshots, not the handoff's prose; M1-used: no linked notes evidenced; M1-ideal: conditional continuation/blocker decision; M2: snapshot creation and AK gate evidence qualify."
+   },
+   {
+    "item": 7,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "false",
+    "notes": "Wrong provenance, not demonstrated temporal drift. repo/evals/dogfood/2026-09-08/final-client-exercise/manifest.json associates local b48ab35 with 309fe48 while its mapping note names cd09b516. repo/diary/2026-09-08--implementation-full-vision-dogfood.md identifies b48ab35 as v0.5 GREEN and cd09b516/309fe48 as an earlier checkpoint; git/log.txt corroborates ordering. M0 has no tree-identity assertion; M1-used has no linked notes; M1-ideal: identity metadata is not decision-shaped; M2 cannot compare valid immutable commit identities merely by watching path changes. Direct historical tree-object verification is unavailable."
+   },
+   {
+    "item": 8,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "false",
+    "notes": "Confirmed contradiction: repo/governance/README.md forbids a work-items projection; repo/AGENTS.md requires it, and repo/governance/work-items.json exists. This is conflicting policy, not proven later drift; governance README dates to initialization (git/file-change-dates.tsv). M0 contains no cross-document semantic consistency check; M1-used: no linked policy notes evidenced; M1-ideal: projection ownership is a governance decision; M2: no demonstrated subsequent invalidating path/AK event, and no reference is missing."
+   },
+   {
+    "item": 9,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "true",
+    "notes": "repo/skills/compass/references/decision-checks.md claims methodology is pinned in engineering/source_register.json, absent from repo/. git/file-change-dates.tsv shows the reference remained after September 8. M0: repo/scripts/validate_skill.py checks Markdown resource links in SKILL.md, not this plain-text nested reference; generated equality cannot detect shared wrong content. M1-used: no linked notes evidenced; M1-ideal: bibliographic pointer is not decision-shaped; M2 explicitly catches missing references."
+   },
+   {
+    "item": 10,
+    "stale_at_head": false,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "false",
+    "notes": "Control passes: repo/docs/project/verified-publication.json explicitly scopes its claim to verified_at and permits later branch advancement. No stale target exists; scores denote no catch required. A guard that invalidates this historical receipt solely because main advances would false-alarm."
+   },
+   {
+    "item": 11,
+    "stale_at_head": false,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "false",
+    "notes": "Misdescribed. repo/README.md's historical dogfood link substantiates actual use; repo/evals/dogfood/2026-09-08/final-brief.json contains a real decision, revision and invalidation history. README also separately links the saved-v0.6 experiment dogfood. Nothing calls the v0.5 brief the latest recommendation. Its September 11 update (git/file-change-dates.tsv) does not invalidate older evidence. All mechanisms: no substantiated stale target."
+   },
+   {
+    "item": 12,
+    "stale_at_head": true,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "true",
+    "M2": "true",
+    "notes": "Only the forward-looking continuation requirement is obsolete: repo/evals/dspx-jury/pilot-attempt.json demands new owner approval and a token/reasoning/budget protocol. ak/evidence-9311.json subsequently supplies authorization and removes the dollar gate; repo/evals/dspx-jury/README.md explains the supersession. Historical failure facts must remain unchanged. git/file-change-dates.tsv confirms the receipt predates authorization. M0: no AK continuation check; M1-used: no linked notes evidenced; M1-ideal: conditional continuation decision; M2: later AK5673 evidence qualifies."
+   },
+   {
+    "item": 13,
+    "stale_at_head": false,
+    "M0": "false",
+    "M1_used": "false",
+    "M1_ideal": "false",
+    "M2": "false",
+    "notes": "Misdescribed as necessarily wrong. repo/scripts/compass_jury.py:evaluate assigns spending responsibility to a caller-owned runner; it neither asserts metered billing nor enforces the withdrawn dollar allowance. repo/scripts/compass_jury_live.py explicitly sets monetary_gate:false, consistent with ak/evidence-9311.json. Subscription authorization does not generally abolish caller responsibility for financial authority. No contradictory current behavior is established; all scores denote no substantiated stale target."
+   }
+  ],
+  "probe2": [
+   {
+    "date": "2026-09-11",
+    "cwd": "~/ai-society/softwareco/contrib/ultimate_bug_scanner",
+    "fit": "plausible",
+    "why": "The highest-leverage-next-step request suggests prioritization, but the truncated request exposes neither concrete alternatives nor uncertainty. Evidence: probe2/probe2-data.json; routing boundary: repo/skills/compass/SKILL.md."
+   },
+   {
+    "date": "2026-09-12",
+    "cwd": "~/ai-society/softwareco/owned/lehrplan-viz",
+    "fit": "plausible",
+    "why": "API versus CLI is an explicit design tradeoff. The requested agent-skill-engineer workflow must retain ownership of skill construction; a subordinate comparison fits, replacement does not. Actual ownership is insufficient_evidence. Sources: probe2/probe2-data.json; repo/skills/compass/SKILL.md."
+   },
+   {
+    "date": "2026-09-13",
+    "cwd": "~/Documents/Obsidian",
+    "fit": "questionable",
+    "why": "The supplied request asks how to implement a coherent state machine and identify gaps, not clearly to choose under uncertainty. Technical complexity alone is excluded by repo/skills/compass/SKILL.md. Additional decision context is insufficient_evidence (probe2/probe2-data.json)."
+   },
+   {
+    "date": "2026-09-14",
+    "cwd": "~/ai-society/softwareco/contrib/ultimate_bug_scanner",
+    "fit": "clear",
+    "why": "Abandon versus continue after another implementation changes the evidence is an explicit reconsideration decision, directly matching repo/skills/compass/SKILL.md. Trigger evidence: probe2/probe2-data.json."
+   },
+   {
+    "date": "2026-09-19",
+    "cwd": "~/ai-society/softwareco/owned/dspx",
+    "fit": "plausible",
+    "why": "Comparing release arrangements can justify conditional decision analysis, but investigation and the expressly selected many-of-the-greats workflow remain primary. A skill read does not establish ownership compliance. Sources: probe2/probe2-data.json; repo/skills/compass/SKILL.md."
+   }
+  ],
+  "rates": {
+   "M0": "8/21",
+   "M1_used": "0/21",
+   "M1_ideal": "11/21",
+   "M2": "15/21"
+  },
+  "rules": {
+   "R1": "Numerically satisfied on the frozen denominator: M2=71.4%, versus zero demonstrated M1-used catches. This conditionally supports C, not verified guard behavior. Denominator is nine confirmed P1 events plus all twelve non-control P2 entries, retaining rejected entries as zero rather than silently changing the frame. Excluding rejected P2 items 4,11,13 gives M0=8/18, M1-used=0/18, M1-ideal=11/18, M2=15/18. Scores apply repo/docs/decisions/2026-09-26-rethink-frame.md's hypothetical detectability rules.",
+   "R2": "Not triggered: M2 exceeds 30% under either denominator. This does not measure implementation feasibility, precision or annotation adoption (repo/docs/decisions/2026-09-26-rethink-frame.md).",
+   "R3": "Not triggered: 11/21 is below 15/21. This does not prove notebook inadequacy: several targets are administrative or bibliographic rather than decision-shaped. Zero M1-used means zero demonstrated qualifying catches for these exact targets, not proof that inaccessible databases contain no relevant notes. A related positive invalidation exists in repo/evals/dogfood/2026-09-08/final-brief.json.",
+   "R4": "Some pull under the frozen rule: probe2/probe2-data.json lists five natural invocations in apparently distinct sessions and zero natural notebooks. Even excluding the questionable fit leaves four. These are SKILL.md reads, not verified beneficial use. Distinct-session identities and notebook inventory are not exported, so independent provenance verification is insufficient_evidence. probe2/classify.py searches arbitrary tool arguments, not successful read/execution results; it can count searches, writes, quoted commands and copied history, double-count one call across patterns, miss alternate CLI syntax and Codex event formats, and does not itself implement date filtering, session deduplication, harness exclusion or the exported classification labels."
+  },
+  "frame_bias": [
+   "Known-case selection: P2 was chosen after the author's review and after forming the B+C prior; there is no held-out population. Source: repo/docs/decisions/2026-09-26-rethink-frame.md.",
+   "P1's subject regex selects maintenance language, misses differently named corrections, and admits initial metadata/tests/merges. Six confirmed events concern one living-posture file, while two README items share AK9198. These are not independent observations. Sources: git/log.txt; git/80716ca.txt; git/d67c0ea.txt; git/dc04e93.txt; ak/evidence-9198.json.",
+   "Unequal adoption assumptions: M1-used requires actual recorded dependencies, whereas M2 receives hypothetical correct declarations and evidence-task selection. Annotation omissions, ownership and maintenance effort are unmeasured. Source: repo/docs/decisions/2026-09-26-rethink-frame.md.",
+   "Recall-only scoring rewards broad path/task watches without measuring false alarms, relevance, diagnosis, repair effort or whether a CI run occurs when external evidence changes. Static wrong mappings and contradictory policies are not necessarily path-change events. Sources: frame; repo/evals/dogfood/2026-09-08/final-client-exercise/manifest.json; repo/governance/README.md.",
+   "M0 already implements the central path-invalidation idea for product posture, but R1 compares M2 only against M1-used, not its incremental benefit over existing gates or a generalized existing gate. Sources: repo/scripts/check-document-policy.sh; frame.",
+   "Actual competing mechanisms are omitted: publication-verified installation, operator correction, fresh-user dogfood, independent review and ordinary regression tests. Sources: git/9c3dc80.txt; repo/diary/2026-09-08--implementation-full-vision-dogfood.md; repo/diary/2026-09-08--implementation-v4-experiment-lifecycle.md.",
+   "The sample contains a positive notebook invalidation but does not score it as its own event; conversely, it proposes several sound historical references as stale. Sources: repo/evals/dogfood/2026-09-08/final-brief.json; repo/README.md; repo/docs/project/vision-validation.md.",
+   "No natural notebook is weak evidence against a product whose skill explicitly defaults to transient analysis and requires permission to save. A read-based invocation metric also conflates acquisition, artifact inspection and useful application. Sources: repo/skills/compass/SKILL.md; probe2/classify.py; ak/evidence-9198.json.",
+   "Alternative B lacks a direct kernel-demand test; guidance-only improvement, routing repair, automated evidence ingestion into the existing notebook, AK-only integration, generic documentation tooling and reduced documentation duplication are not separately compared. A carries an additional untested study condition, while D and maintenance economics are untested. Source: frame.",
+   "R1's comparison against zero is effectively vacuous beyond the 60% threshold, R3 leaves 'about zero' undefined, and neither rule supplies uncertainty or partial-credit conventions. Source: frame.",
+   "Probe reproducibility is incomplete: exported natural rows omit session identifiers and include user-request excerpts despite the frame's counts/identifiers-only restriction. Notebook counts are aggregates without an auditable inventory. Sources: probe2/probe2-data.json; frame."
+  ]
+ }
+}

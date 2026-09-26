@@ -160,14 +160,14 @@ The sections above stay unchanged as the original claims. This addendum supersed
   - **A:** blind re-scoring, without this report. Packet digest `223084b3…`.
   - **B:** argument critique, with this report. Packet digest `9fec55ad…`.
   - **C:** adjudication of the guard's flags. Packet digest `d6770a6c…`.
-- **Output digests:** A `db13761f…`, B `b192e58e…`, C `a1e84a93…`. The critic outputs, packets and measurement protocol were kept only in session scratch space, which is no longer available. Only these digests and the summaries below are retained.
+- **Output digests:** A `db13761f…`, B `b192e58e…`, C `a1e84a93…`. The briefs, outputs, structured verdicts, run metadata and measurement protocol are retained in [`evals/rethink-2026-09-26/`](../../evals/rethink-2026-09-26/README.md), byte-identical to these digests. The packets and raw event streams were not retained: they contained the operator's prompt excerpts.
 - **Deviations:**
   - The packets included five excerpts of 300 characters or fewer from the operator's prompts in other sessions, so that routing fit could be re-scored. This contradicts the frame's "counts only" rule. Critic A flagged it.
   - The first C run stalled waiting on stdin, was stopped after about 4 minutes with no output, and was rerun.
 
 ### The guard, built and measured
 
-The guard was built as `scripts/check-claim-freshness.py` (SHA `f0e4d4db…3dfc`). Under the [pause decision](2026-09-26-adr-pause-discretionary-expansion.md) it is archived, byte-identical, as the non-executable text file [2026-09-26-rethink-guard-prototype.py.txt](2026-09-26-rethink-guard-prototype.py.txt). Its measurement protocol (`1c87219d…da0b`) was frozen before any run on the repository.
+The guard was built as `scripts/check-claim-freshness.py` (SHA `f0e4d4db…3dfc`). Under the [pause decision](2026-09-26-adr-pause-discretionary-expansion.md) it is archived, byte-identical, as the non-executable text file [`check-claim-freshness.py.txt`](../../evals/rethink-2026-09-26/guard/check-claim-freshness.py.txt). Its [measurement protocol](../../evals/rethink-2026-09-26/guard/protocol.json) (`1c87219d…da0b`) was frozen before any run on the repository.
 
 - **Citations are extracted mechanically:** Markdown links, backticked and plain paths, `evidence_paths`, JSON path strings, and AK references.
 - **It flags a document when:** a cited file changed after the document's last revision, a cited path is missing, or AK evidence on a cited task is newer than the document.

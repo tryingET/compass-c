@@ -1,0 +1,22 @@
+import json, re, sys
+events_path, out_md, out_json = sys.argv[1:4]
+final=None; models=set(); tools=0; usage={"input":0,"output":0}
+for line in open(events_path):
+    try: e=json.loads(line)
+    except Exception: continue
+    m=e.get("message") if isinstance(e.get("message"),dict) else None
+    if e.get("type")=="message_end" and m and m.get("role")=="assistant":
+        models.add((m.get("provider"),m.get("model")))
+        tools+=sum(1 for c in m.get("content",[]) if isinstance(c,dict) and c.get("type")=="toolCall")
+        u=m.get("usage") or {}
+        usage["input"]+=u.get("input",0) or 0; usage["output"]+=u.get("output",0) or 0
+        text="".join(c.get("text","") for c in m.get("content",[]) if isinstance(c,dict) and c.get("type")=="text")
+        if text.strip(): final=text
+open(out_md,"w").write(final or "")
+block=re.search(r"```json\s*(\{.*?\})\s*```", final or "", re.S)
+parsed=None
+if block:
+    try: parsed=json.loads(block.group(1))
+    except Exception as exc: parsed={"_parse_error":str(exc)}
+json.dump({"models":sorted(map(list,models)),"assistant_tool_calls":tools,"usage":usage,"final_chars":len(final or ""),"json":parsed},open(out_json,"w"),indent=1)
+print(json.dumps({"models":sorted(map(list,models)),"tools":tools,"usage":usage,"final_chars":len(final or ""),"json_ok":isinstance(parsed,dict) and "_parse_error" not in parsed}))

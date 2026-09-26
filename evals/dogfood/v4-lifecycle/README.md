@@ -84,3 +84,5 @@ run-2 effort failure was never recorded there. The notebook itself is not availa
 in the current environment, so this readback cannot be updated honestly. It is left
 unchanged as captured: evidence that the product's own record was not kept current,
 not a current recommendation.
+
+The participant-written `run-3/resume/final-brief.md` links to `sandbox:/workspace/scratch/…` paths from its original environment. The linked files are retained next to it in `run-3/resume/`: `actual-check.json`, `observation.json`, `final-plan-lineage.json` and `final-notebook-brief.json`. The captured brief is left unchanged.

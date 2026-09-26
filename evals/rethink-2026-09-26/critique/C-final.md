@@ -1,0 +1,419 @@
+```json
+{
+  "documents": [
+    {
+      "document": ".pi/skills/compass-c-maintainer/SKILL.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project/installation.md",
+          "judgment": "noise",
+          "why": "The maintainer document directs readers to inspect installation evidence; it does not freeze an installation status. repo/docs/project/installation.md preserves its distinction between archives, local installation and account installation."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "scripts/build_skill.py",
+          "judgment": "noise",
+          "why": "repo/scripts/build_skill.py still generates portable scripts from src/compass_c, exactly as the maintenance guidance requires."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "src/compass_c",
+          "judgment": "noise",
+          "why": "Runtime additions do not contradict the maintenance ownership or verification rules in repo/.pi/skills/compass-c-maintainer/SKILL.md; repo/scripts/build_skill.py still identifies that directory as canonical."
+        }
+      ]
+    },
+    {
+      "document": ".pi/skills/compass-c-maintainer/references/improvement.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "skills/agent-skill-engineer",
+          "judgment": "noise",
+          "why": "repo/.pi/skills/compass-c-maintainer/references/improvement.md explicitly locates this pinned adoption source in tryingET/procesio-cli, not this repository."
+        }
+      ]
+    },
+    {
+      "document": "AGENTS.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "diary/YYYY-MM-DD--type-scope-summary.md",
+          "judgment": "noise",
+          "why": "This is a naming template in repo/AGENTS.md, not a claim that a literal YYYY-MM-DD file exists."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "diary",
+          "judgment": "noise",
+          "why": "repo/AGENTS.md prescribes ongoing diary capture and reading recent sessions; additions such as repo/diary/2026-09-11--verification-glm-native-and-recovery-boundaries.md are consistent with that policy."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project",
+          "judgment": "noise",
+          "why": "repo/AGENTS.md gives a read order and ownership rules, not a frozen inventory of project outcomes. The changed project documents do not invalidate those rules."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project/product_posture.md",
+          "judgment": "noise",
+          "why": "repo/docs/project/product_posture.md still expressly calls itself a maturity projection, not an execution queue, agreeing with repo/AGENTS.md."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project/vision.md",
+          "judgment": "noise",
+          "why": "repo/docs/project/vision.md remains the durable outcome direction, as repo/AGENTS.md specifies."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "scripts/build_skill.py",
+          "judgment": "noise",
+          "why": "repo/scripts/build_skill.py retains generation and --check behavior; its changes do not invalidate the generation policy."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "skills/compass/scripts",
+          "judgment": "noise",
+          "why": "repo/skills/compass/scripts/compass.py retains the generated-file header directing edits to src/compass_c, consistent with repo/AGENTS.md."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "src/compass_c",
+          "judgment": "noise",
+          "why": "repo/scripts/build_skill.py still uses src/compass_c as its source. Runtime changes do not contradict the operating contract. Its work-items projection also actually exists at repo/governance/work-items.json."
+        }
+      ]
+    },
+    {
+      "document": "README.md",
+      "verdict": "real_drift",
+      "stale_statement": "repo/README.md presents '20/24 versus 19/24 answer-rubric passes; p=1.0' without disclosing that later forensic review invalidated the apparent improvements as quality measurements.",
+      "contradicting_evidence": "ak/evidence-9198.json states: 'Both recorded improvements rely on inconsistent grading' and 'Published counts remain historical model judgments, not trustworthy quality-improvement evidence.' repo/docs/project/evaluation.md and repo/docs/project/product_posture.md now disclose this. The numbers remain historical facts, but the README's characterization is materially incomplete.",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project/evaluation.md",
+          "judgment": "signal",
+          "why": "repo/docs/project/evaluation.md explicitly reports inconsistent grading, unsafe timeout reasoning and empty-final passes, and labels the counts historical rather than accepted quality measurements."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project/product_posture.md",
+          "judgment": "signal",
+          "why": "repo/docs/project/product_posture.md expressly says the historical rubric counts 'are not accepted quality measurements'; this qualification is missing from the README."
+        }
+      ]
+    },
+    {
+      "document": "docs/decisions/README.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "docs/core/system4d/TEMPLATE-ADR.md",
+          "judgment": "noise",
+          "why": "repo/docs/decisions/README.md explicitly attributes this template to governance-kernel. It does not claim a local copy."
+        },
+        {
+          "kind": "missing_reference",
+          "target": "docs/core/system4d/TEMPLATE-RFC.md",
+          "judgment": "noise",
+          "why": "repo/docs/decisions/README.md explicitly identifies governance-kernel as the template owner; local absence does not contradict that reference."
+        }
+      ]
+    },
+    {
+      "document": "docs/engineering.local.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "docs/dev/ts-quality-current-vs-target.md",
+          "judgment": "noise",
+          "why": "repo/docs/engineering.local.md makes this conditional on adopting ts-quality. repo/policy/engineering-lane.json declares the py lane and no ts-quality discipline; no existing rollout file is promised."
+        }
+      ]
+    },
+    {
+      "document": "docs/project/evaluation.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "ak_evidence_after",
+          "target": "5673",
+          "judgment": "noise",
+          "why": "ak/evidence-9370.json confirms committed validation and unchanged retained readback. repo/docs/project/evaluation.md already reports completed jury execution and its semantic limitations; the later validation does not contradict them."
+        }
+      ]
+    },
+    {
+      "document": "docs/project/installation.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": ".codex-plugin/plugin.json",
+          "judgment": "noise",
+          "why": "This is plugin-root-relative. repo/scripts/build_archives.py explicitly generates that manifest key in plugin_files() and synchronizes plugin contents under integrations/plugin."
+        },
+        {
+          "kind": "ak_evidence_after",
+          "target": "5641",
+          "judgment": "noise",
+          "why": "ak/evidence-9174.json and ak/evidence-9197.json add personal local Codex installation and prompted canaries, explicitly not ChatGPT browser installation. They do not contradict repo/docs/project/installation.md's dated local observations or unresolved account-installation, efficacy and unattended-recovery boundaries. ak/evidence-9198.json reinforces the efficacy limitation."
+        }
+      ]
+    },
+    {
+      "document": "docs/project/product_posture.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "ak_evidence_after",
+          "target": "5673",
+          "judgment": "noise",
+          "why": "ak/evidence-9370.json confirms the stated test counts and records final committed validation. repo/docs/project/product_posture.md says final readbacks belong to AK5673, not that they failed or remain unperformed; its semantic and installation limitations still stand."
+        }
+      ]
+    },
+    {
+      "document": "docs/project/source-provenance.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "skills/agent-skill-engineer",
+          "judgment": "noise",
+          "why": "repo/docs/project/source-provenance.md explicitly places this methodology source in tryingET/procesio-cli."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "skills/compass/scripts",
+          "judgment": "noise",
+          "why": "repo/docs/project/source-provenance.md is explicitly initial provenance, dated 2026-09-05. Later generated features do not falsify that historical baseline; repo/scripts/build_skill.py preserves the stated lineage."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "src/compass_c",
+          "judgment": "noise",
+          "why": "The initial 0.3.0 release and demonstrated operations in repo/docs/project/source-provenance.md are historical, not a current exhaustive capability claim. repo/scripts/build_skill.py still identifies the same canonical runtime."
+        }
+      ]
+    },
+    {
+      "document": "docs/project/usage.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "target": "skills/compass/references/experiment-workflow.md",
+          "judgment": "noise",
+          "why": "repo/skills/compass/references/experiment-workflow.md clarifies sufficient readbacks and avoiding redundant reads. It preserves the save/resume/preview/apply lifecycle described in repo/docs/project/usage.md."
+        }
+      ]
+    },
+    {
+      "document": "docs/project/vision-validation.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project/product_posture.md",
+          "judgment": "noise",
+          "why": "repo/docs/project/vision-validation.md defines acceptance boundaries and delegates current assessment to the living posture. Its 'native host discovery was not measured' statement explicitly concerns the retained manually injected guidance diagnostic, not every later study. New Pi/GLM evidence in repo/docs/project/product_posture.md does not falsify that historical statement."
+        }
+      ]
+    },
+    {
+      "document": "evals/dspx-jury/README.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "generated/manifest.json.meta.json",
+          "judgment": "noise",
+          "why": "repo/evals/dspx-jury/README.md explicitly describes generated/ as an ignored local native-receipt directory, not portable source. The replay example requires the retained local receipt and matching cache root."
+        },
+        {
+          "kind": "ak_evidence_after",
+          "target": "5673",
+          "judgment": "noise",
+          "why": "ak/evidence-9370.json confirms validation and unchanged report readback. repo/evals/dspx-jury/README.md already separates the failed historical pilot from subscription continuation and links repo/evals/dspx-jury/subscription-review.md for completed results."
+        }
+      ]
+    },
+    {
+      "document": "evals/observations/2026-09-11-glm-native/README.md",
+      "verdict": "real_drift",
+      "stale_statement": "repo/evals/observations/2026-09-11-glm-native/README.md says: 'The operator has not yet identified browser versus desktop versus Codex'. It also presents 'two improvements and one regression' without the subsequently established grading-invalidity caveat.",
+      "contradicting_evidence": "ak/evidence-9174.json records operator intent 'Codex first, then ChatGPT browser' and a personal Codex installation; ak/evidence-9197.json records fresh authenticated Codex canaries. ak/evidence-9198.json states 'Both recorded improvements rely on inconsistent grading' and finds shared unsafe timeout reasoning. These supersede the current remaining-work statement and materially qualify the results, while leaving original scores unchanged.",
+      "reasons": [
+        {
+          "kind": "ak_evidence_after",
+          "target": "5641",
+          "judgment": "signal",
+          "why": "The newer task evidence directly resolves client selection and documents grading-validity failures: ak/evidence-9174.json, ak/evidence-9197.json and ak/evidence-9198.json."
+        }
+      ]
+    },
+    {
+      "document": "governance/README.md",
+      "verdict": "real_drift",
+      "stale_statement": "repo/governance/README.md says 'no checked-in projection file exists or should be reintroduced' and 'Do not reintroduce a checked-in governance/work-items.json projection'.",
+      "contradicting_evidence": "repo/governance/work-items.json exists with schema_version 1 and project_name 'compass-c'. repo/AGENTS.md explicitly says to keep that file 'as the exported projection'. The existence assertion is false, and the policy texts conflict; this does not determine which policy an owner should adopt.",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "target": "scripts/check-task-scope-snapshots.sh",
+          "judgment": "noise",
+          "why": "repo/scripts/check-task-scope-snapshots.sh still invokes the snapshot validator as documented. Its change does not identify the actual work-items projection contradiction, which lies in repo/governance/work-items.json and repo/AGENTS.md."
+        }
+      ]
+    },
+    {
+      "document": "next_session_prompt.md",
+      "verdict": "real_drift",
+      "stale_statement": "repo/next_session_prompt.md says 'No snapshots currently require AK validation' and, in its active checkpoint, 'approved AK runtime/database unavailable' and 'Task-scope snapshots refreshed (if applicable): None authored or fabricated.'",
+      "contradicting_evidence": "repo/governance/task-scopes/AK-5641.snapshot.json and repo/governance/task-scopes/AK-5673.snapshot.json now exist. repo/scripts/lib/check-task-scope-snapshots.py requires AK validation for nonempty snapshots. ak/evidence-9173.json records a stale scope failure followed by 're-exported through ak task scope export' and successful task-scope/ROCS checks. repo/docs/project/product_posture.md explicitly calls the earlier unavailable-AK environment historical, not a current gate claim.",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "diary/YYYY-MM-DD--type-scope-summary.md",
+          "judgment": "noise",
+          "why": "The read-first entry in repo/next_session_prompt.md is a date-and-summary naming pattern, not a literal missing file."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "diary",
+          "judgment": "signal",
+          "why": "repo/diary/2026-09-11--dogfood-local-hosts-and-mcp.md and repo/diary/2026-09-11--verification-glm-native-and-recovery-boundaries.md document subsequent AK5641 work and recorded evidence, exposing the active handoff's obsolete September 8 checkpoint."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "docs/project/product_posture.md",
+          "judgment": "signal",
+          "why": "repo/docs/project/product_posture.md expressly distinguishes the historical unavailable-AK environment from current AK5641/AK5673 work, directly contradicting the handoff's current blocker framing."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "scripts/ci/fast.sh",
+          "judgment": "noise",
+          "why": "repo/scripts/ci/fast.sh remains a valid validation entry point. Added MCP checks do not invalidate the handoff's instruction to invoke it and do not establish the snapshot/blocker problem."
+        }
+      ]
+    },
+    {
+      "document": "ontology/index.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "ontology/dist",
+          "judgment": "noise",
+          "why": "repo/ontology/index.md labels this 'generated artifacts (tool-first)', not committed source or an already completed build. repo/.gitignore excludes dist/ directories; their absence from the snapshot is not contradictory."
+        }
+      ]
+    },
+    {
+      "document": "skills/compass/SKILL.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "target": "skills/compass/references/experiment-workflow.md",
+          "judgment": "noise",
+          "why": "repo/skills/compass/references/experiment-workflow.md still supplies the persistence, handoff and observation workflow promised by repo/skills/compass/SKILL.md; clarified readback ergonomics do not contradict the skill."
+        },
+        {
+          "kind": "evidence_changed",
+          "target": "skills/compass/references/notebook.md",
+          "judgment": "noise",
+          "why": "repo/skills/compass/references/notebook.md explains that lifecycle replies contain validated state snapshots. Inspecting those replies satisfies repo/skills/compass/SKILL.md's instruction to inspect results; the skill never requires a redundant get."
+        }
+      ]
+    },
+    {
+      "document": "skills/compass/references/decision-checks.md",
+      "verdict": "real_drift",
+      "stale_statement": "repo/skills/compass/references/decision-checks.md says: 'The methodology used to engineer this version is pinned in the full toolkit's engineering/source_register.json.'",
+      "contradicting_evidence": "repo/engineering/source_register.json is absent, and no source-register file exists in the supplied repository. repo/scripts/build_archives.py constructs the toolkit from declared existing source files and does not generate this register. The actual methodology provenance appears in repo/docs/project/source-provenance.md and repo/.pi/skills/compass-c-maintainer/references/improvement.md.",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "engineering/source_register.json",
+          "judgment": "signal",
+          "why": "Unlike an external or generated-relative reference, this asserts a concrete provenance artifact in this product's full toolkit. repo/scripts/build_archives.py provides no mechanism to supply the absent file."
+        }
+      ]
+    },
+    {
+      "document": "skills/compass/references/notebook.md",
+      "verdict": "not_drift",
+      "stale_statement": "",
+      "contradicting_evidence": "",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "target": "scripts/compass.py",
+          "judgment": "noise",
+          "why": "repo/skills/compass/references/notebook.md explicitly says to find the real installed file. This is skill-root-relative: repo/skills/compass/scripts/compass.py exists, and repo/scripts/build_archives.py preserves scripts/compass.py inside the standalone skill."
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "real_drift": 5,
+    "not_drift": 15,
+    "uncertain": 0,
+    "signal_reasons": 6,
+    "noise_reasons": 33
+  }
+}
+```
+
+The guard conflates changed evidence with contradictory evidence. Broad directory references amplify this: runtime development does not invalidate maintenance rules, and new diary entries do not invalidate a diary policy.
+
+Path interpretation produces several false positives: external repositories, conditional templates, generated outputs and installed-skill-relative paths are not missing local dependencies. Conversely, the nonexistent toolkit provenance register is a genuine broken claim.
+
+Historical scope matters. The initial provenance document and the vision map’s manually injected diagnostic remain accurate within their stated scope. Later local Codex installation does not establish ChatGPT browser installation. Likewise, `ak/evidence-9370.json` confirms validation rather than overturning existing jury claims.
+
+Material omissions can still be drift: the unchanged GLM counts require the later grading-invalidity qualification. Preserving numbers is not enough when their interpretation has changed.
+
+Document-level hits can conceal reason-level misses. `repo/governance/README.md` is false about projection-file absence, but its flagged snapshot-script change is unrelated. The guard therefore caught the document accidentally.
+
+A concrete unflagged problem is `repo/release.json`: `"host_installation": "not_performed"` conflicts with `ak/evidence-9174.json` and `ak/evidence-9182.json`. Mechanical dependency extraction misses claims whose superseding evidence is not linked. Also, `guard.py.txt` treats any document-touching commit as revalidation, which cannot establish that every claim was reconsidered. These findings do not constitute an exhaustive false-negative audit.

@@ -43,7 +43,7 @@ ownership criteria in all four sessions.
 
 The evaluated treatment is the retained **v0.4.0** `skill-snapshot.md`, byte
 SHA-256 `d24d058f60bd85e2af870e133041c0a374b9f408d346cccb1b979f2e0e60dc7c`.
-The frozen source snapshot is recorded in `manifest.json`. Subsequent v0.5
+The frozen source snapshot is recorded in `manifest.json`. The snapshot's relative links (`references/…`, `scripts/compass.py`) point into the original skill package, not into this directory. They are left unchanged so the bytes stay identical to the evaluated treatment. Subsequent v0.5
 version or reference-link edits are not the exact bytes evaluated here, even
 when the decision workflow remains unchanged. This study exercised guidance
 alone; no notebook, portfolio, experiment, or MCP tool execution occurred in

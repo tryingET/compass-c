@@ -35,7 +35,7 @@ type: "diary"
 ## Deviations
 
 - The critic packets carried five excerpts, of up to 300 characters each, of the operator's prompts in other sessions. This contradicted the frame's counts-only rule.
-- Critic outputs were kept only in session scratch space. That space is gone; only digests remain.
+- Critic outputs were first kept only in session scratch space. Later the same day they were retrieved, with the guard, protocol, classifier and risk probes, into `evals/rethink-2026-09-26/`. The packets and raw event streams were not retained because they contain the prompt excerpts. The classifier export was redacted.
 
 ## Crystallization candidates
 

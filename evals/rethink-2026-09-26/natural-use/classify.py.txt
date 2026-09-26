@@ -1,0 +1,46 @@
+import json, re, sys, os
+from collections import Counter
+INV = {
+ "skill_md": re.compile(r"skills/compass/SKILL\.md"),
+ "reference": re.compile(r"skills/compass/references/"),
+ "script": re.compile(r"skills/compass/scripts/compass\.py|compass-c (--db|calculate|start|brief|list)|python3? -m compass_c"),
+ "claude_skill": re.compile(r'^compass$'),
+}
+MCP = re.compile(r"^(mcp__.*__)?compass_(start|record|calculate|brief|get|list|revise|review|invalidate|plan_experiment|experiments?|preview_updates|apply_updates|preview_observation|apply_observation|migrate)$")
+DEV = re.compile(r"/owned/compass-c(/|\b)(?!.*skills/compass/SKILL)")
+rows=[]
+for path in open(sys.argv[1]).read().split():
+    cwd=None; start=None; calls=Counter(); dev_calls=0; user_mentions=0; user_dollar=0; tool_calls_total=0
+    for line in open(path, errors="replace"):
+        try: e=json.loads(line)
+        except Exception: continue
+        if cwd is None and isinstance(e,dict):
+            cwd = e.get("cwd") or (e.get("payload") or {}).get("cwd") if isinstance(e.get("payload"),dict) else e.get("cwd")
+        ts = e.get("timestamp") if isinstance(e,dict) else None
+        if ts and not start: start=ts[:10]
+        # normalize message
+        msg = e.get("message") if isinstance(e.get("message"),dict) else None
+        role = (msg or {}).get("role") or e.get("role")
+        content = (msg or {}).get("content")
+        if isinstance(content,str): content=[{"type":"text","text":content}]
+        if not isinstance(content,list): continue
+        for c in content:
+            if not isinstance(c,dict): continue
+            t=c.get("type")
+            if t in ("toolCall","tool_use"):
+                tool_calls_total+=1
+                name=c.get("name",""); args=c.get("arguments") or c.get("input") or {}
+                s=json.dumps(args)
+                if name=="Skill" and isinstance(args,dict) and args.get("skill")=="compass": calls["claude_skill"]+=1
+                if MCP.match(name): calls["mcp_tool"]+=1
+                for k in ("skill_md","reference","script"):
+                    if INV[k].search(s): calls[k]+=1
+                if "/owned/compass-c" in s and "skills/compass/" not in s: dev_calls+=1
+            elif t=="text" and role=="user":
+                txt=c.get("text","")
+                if re.search(r"(?i)\bcompass\b", txt): user_mentions+=1
+                if "$compass" in txt or "/compass" in txt: user_dollar+=1
+    src = "claude" if "/.claude/" in path else "pi" if "/.pi/" in path else "codex"
+    rows.append(dict(src=src, start=start, cwd=cwd, calls=dict(calls), invocations=sum(calls.values()), dev_calls=dev_calls, user_mentions=user_mentions, explicit=user_dollar, tools=tool_calls_total, file=os.path.basename(path)[:40]))
+rows.sort(key=lambda r:(r["start"] or ""))
+for r in rows: print(json.dumps(r))

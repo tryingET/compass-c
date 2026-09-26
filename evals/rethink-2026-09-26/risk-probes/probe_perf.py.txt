@@ -1,0 +1,28 @@
+import sys, time, tempfile, os
+sys.path.insert(0, "src")
+from compass_c import Notebook
+from compass_c.lifecycle import plan_experiment
+d = tempfile.mkdtemp()
+book = Notebook(os.path.join(d, "n.sqlite3"))
+s = book.start("perf"); did, rev = s["decision_id"], s["revision"]
+for i in range(300):
+    r = book.record(did, rev, "evidence", f"e{i}", status="observed", source="s"); rev = r["revision"]
+n=8
+model = {"actions":[f"a{i}" for i in range(n)],"scenarios":[f"s{j}" for j in range(n)],
+ "payoffs":[[(i*7+j*3)%11-5 for j in range(n)] for i in range(n)],
+ "probabilities":[1/n]*n,"value_unit":"u","provenance":["p"],"assumptions":["a"]}
+exps=[{"id":f"x{k}","question":"q","protocol":"p","outcomes":["o1","o2","o3"],
+ "likelihoods":[[0.6,0.3,0.1] if (j+k)%2 else [0.1,0.3,0.6] for j in range(n)],
+ "cost":0.01,"duration":1,"provenance":["s"],"assumptions":["a"]} for k in range(8)]
+params={"model":model,"experiments":exps,"budget":10,"max_duration":10,"duration_unit":"h"}
+for plans in (1, 10, 40, 100):
+    while True:
+        cur = book.get(did)["revision"]
+        from compass_c.lifecycle import _PLAN_LIMIT
+        import sqlite3
+        c = sqlite3.connect(book.path).execute("select count(*) from experiment_plans").fetchone()[0]
+        if c >= plans: break
+        plan_experiment(book, did, cur, params)
+    t=time.perf_counter(); book.brief(did); b=time.perf_counter()-t
+    t=time.perf_counter(); book.get(did); g=time.perf_counter()-t
+    print(f"plans={plans:4d} notes~{300+plans}: brief {b*1000:8.1f} ms   get {g*1000:6.1f} ms")

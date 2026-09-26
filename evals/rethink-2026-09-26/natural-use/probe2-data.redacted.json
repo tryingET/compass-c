@@ -1,0 +1,361 @@
+{
+ "window": "2026-09-05..2026-09-26",
+ "sources": {
+  "claude_code_files_in_window": 382,
+  "pi_files_in_window": 1563,
+  "codex_files_in_window": 0
+ },
+ "matched_files_total": 33,
+ "excluded_compass_c_project_files": 9,
+ "candidates": [
+  {
+   "src": "pi",
+   "start": "2026-09-05",
+   "cwd": "~/ai-society/softwareco/owned/pi-extensions",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 186,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 971,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-05",
+   "cwd": "~/ai-society/softwareco/owned",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 188,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 1607,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-05",
+   "cwd": "~/ai-society/softwareco/owned",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 186,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 1073,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-05",
+   "cwd": "~/ai-society/softwareco/owned/semantic-code-intelligence",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 186,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 1073,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-05",
+   "cwd": "~/ai-society/softwareco/owned",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 186,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 799,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-05",
+   "cwd": "~/ai-society/softwareco/owned",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 188,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 1447,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-07",
+   "cwd": "~/ai-society/softwareco/owned/agent-kernel",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 186,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 1178,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-07",
+   "cwd": "~/.local/state/pi-quests/tmp/decision151-main.5gPphB/pi-extensions",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 186,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 1179,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-07",
+   "cwd": "~/ai-society/softwareco/owned",
+   "calls": {
+    "skill_md": 6,
+    "reference": 6,
+    "script": 3
+   },
+   "invocations": 15,
+   "dev_calls": 186,
+   "user_mentions": 5,
+   "explicit": 0,
+   "tools": 1180,
+   "classification": "development_copy_excluded"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-07",
+   "cwd": "~/ai-society/softwareco/owned",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 22,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-11",
+   "cwd": "~/ai-society/softwareco/owned/pi-extensions",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 26,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-11",
+   "cwd": "~/ai-society/softwareco/contrib/ultimate_bug_scanner",
+   "calls": {
+    "skill_md": 1
+   },
+   "invocations": 1,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 312,
+   "classification": "natural_invocation",
+   "preceding_user_request": "[redacted before publication: operator prompt excerpt; see the report's paraphrase table]"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-11",
+   "cwd": "~/ai-society/softwareco/owned/pi-extensions",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 31,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-12",
+   "cwd": "~/ai-society/softwareco/owned/pi-extensions",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 41,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-12",
+   "cwd": "~/ai-society/softwareco/owned/lehrplan-viz",
+   "calls": {
+    "skill_md": 1
+   },
+   "invocations": 1,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 415,
+   "classification": "natural_invocation",
+   "preceding_user_request": "[redacted before publication: operator prompt excerpt; see the report's paraphrase table]"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-12",
+   "cwd": "~/Documents/Obsidian",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 70,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-13",
+   "cwd": "~/Documents/Obsidian",
+   "calls": {
+    "skill_md": 1
+   },
+   "invocations": 1,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 211,
+   "classification": "natural_invocation",
+   "preceding_user_request": "[redacted before publication: operator prompt excerpt; see the report's paraphrase table]"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-13",
+   "cwd": "~/ai-society/softwareco/owned/pi-extensions",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 65,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-14",
+   "cwd": "~/Documents/Obsidian",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 17,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-14",
+   "cwd": "~/ai-society/softwareco/contrib/ultimate_bug_scanner",
+   "calls": {
+    "skill_md": 1
+   },
+   "invocations": 1,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 147,
+   "classification": "natural_invocation",
+   "preceding_user_request": "[redacted before publication: operator prompt excerpt; see the report's paraphrase table]"
+  },
+  {
+   "src": "claude",
+   "start": "2026-09-19",
+   "cwd": "~/ai-society/softwareco/infra/workstation",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 348,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "claude",
+   "start": "2026-09-19",
+   "cwd": "~/ai-society/softwareco/infra/workstation",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 204,
+   "classification": "text_mention_only"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-19",
+   "cwd": "~/ai-society/softwareco/owned/dspx",
+   "calls": {
+    "skill_md": 1
+   },
+   "invocations": 1,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 317,
+   "classification": "natural_invocation",
+   "preceding_user_request": "[redacted before publication: operator prompt excerpt; see the report's paraphrase table]"
+  },
+  {
+   "src": "pi",
+   "start": "2026-09-19",
+   "cwd": "~/ai-society/softwareco/infra/workstation",
+   "calls": {},
+   "invocations": 0,
+   "dev_calls": 0,
+   "user_mentions": 0,
+   "explicit": 0,
+   "tools": 5,
+   "classification": "text_mention_only"
+  }
+ ],
+ "invocation_patterns": "see classify.py INV/MCP regexes; first-pass rg pattern also matched text mentions",
+ "notebooks": {
+  "compass_notebooks_under_home_since_2026-09-05": 195,
+  "eval_workspaces": 33,
+  "test_scratch_of_authoring_session": 158,
+  "author_probe_notebooks_deleted": 4,
+  "natural": 0
+ },
+ "note": "Routing-fit labels intentionally omitted for blind re-scoring. Final-answer reversal scan: keyword regex over the triggering turn's final assistant text.",
+ "redaction": "Operator prompt excerpts removed on 2026-09-26 before publication. The unredacted packet was given to the critics; its digest is recorded in critique/run-metadata.json."
+}

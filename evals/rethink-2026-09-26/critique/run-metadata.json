@@ -1,0 +1,65 @@
+{
+ "host": "Pi 0.84.4",
+ "model": "openai-codex-2/gpt-6-astra",
+ "thinking": "high",
+ "invocation": "pi -p --mode json --no-session --no-extensions -e <pi-multi-pass/extensions/multi-sub.ts> --no-skills --no-prompt-templates --no-context-files --no-approve --tools read,grep,find,ls --model openai-codex-2/gpt-6-astra --thinking high 'Read BRIEF.md in the current directory and carry out the task exactly. Your final message is the deliverable.' < /dev/null",
+ "event_streams_retained": false,
+ "event_streams_note": "Raw event streams were not retained: they are large and include tool reads of the unredacted packet (operator prompt excerpts). Their SHA-256 digests are recorded.",
+ "runs": {
+  "A": {
+   "packet_digest": "223084b362f579367a8944e9a6d633d2b0852514fdfcbf8128faf7295c997034",
+   "exit": "exit=0",
+   "reported_models": [
+    [
+     "openai-codex-2",
+     "gpt-6-astra"
+    ]
+   ],
+   "assistant_tool_calls": 79,
+   "usage": {
+    "input": 109197,
+    "output": 13126
+   },
+   "final_md_sha256": "db13761fcb75700c4fe6d6c18d6d0b1348210b66f68e9491ca277b99b8e428ab",
+   "event_stream_sha256": "677d781050c8721ffda9aa3937e3f194049f2baac617f4a70d5f408eb4251cac",
+   "event_stream_bytes": 4334502
+  },
+  "B": {
+   "packet_digest": "9fec55ad468fbe61952d1b2bc454ac1a6187ee39bac674ed17f86b6a8b2d1494",
+   "exit": "exit=0",
+   "reported_models": [
+    [
+     "openai-codex-2",
+     "gpt-6-astra"
+    ]
+   ],
+   "assistant_tool_calls": 62,
+   "usage": {
+    "input": 94214,
+    "output": 8569
+   },
+   "final_md_sha256": "b192e58ebde3beb50657d0bd73866f8f76a6afc778b32ea3e9d36caa56618fd1",
+   "event_stream_sha256": "815765c8b65eaadbcb146b368ac524ec27e18a140a654dba716c2c086b32cac4",
+   "event_stream_bytes": 3117576
+  },
+  "C": {
+   "packet_digest": "d6770a6c4a36f76c1a81e40565b99823fe2eb7026937384921888fa6380e0978",
+   "exit": "exit=0",
+   "reported_models": [
+    [
+     "openai-codex-2",
+     "gpt-6-astra"
+    ]
+   ],
+   "assistant_tool_calls": 63,
+   "usage": {
+    "input": 66589,
+    "output": 7494
+   },
+   "final_md_sha256": "a1e84a93c83f6e4dced6dd62c62e3b8e04f6c187ccd47d423066a0790525e60c",
+   "event_stream_sha256": "ca2ab3949d6a63368f52f91b1b59d6167fbd62a36126d1d5a4fdf05ee712932c",
+   "event_stream_bytes": 2895646,
+   "note": "First C launch stalled on stdin and was stopped after about 4 minutes with no output; this is the rerun."
+  }
+ }
+}

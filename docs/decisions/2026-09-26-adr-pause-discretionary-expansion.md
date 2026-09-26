@@ -18,7 +18,7 @@ The v1–v4 horizons have bounded, tested mechanics. The outcome the vision care
 - **8-case guidance diagnostic:** 7/8 → 8/8, p = 1.0.
 - **96-trial Pi/GLM study:** its grades were found invalid (AK 9198). A jury re-adjudication did not recover the apparent gains (AK 9361), and the adjudication has its own semantic failure (AK 9362).
 
-The 2026-09-26 rethink froze its [frame](2026-09-26-rethink-frame.md) before probing, and its [probe report](2026-09-26-rethink-probe-report.md) includes an independent critique and a measured guard. It found:
+The 2026-09-26 rethink froze its [frame](2026-09-26-rethink-frame.md) before probing, and its [probe report](2026-09-26-rethink-probe-report.md) includes an independent critique and a measured guard. The retained evidence is in [`evals/rethink-2026-09-26/`](../../evals/rethink-2026-09-26/README.md). It found:
 
 - **Natural use:** five model-initiated skill reads, with no downstream tool or notebook use, and zero natural notebooks.
 - **Where the reasoning lives:** the owner's own COMPASS-style reasoning is kept in AK evidence, not in notebooks.
@@ -35,7 +35,7 @@ Pause **discretionary expansion** of COMPASS-C. The pause is reversible.
 **Paused**
 - New features, calculators, MCP tools, schema changes or horizons beyond v4.
 - New behavioral studies, provider trials, jury cycles or evaluation infrastructure.
-- The claim-freshness guard. Its prototype is archived as text beside this ADR and is not a repository gate.
+- The claim-freshness guard. Its prototype is archived as text in [`evals/rethink-2026-09-26/guard/`](../../evals/rethink-2026-09-26/guard/check-claim-freshness.py.txt) and is not a repository gate.
 - Skill description or routing rewrites. Improving routing precision is an untested hypothesis.
 - Pursuing further host or account installations.
 
@@ -59,6 +59,7 @@ These are from the independent critique:
 
 ## Consequences
 
-- AK 5641 (host dogfood and behavior measurement) and AK 5673 (jury program) are deferred, not closed.
+- AK 5641 (host dogfood and behavior measurement) and AK 5673 (jury program) were deferred, not closed.
+  *Update, later on 2026-09-26:* at the owner's instruction, AK 5673 was completed on its committed validation (AK 9370), keeping failures 9267 and 9362 and its advisory claim boundary. AK 5641 remains deferred.
 - Publishing the unpublished local commits, releasing, and archiving remain separate owner decisions.
 - The installed skill copies predate the 2026-09-26 reference correction in `decision-checks.md`. They remain usable.

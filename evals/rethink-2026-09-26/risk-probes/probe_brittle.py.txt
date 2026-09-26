@@ -1,0 +1,23 @@
+import sys, time, tempfile, os
+sys.path.insert(0, "src")
+from compass_c import Notebook, CompassError
+from compass_c import experiments as ex
+from compass_c.lifecycle import plan_experiment, experiment, experiments
+d = tempfile.mkdtemp()
+book = Notebook(os.path.join(d, "n.sqlite3"))
+s = book.start("probe")
+did, rev = s["decision_id"], s["revision"]
+model = {"actions":["ship","defer"],"scenarios":["ready","not"],"payoffs":[[10,-20],[0,0]],
+ "probabilities":[0.5,0.5],"value_unit":"u","provenance":["synthetic"],"assumptions":["a"]}
+exp = {"id":"smoke","question":"q","protocol":"p","outcomes":["pass","fail"],
+ "likelihoods":[[0.8,0.2],[0.2,0.8]],"cost":0.5,"duration":10,"provenance":["s"],"assumptions":["a"]}
+params = {"model":model,"experiments":[exp],"budget":1,"max_duration":20,"duration_unit":"min"}
+p = plan_experiment(book, did, rev, params)
+print("plan ok, status:", p["status"])
+# 1) Simulate a later release that only rewords the limitations text
+ex._LIMITATIONS = ex._LIMITATIONS + " (reworded in a later release)"
+for name, fn in [("experiment", lambda: experiment(book, p["plan_id"])), ("brief", lambda: book.brief(did))]:
+    try:
+        fn(); print(name, "OK after wording change")
+    except CompassError as e:
+        print(name, "FAILS after wording change:", e.code, "-", e)

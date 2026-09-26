@@ -1,0 +1,21 @@
+import sys, time, tempfile, os
+sys.path.insert(0, "src")
+from compass_c import Notebook, calculate
+from compass_c.lifecycle import plan_experiment, experiment
+A,Sn,E,O = 64,128,int(sys.argv[1]),int(sys.argv[2])
+model = {"actions":[f"a{i}" for i in range(A)],"scenarios":[f"s{j}" for j in range(Sn)],
+ "payoffs":[[((i*7+j*3)%11-5)*1.5 for j in range(Sn)] for i in range(A)],
+ "probabilities":[1/Sn]*Sn,"value_unit":"u","provenance":["p"],"assumptions":["a"]}
+def lik(j,k):
+    v=[((j+k+o)%5)+1 for o in range(O)]; t=sum(v); r=[x/t for x in v]; r[-1]=1-sum(r[:-1]); return r
+exps=[{"id":f"x{k}","question":"q","protocol":"p","outcomes":[f"o{o}" for o in range(O)],
+ "likelihoods":[lik(j,k) for j in range(Sn)],"cost":0.01,"duration":1,"provenance":["s"],"assumptions":["a"]} for k in range(E)]
+params={"model":model,"experiments":exps,"budget":10,"max_duration":10,"duration_unit":"h"}
+t=time.perf_counter()
+try:
+    calculate("experiment", params); print(f"E={E} O={O}: calculate {time.perf_counter()-t:.2f}s")
+except Exception as e:
+    print("calc error", type(e).__name__, e); sys.exit()
+d=tempfile.mkdtemp(); book=Notebook(os.path.join(d,"n.sqlite3")); s=book.start("big")
+t=time.perf_counter(); p=plan_experiment(book,s["decision_id"],1,params); print(f"  plan write {time.perf_counter()-t:.2f}s")
+t=time.perf_counter(); book.brief(s["decision_id"]); print(f"  brief {time.perf_counter()-t:.2f}s")

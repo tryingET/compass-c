@@ -1,0 +1,452 @@
+{
+  "revision": "23f883d3d8810afd388edac769743fa96a72a630",
+  "flagged": [
+    {
+      "document": ".pi/skills/compass-c-maintainer/SKILL.md",
+      "revised_in": "9726d109212d",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project/installation.md",
+          "commits": [
+            "2c01da9845e181ef247925b1a57f068ffe9d6832",
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "6116ac46bed5a87b97c5ba9c01d8eb97e28d5c5d",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "d839c97b9bc169672c2f25935e770017a0bb5990",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "scripts/build_skill.py",
+          "commits": [
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "72648dd2b0fc4fcfaa2b53be6daf0423d1158cbc",
+            "8feeff40cc2c040a12d61cfb55b7ab1a555c6643",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "src/compass_c",
+          "commits": [
+            "2c01da9845e181ef247925b1a57f068ffe9d6832",
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "8feeff40cc2c040a12d61cfb55b7ab1a555c6643",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "d17f78bdeac007c9efe8a4c536cd28efc9e7294c",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        }
+      ]
+    },
+    {
+      "document": ".pi/skills/compass-c-maintainer/references/improvement.md",
+      "revised_in": "9726d109212d",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "skills/agent-skill-engineer"
+        }
+      ]
+    },
+    {
+      "document": "AGENTS.md",
+      "revised_in": "d638d024ed8b",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "diary/YYYY-MM-DD--type-scope-summary.md"
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "diary",
+          "commits": [
+            "0c16f0e30870220dcecd3a9463f32943101a3325",
+            "1bb2382dd324fa3b3bc315605313bc642f5cbe8c",
+            "2c01da9845e181ef247925b1a57f068ffe9d6832",
+            "6116ac46bed5a87b97c5ba9c01d8eb97e28d5c5d",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "9c3dc80adecda1e5e5ee301b5c6523ee3875db61",
+            "a4e2b394cb3b0a549c035d9169322015ed552892",
+            "a9cd5fc4e12613583e8ee3f5615f3e6940c9191c",
+            "c89e6d22e2c8712173071ceca0b67ff459af486e",
+            "cc81e320d5efd5d71f143d5c725c304550c53299",
+            "d839c97b9bc169672c2f25935e770017a0bb5990",
+            "ed42c018e5344fe75c520bb62002c2c3619de33e"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project",
+          "commits": [
+            "1bb2382dd324fa3b3bc315605313bc642f5cbe8c",
+            "23f883d3d8810afd388edac769743fa96a72a630",
+            "260c1dcfacaa3db42327d93dc54a1f98a6a0e70c",
+            "2c01da9845e181ef247925b1a57f068ffe9d6832",
+            "35b2007d9c7a72f245e5194bcd5232b0759881b9",
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "56066fc06ae8358cfa81fe7700be28382bb68ddc",
+            "5e41b4f3b792e5c1bd8ff296dcdcbbb77498020e",
+            "6116ac46bed5a87b97c5ba9c01d8eb97e28d5c5d",
+            "6ab96b65e0a5530d23958844a1cd56d4e9905b6a",
+            "6fa6d713a13d3e1ec713fc697630413ee1a8aa93",
+            "73f6c79355f80db3bdaaeb6aeb4dc91740cc8856",
+            "7662840b0656740ae984c8db3911c6355bae37d7",
+            "80716ca318e6eac5734bca4eddc8d6a510058f6f",
+            "92f80c6b20e8cb82e144db96662e45873fac7add",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "9726d109212d54cea252d5f340cf6494720ff7c2",
+            "a9cd5fc4e12613583e8ee3f5615f3e6940c9191c",
+            "bec7f1137fabf91ecad4c16a87203fa2af5af23a",
+            "c89e6d22e2c8712173071ceca0b67ff459af486e",
+            "cc81e320d5efd5d71f143d5c725c304550c53299",
+            "d0c820a84ce747522b763d56cd163300686f7134",
+            "d839c97b9bc169672c2f25935e770017a0bb5990",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272",
+            "ed42c018e5344fe75c520bb62002c2c3619de33e"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project/product_posture.md",
+          "commits": [
+            "23f883d3d8810afd388edac769743fa96a72a630",
+            "260c1dcfacaa3db42327d93dc54a1f98a6a0e70c",
+            "35b2007d9c7a72f245e5194bcd5232b0759881b9",
+            "56066fc06ae8358cfa81fe7700be28382bb68ddc",
+            "5e41b4f3b792e5c1bd8ff296dcdcbbb77498020e",
+            "6ab96b65e0a5530d23958844a1cd56d4e9905b6a",
+            "73f6c79355f80db3bdaaeb6aeb4dc91740cc8856",
+            "7662840b0656740ae984c8db3911c6355bae37d7",
+            "80716ca318e6eac5734bca4eddc8d6a510058f6f",
+            "92f80c6b20e8cb82e144db96662e45873fac7add",
+            "bec7f1137fabf91ecad4c16a87203fa2af5af23a"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project/vision.md",
+          "commits": [
+            "9726d109212d54cea252d5f340cf6494720ff7c2"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "scripts/build_skill.py",
+          "commits": [
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "72648dd2b0fc4fcfaa2b53be6daf0423d1158cbc",
+            "8feeff40cc2c040a12d61cfb55b7ab1a555c6643",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "skills/compass/scripts",
+          "commits": [
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "72648dd2b0fc4fcfaa2b53be6daf0423d1158cbc",
+            "8feeff40cc2c040a12d61cfb55b7ab1a555c6643",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "src/compass_c",
+          "commits": [
+            "2c01da9845e181ef247925b1a57f068ffe9d6832",
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "8feeff40cc2c040a12d61cfb55b7ab1a555c6643",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "d17f78bdeac007c9efe8a4c536cd28efc9e7294c",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "README.md",
+      "revised_in": "2c01da9845e1",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project/evaluation.md",
+          "commits": [
+            "a9cd5fc4e12613583e8ee3f5615f3e6940c9191c",
+            "ed42c018e5344fe75c520bb62002c2c3619de33e"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project/product_posture.md",
+          "commits": [
+            "23f883d3d8810afd388edac769743fa96a72a630",
+            "260c1dcfacaa3db42327d93dc54a1f98a6a0e70c",
+            "5e41b4f3b792e5c1bd8ff296dcdcbbb77498020e",
+            "7662840b0656740ae984c8db3911c6355bae37d7"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "docs/decisions/README.md",
+      "revised_in": "d638d024ed8b",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "docs/core/system4d/TEMPLATE-ADR.md"
+        },
+        {
+          "kind": "missing_reference",
+          "path": "docs/core/system4d/TEMPLATE-RFC.md"
+        }
+      ]
+    },
+    {
+      "document": "docs/engineering.local.md",
+      "revised_in": "d638d024ed8b",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "docs/dev/ts-quality-current-vs-target.md"
+        }
+      ]
+    },
+    {
+      "document": "docs/project/evaluation.md",
+      "revised_in": "a9cd5fc4e126",
+      "reasons": [
+        {
+          "kind": "ak_evidence_after",
+          "task": 5673,
+          "records": 1
+        }
+      ]
+    },
+    {
+      "document": "docs/project/installation.md",
+      "revised_in": "2c01da9845e1",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": ".codex-plugin/plugin.json"
+        },
+        {
+          "kind": "ak_evidence_after",
+          "task": 5641,
+          "records": 7
+        }
+      ]
+    },
+    {
+      "document": "docs/project/product_posture.md",
+      "revised_in": "23f883d3d881",
+      "reasons": [
+        {
+          "kind": "ak_evidence_after",
+          "task": 5673,
+          "records": 1
+        }
+      ]
+    },
+    {
+      "document": "docs/project/source-provenance.md",
+      "revised_in": "d638d024ed8b",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "skills/agent-skill-engineer"
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "skills/compass/scripts",
+          "commits": [
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "72648dd2b0fc4fcfaa2b53be6daf0423d1158cbc",
+            "8feeff40cc2c040a12d61cfb55b7ab1a555c6643",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "src/compass_c",
+          "commits": [
+            "2c01da9845e181ef247925b1a57f068ffe9d6832",
+            "38dee55cc95997ff94469676fbbbaee05a99f640",
+            "8feeff40cc2c040a12d61cfb55b7ab1a555c6643",
+            "93fb6ef38869f730bbfffb20c7f1b71dea48a1ae",
+            "d17f78bdeac007c9efe8a4c536cd28efc9e7294c",
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "docs/project/usage.md",
+      "revised_in": "38dee55cc959",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "path": "skills/compass/references/experiment-workflow.md",
+          "commits": [
+            "cb3c54ba3741a71f5eb270caecda06ddbed7f2a9"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "docs/project/vision-validation.md",
+      "revised_in": "cc81e320d5ef",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project/product_posture.md",
+          "commits": [
+            "23f883d3d8810afd388edac769743fa96a72a630",
+            "260c1dcfacaa3db42327d93dc54a1f98a6a0e70c",
+            "5e41b4f3b792e5c1bd8ff296dcdcbbb77498020e",
+            "6ab96b65e0a5530d23958844a1cd56d4e9905b6a",
+            "7662840b0656740ae984c8db3911c6355bae37d7",
+            "92f80c6b20e8cb82e144db96662e45873fac7add"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "evals/dspx-jury/README.md",
+      "revised_in": "a9cd5fc4e126",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "generated/manifest.json.meta.json"
+        },
+        {
+          "kind": "ak_evidence_after",
+          "task": 5673,
+          "records": 1
+        }
+      ]
+    },
+    {
+      "document": "evals/observations/2026-09-11-glm-native/README.md",
+      "revised_in": "2c01da9845e1",
+      "reasons": [
+        {
+          "kind": "ak_evidence_after",
+          "task": 5641,
+          "records": 7
+        }
+      ]
+    },
+    {
+      "document": "governance/README.md",
+      "revised_in": "d638d024ed8b",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "path": "scripts/check-task-scope-snapshots.sh",
+          "commits": [
+            "e53178d9f68fd9d76f7df3e6c898cb6d20a9a272"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "next_session_prompt.md",
+      "revised_in": "cc81e320d5ef",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "diary/YYYY-MM-DD--type-scope-summary.md"
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "diary",
+          "commits": [
+            "0c16f0e30870220dcecd3a9463f32943101a3325",
+            "2c01da9845e181ef247925b1a57f068ffe9d6832",
+            "6116ac46bed5a87b97c5ba9c01d8eb97e28d5c5d",
+            "9c3dc80adecda1e5e5ee301b5c6523ee3875db61",
+            "a9cd5fc4e12613583e8ee3f5615f3e6940c9191c",
+            "ed42c018e5344fe75c520bb62002c2c3619de33e"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "docs/project/product_posture.md",
+          "commits": [
+            "23f883d3d8810afd388edac769743fa96a72a630",
+            "260c1dcfacaa3db42327d93dc54a1f98a6a0e70c",
+            "5e41b4f3b792e5c1bd8ff296dcdcbbb77498020e",
+            "6ab96b65e0a5530d23958844a1cd56d4e9905b6a",
+            "7662840b0656740ae984c8db3911c6355bae37d7",
+            "92f80c6b20e8cb82e144db96662e45873fac7add"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "scripts/ci/fast.sh",
+          "commits": [
+            "6116ac46bed5a87b97c5ba9c01d8eb97e28d5c5d"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "ontology/index.md",
+      "revised_in": "d638d024ed8b",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "ontology/dist"
+        }
+      ]
+    },
+    {
+      "document": "skills/compass/SKILL.md",
+      "revised_in": "38dee55cc959",
+      "reasons": [
+        {
+          "kind": "evidence_changed",
+          "path": "skills/compass/references/experiment-workflow.md",
+          "commits": [
+            "cb3c54ba3741a71f5eb270caecda06ddbed7f2a9"
+          ]
+        },
+        {
+          "kind": "evidence_changed",
+          "path": "skills/compass/references/notebook.md",
+          "commits": [
+            "cb3c54ba3741a71f5eb270caecda06ddbed7f2a9"
+          ]
+        }
+      ]
+    },
+    {
+      "document": "skills/compass/references/decision-checks.md",
+      "revised_in": "e53178d9f68f",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "engineering/source_register.json"
+        }
+      ]
+    },
+    {
+      "document": "skills/compass/references/notebook.md",
+      "revised_in": "cb3c54ba3741",
+      "reasons": [
+        {
+          "kind": "missing_reference",
+          "path": "scripts/compass.py"
+        }
+      ]
+    }
+  ]
+}

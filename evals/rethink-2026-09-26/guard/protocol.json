@@ -1,0 +1,30 @@
+{
+ "purpose": "Measure the real claim guard (scripts/check-claim-freshness.py) against the frozen rethink populations. Frozen before any run on the real repository.",
+ "catch_definition": "catch = the item's document is flagged with at least one reason whose path or AK task matches the listed superseding evidence; coincidental = flagged only for other reasons; miss = in scope but not flagged; out_of_scope = excluded by the guard's scope rules",
+ "p2_at_head": {"rev": "HEAD", "now": "current time", "items": [
+  {"item": 1, "document": "evals/dogfood/v4-lifecycle/continuing-build-record.json", "superseding": ["task:5641", "evals/observations/2026-09-11-glm-native", "evals/dogfood/v4-lifecycle"]},
+  {"item": 2, "document": "README.md", "superseding": ["task:5641", "docs/project/evaluation.md", "docs/project/product_posture.md", "evals/observations/2026-09-11-glm-native"]},
+  {"item": 3, "document": "evals/observations/2026-09-11-glm-native/README.md", "superseding": ["task:5641", "docs/project/evaluation.md", "docs/project/product_posture.md"]},
+  {"item": 4, "document": "docs/project/vision-validation.md", "superseding": ["task:5641", "evals/observations/2026-09-11-glm-native", "docs/project/product_posture.md", "docs/project/evaluation.md"]},
+  {"item": 5, "document": "release.json", "superseding": ["task:5641", "docs/project/installation.md", "docs/project/product_posture.md"]},
+  {"item": 6, "document": "next_session_prompt.md", "superseding": ["task:5641", "task:5673", "governance/task-scopes", "docs/project/product_posture.md"]},
+  {"item": 7, "document": "evals/dogfood/2026-09-08/final-client-exercise/manifest.json", "superseding": ["wrong-from-start"]},
+  {"item": 8, "document": "governance/README.md", "superseding": ["AGENTS.md", "governance/work-items.json"]},
+  {"item": 9, "document": "skills/compass/references/decision-checks.md", "superseding": ["missing:engineering/source_register.json"]},
+  {"item": 10, "document": "docs/project/verified-publication.json", "control": "must NOT be flagged"},
+  {"item": 11, "document": "README.md", "superseding": ["evals/dogfood/v4-lifecycle", "evals/dogfood/2026-09-08"]},
+  {"item": 12, "document": "evals/dspx-jury/pilot-attempt.json", "superseding": ["task:5673"]},
+  {"item": 13, "document": "scripts/compass_jury.py", "superseding": ["task:5673"]}]},
+ "p1_replay": {"rev": "first parent of the correction commit", "events": [
+  {"commit": "73f6c79", "document": "docs/project/product_posture.md", "superseding": ["any evidence_paths entry changed"]},
+  {"commit": "35b2007", "document": "docs/project/product_posture.md", "superseding": ["any evidence_paths entry changed"]},
+  {"commit": "bec7f11", "document": "docs/project/product_posture.md", "superseding": ["any evidence_paths entry changed"]},
+  {"commit": "92f80c6", "document": "docs/project/product_posture.md", "superseding": ["any evidence_paths entry changed"]},
+  {"commit": "5e41b4f", "document": "docs/project/product_posture.md", "superseding": ["any evidence_paths entry changed", "task:5641"]},
+  {"commit": "cb3c54b", "document": "skills/compass/references/notebook.md", "superseding": ["skills/compass/references/experiment-workflow.md", "src/compass_c/lifecycle.py"]},
+  {"commit": "9c3dc80", "document": "governance/task-scopes/AK-5641.snapshot.json", "superseding": ["AK scope entity change"]},
+  {"commit": "33d2c90", "document": "governance/task-scopes/AK-5641.snapshot.json", "superseding": ["AK scope entity change"]},
+  {"commit": "91aab1a", "document": null, "superseding": ["origin/main advanced (not a repository path)"]}]},
+ "noise": "run at every first-parent commit with AK bounded by commit time; report flagged-document counts; at HEAD list every flagged document for independent adjudication (real drift / not drift / uncertain)",
+ "ak_input": "evidence export of the 34 COMPASS-C task records: id, task_id, checked_at"
+}
