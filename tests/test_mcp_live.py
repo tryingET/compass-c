@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 import subprocess
 import sys
 from contextlib import asynccontextmanager
@@ -206,3 +207,48 @@ def test_stdio_revision_type_is_not_coerced(tmp_path, revision, tool):
             assert after == before
 
     asyncio.run(scenario())
+
+
+def test_stdio_default_notebook_is_home_scoped_unlike_the_cli(tmp_path):
+    work, home = tmp_path / "work", tmp_path / "home"
+    work.mkdir()
+    home.mkdir()
+    default = home / ".compass" / "decisions.sqlite3"
+
+    async def scenario():
+        # The SDK merges HOME and PATH from its own safe list; COMPASS_DB is not inherited.
+        parameters = StdioServerParameters(
+            command=sys.executable,
+            args=["-B", "-m", "compass_c.mcp_server"],
+            cwd=str(work),
+            env={"HOME": str(home)},
+        )
+        async with stdio_client(parameters) as (reader, writer):
+            async with ClientSession(reader, writer, read_timeout_seconds=20) as session:
+                await session.initialize()
+                started = await call(session, "compass_start", objective="Default MCP location")
+                assert started["ok"]
+                return started["data"]["decision_id"]
+
+    did = asyncio.run(scenario())
+    assert default.is_file()
+    assert not (work / ".compass").exists()
+    environment = {key: value for key, value in os.environ.items() if key != "COMPASS_DB"}
+    environment["HOME"] = str(home)
+
+    def cli(extra_environment=None):
+        process = subprocess.run(
+            [sys.executable, "-B", "-m", "compass_c", "list"],
+            cwd=work,
+            env={**environment, **(extra_environment or {})},
+            capture_output=True,
+            text=True,
+            timeout=20,
+        )
+        return json.loads(process.stdout)
+
+    separate = cli()
+    assert separate["error"]["code"] == "STORAGE_NOT_FOUND"
+    assert not (work / ".compass").exists()
+    shared = cli({"COMPASS_DB": str(default)})
+    assert [item["decision_id"] for item in shared["data"]["decisions"]] == [did]

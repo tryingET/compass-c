@@ -3,11 +3,15 @@
 from __future__ import annotations
 
 import json
+import os
+import re
 import subprocess
 import sys
 from pathlib import Path
 
 import pytest
+
+from compass_c import CompassError, calculate
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -161,3 +165,62 @@ def test_cli_evaluate_invalid_input_has_no_traceback(tmp_path: Path, payload: by
     )
     assert code == 2
     assert result["error"]["code"] in {"INVALID_JSON", "INPUT_FILE_ERROR"}
+
+
+DOCUMENTED_KINDS = (
+    "compare",
+    "sensitivity",
+    "portfolio",
+    "experiment",
+    "update_beliefs",
+    "committee",
+    "bundle",
+    "feedback",
+    "recovery",
+    "tail",
+    "brier",
+)
+
+
+def test_unknown_calculation_names_every_supported_kind(tmp_path: Path) -> None:
+    reference = (ROOT / "skills/compass/references/calculators.md").read_text(encoding="utf-8")
+    assert tuple(re.findall(r"^\| ([a-z_]+) \|", reference, flags=re.MULTILINE)) == (
+        DOCUMENTED_KINDS
+    )
+    code, response = invoke(
+        tmp_path / "decisions.sqlite3", "calculate", "forecast", "--parameters", "{}"
+    )
+    assert code == 2
+    assert response["error"]["code"] == "INVALID_ARGUMENTS"
+    assert set(DOCUMENTED_KINDS) <= set(re.findall(r"[a-z_]+", response["error"]["message"]))
+    with pytest.raises(CompassError) as error:
+        calculate("forecast", {})
+    assert error.value.code == "UNKNOWN_CALCULATION"
+    assert set(DOCUMENTED_KINDS) <= set(re.findall(r"[a-z_]+", str(error.value)))
+    assert not (tmp_path / ".compass").exists()
+
+
+@pytest.mark.parametrize("portable", [False, True], ids=["package", "portable"])
+def test_default_notebook_is_in_the_working_directory(tmp_path: Path, portable: bool) -> None:
+    work, home = tmp_path / "work", tmp_path / "home"
+    work.mkdir()
+    home.mkdir()
+    entry = (
+        ["-I", "-B", str(ROOT / "skills/compass/scripts/compass.py")]
+        if portable
+        else ["-B", "-m", "compass_c"]
+    )
+    environment = {key: value for key, value in os.environ.items() if key != "COMPASS_DB"}
+    environment["HOME"] = str(home)
+    process = subprocess.run(
+        [sys.executable, *entry, "start", "--objective", "Use the default location"],
+        cwd=work,
+        env=environment,
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert process.returncode == 0, process.stdout + process.stderr
+    assert json.loads(process.stdout)["ok"] is True
+    assert (work / ".compass" / "decisions.sqlite3").is_file()
+    assert not any(home.iterdir())

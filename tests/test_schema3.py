@@ -9,6 +9,14 @@ import pytest
 
 from compass_c import CompassError, Notebook
 from compass_c.evidence import apply_updates, preview_updates
+from compass_c.lifecycle import experiment, experiments, preview_observation
+
+RELEASED = Path(__file__).parent / "fixtures" / "v0.6.0-saved-experiments.sql"
+RELEASED_DECISION = "f1613e135c014bd98a4fcdb050533ac0"
+RELEASED_OBSERVED, RELEASED_OPEN = (
+    "1b4c1eef7d79407d83dec22fcef3f8c1",
+    "fd182f916fba49fc974fed5868ff9cab",
+)
 
 # Frozen DDL: legacy fixtures must not inherit changes to current initialization.
 BASE_SCHEMA = """
@@ -254,7 +262,7 @@ def test_schema3_without_required_observation_uniqueness_is_refused(
     )
     with sqlite3.connect(book.path) as database:
         database.executescript(PLAN_SCHEMA)
-        database.execute(
+        database.execute(  # ubs:ignore -- DDL built only from module constants
             "CREATE TABLE experiment_observations ("
             + OBSERVATION_COLUMNS
             + ", "
@@ -267,3 +275,50 @@ def test_schema3_without_required_observation_uniqueness_is_refused(
         getattr(book, operation)(*([DID] if operation == "get" else []))
     assert error.value.code == "INVALID_STORAGE"
     assert book.path.read_bytes() == before
+
+
+def test_saved_plans_written_by_v060_remain_readable(tmp_path: Path) -> None:
+    # Stored plans are verified by recomputation, so any change to experiment output
+    # fails here. Do not regenerate the fixture; add a stored-plan migration instead.
+    path = tmp_path / "released.sqlite3"
+    database = sqlite3.connect(path)
+    try:
+        database.executescript(RELEASED.read_text(encoding="utf-8"))
+    finally:
+        database.close()
+    before = path.read_bytes()
+    book = Notebook(path)
+    listed = experiments(book, RELEASED_DECISION)
+    assert {item["plan_id"] for item in listed["experiments"]} == {
+        RELEASED_OBSERVED,
+        RELEASED_OPEN,
+    }
+    observed = experiment(book, RELEASED_OBSERVED)
+    assert observed["status"] == "observed"
+    assert observed["observation"]["event_id"] == "event-1"
+    assert observed["observation"]["replayed"] is True
+    assert observed["summary"]["current_winners"] == ["ship"]
+    assert observed["current_model"] != observed["parameters"]["model"]
+    waiting = experiment(book, RELEASED_OPEN)
+    assert waiting["status"] == "awaiting_observation"
+    assert [item["id"] for item in waiting["parameters"]["experiments"]] == ["smoke", "survey"]
+    preview = preview_observation(
+        book,
+        RELEASED_OPEN,
+        waiting["revision"],
+        "survey",
+        "event-2",
+        {
+            "outcome": "mixed",
+            "source": "fixture://survey/mixed",
+            "observed_at": "2026-09-26T13:00:00Z",
+            "note": "Synthetic preview; nothing is applied.",
+        },
+    )
+    assert preview["applied"] is False and preview["replayed"] is False
+    brief = book.brief(RELEASED_DECISION)
+    assert {item["plan_id"] for item in brief["experiments"]} == {
+        RELEASED_OBSERVED,
+        RELEASED_OPEN,
+    }
+    assert path.read_bytes() == before

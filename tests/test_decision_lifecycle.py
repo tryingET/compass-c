@@ -6,6 +6,7 @@ from pathlib import Path
 from threading import Barrier
 
 import pytest
+from concurrent_processes import race
 
 from compass_c import CompassError, Notebook
 
@@ -308,6 +309,65 @@ def test_competing_revisions_accept_exactly_one(decision: tuple[Notebook, str]) 
     with ThreadPoolExecutor(max_workers=6) as pool:
         results = list(pool.map(revise, range(6)))
     assert results.count("REVISION_CONFLICT") == 5
+    final = book.get(did)
+    assert final["revision"] == 3
+    assert len(final["notes"]) == 2
+    assert len(final["revisions"]) == len(final["invalidations"]) == 1
+
+
+def test_separate_processes_starting_one_notebook_keep_every_decision(tmp_path: Path) -> None:
+    path = tmp_path / "processes.sqlite3"
+    body = """
+from compass_c import Notebook
+released()
+started = Notebook(arguments["path"]).start(arguments["objective"])
+print(json.dumps({"decision_id": started["decision_id"]}))
+"""
+    results = race(
+        tmp_path,
+        body,
+        [{"path": str(path), "objective": f"Process objective {index}"} for index in range(8)],
+    )
+    listed = Notebook(path).list()
+    assert listed["total"] == 8
+    assert {item["decision_id"] for item in listed["decisions"]} == {
+        result["decision_id"] for result in results
+    }
+    with sqlite3.connect(path) as db:
+        assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+
+
+def test_separate_processes_revising_one_note_accept_exactly_one(
+    decision: tuple[Notebook, str], tmp_path: Path
+) -> None:
+    book, did = decision
+    root = add(book, did, "assumption", "Original")
+    body = """
+from compass_c import CompassError, Notebook
+released()
+try:
+    revised = Notebook(arguments["path"]).revise(
+        arguments["decision_id"], 2, arguments["note_id"], arguments["content"], "Competing update"
+    )
+    print(json.dumps({"note_id": revised["note_id"]}))
+except CompassError as exc:
+    print(json.dumps({"code": exc.code}))
+"""
+    results = race(
+        tmp_path,
+        body,
+        [
+            {
+                "path": str(book.path),
+                "decision_id": did,
+                "note_id": root,
+                "content": f"Process candidate {index}",
+            }
+            for index in range(6)
+        ],
+    )
+    assert [result.get("code") for result in results].count("REVISION_CONFLICT") == 5
+    assert sum("note_id" in result for result in results) == 1
     final = book.get(did)
     assert final["revision"] == 3
     assert len(final["notes"]) == 2

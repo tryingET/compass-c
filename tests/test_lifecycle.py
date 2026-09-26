@@ -10,6 +10,7 @@ from pathlib import Path
 from threading import Barrier
 
 import pytest
+from concurrent_processes import race
 
 from compass_c import CompassError, Notebook
 from compass_c.experiments import propose_experiments, revise_model
@@ -368,6 +369,7 @@ def test_invalid_plan_dependency_is_atomic(saved, dependencies, code):
 def test_malformed_saved_plan_fails_closed(saved, column, value):
     book, _, _, plan = saved
     with sqlite3.connect(book.path) as db:
+        # ubs:ignore -- column comes only from the fixed parametrize list above
         db.execute(f"UPDATE experiment_plans SET {column}=? WHERE id=?", (value, plan["plan_id"]))
     before = book.path.read_bytes()
     with pytest.raises(CompassError) as error:
@@ -402,6 +404,26 @@ def test_concurrent_identical_event_is_applied_once(saved):
 
     with ThreadPoolExecutor(max_workers=2) as pool:
         receipts = list(pool.map(lambda _: apply(), range(2)))
+    assert sorted(r["replayed"] for r in receipts) == [False, True]
+    assert book.get(did)["revision"] == 4
+    with sqlite3.connect(book.path) as db:
+        assert db.execute("SELECT COUNT(*) FROM experiment_observations").fetchone()[0] == 1
+
+
+def test_separate_processes_apply_identical_event_once(saved, tmp_path):
+    book, did, _, plan = saved
+    body = """
+from compass_c import Notebook
+from compass_c.lifecycle import apply_observation
+released()
+receipt = apply_observation(
+    Notebook(arguments["path"]), arguments["plan_id"], 3, "smoke", "event-1",
+    arguments["observation"],
+)
+print(json.dumps({"replayed": receipt["replayed"]}))
+"""
+    values = {"path": str(book.path), "plan_id": plan["plan_id"], "observation": observation()}
+    receipts = race(tmp_path, body, [values, values])
     assert sorted(r["replayed"] for r in receipts) == [False, True]
     assert book.get(did)["revision"] == 4
     with sqlite3.connect(book.path) as db:

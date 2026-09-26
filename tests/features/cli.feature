@@ -23,7 +23,7 @@ Feature: A complete standalone decision workflow
     And it does not create a notebook
 
   Scenario: Name every supported calculation when a kind is unknown
-    Given a library, portable-script or MCP caller supplies an unsupported calculation kind
+    Given a library or MCP caller supplies an unsupported calculation kind
     When the calculation is requested
     Then it fails with a stable unknown-calculation error
     And the message names every kind the CLI accepts and the calculator reference documents
