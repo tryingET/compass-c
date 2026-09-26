@@ -2,7 +2,7 @@
 summary: "Current versus target product maturity for COMPASS-C."
 as_of: "2026-09-26"
 last_validated: "2026-09-26"
-last_validated_commit: "0c76d015b8ed29b83808edb45eaf7ad008d1d187"
+last_validated_commit: "022da50a3de62edbcb70290da746044f9e1d33cb"
 evidence_paths:
   - "README.md"
   - "src/compass_c"
@@ -90,7 +90,7 @@ failures and advisory claim boundary.
 | Coordinated decisions | Bounded feasible portfolios, exact shared capacity, dependency layers, exclusions, explicit deferral values and preserved stakeholder optima/disagreement. | Coordinate choices while retaining each owner's authority. | Additive caller-supplied values are assumptions; dependency layers do not schedule work or reserve resources. |
 | Experimental decisions | Frozen bounded plans, cold resume, identified observation preview/apply, exact prior/posterior history and atomic note invalidation across CLI, portable skill and MCP. Duplicate event retries do not incorporate evidence again; changed evidence makes the retained model historical. | Identify decision-changing uncertainty and learn from informative observations. | One observation per plan; subsequent likelihoods and model adequacy remain caller-owned. Sources are unverified; the product does not execute experiments or detect relabeled duplicate evidence. |
 | Skill behavior | Prior diagnostic plus 96 fresh Pi/GLM-5.3-flash trials: native acquisition observed, 48 A/A then 48 A/B captures, all failures retained. | Reliable selection and improved decisions in target hosts. | Historical A/B rubric counts are 19/24 versus 20/24, p=1.0. Forensic review found inconsistent grading of both apparent improvements and shared unsafe timeout reasoning. These are not accepted quality measurements. |
-| Installation and archives | Declared-source archives, public-head-verified v0.6.0 skill install, disposable managed upgrade with runnable backup, Pi/Codex discovery and withdrawal; personal Codex calculator and no-tool canaries observed (AK9197). | Reproducible client-specific adoption and rollback. | ChatGPT browser plugin registration, installation and account-side readback remain external. Prompted read-only canaries do not prove spontaneous selection or write safety. |
+| Installation and archives | Declared-source archives, public-head-verified v0.6.0 skill install, disposable managed upgrade with runnable backup, Pi/Codex discovery and withdrawal; personal Codex calculator and no-tool canaries observed (AK9197). Personal installs refreshed on 2026-09-26 by managed replacement from verified head `0526f34`, keeping backups (AK 10672). | Reproducible client-specific adoption and rollback. | ChatGPT browser plugin registration, installation and account-side readback remain external. Prompted read-only canaries do not prove spontaneous selection or write safety. |
 | MCP | SDK 2.1.1 pinned; seventeen tools; local wheel sessions and an actual GLM-driven Pi SDK workflow using six core operations observed. Missing-store errors now state their limited scope. | Directly verified supported client paths. | Custom Pi integration is not default host/account installation. One of three targeted recovery probes still offered unsafe retry assurance; no unattended-write approval or shared-service readiness. |
 | First consumer | Three prospective saved-workflow runs with fresh preparer/resumer pairs. Two failed effort gates exposed guidance and capture friction; the third passed all eight unchanged criteria with eight product attempts and no failures. | Useful self-correction during this repository's own work. | Small author-visible local exercise; full audit output is lengthy and generic briefs can still flag missing narrative categories. Capture ergonomics do not establish product benefit. |
 | Repo skill adoption | Repo-owned maintainer guidance remains separate from standalone skill/plugin archives. | Recipient-owned improvement based on verified learning. | KES acceptance, controlled behavioral improvement and cross-repo adoption remain with their owners. |
@@ -120,8 +120,9 @@ that later evidence had contradicted:
 - a commit-mapping erratum.
 
 It also removes the retired work-items projection and the session-handoff file. These are
-documentation corrections, not new behavioral evidence. The installed skill copies predate
-the corrected reference.
+documentation corrections, not new behavioral evidence. The corrected skill was
+published at `0526f34`; GitHub CI passed on Python 3.11 and 3.13, and the installer's
+publication readback passed. The personal installs were then refreshed from that head.
 
 The [current GLM study](../../evals/observations/2026-09-11-glm-native/README.md)
 retains the actual protocol, reports, failures, normalization records and recovery
@@ -187,6 +188,6 @@ review found cross-process budget-custody gaps. Exact archival source remains fo
 inspection. The original controller-serialized study stayed below its allowance; global
 budget enforcement was not proved and future live reuse needs execution-owner gates.
 
-This document is a maturity projection, not an execution queue. No release tag,
-registry release, new public push, vendor-account installation, KES promotion or
-wider rollout is claimed. None becomes a COMPASS-C core runtime dependency.
+This document is a maturity projection, not an execution queue. The source was
+published to the public default branch on 2026-09-26. No release tag, registry release,
+vendor-account installation, KES promotion or wider rollout is claimed. None becomes a COMPASS-C core runtime dependency.
