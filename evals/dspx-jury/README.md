@@ -202,6 +202,13 @@ Default source-only tests must not depend on ignored `.compass/` data.
 COMPASS_JURY_PRIVATE_EVIDENCE=1 /path/to/dspy-lm-auth/.venv/bin/python -m pytest tests/test_compass_jury*.py -q
 ```
 
+The owner environment must be the maintained `dspy-lm-auth` checkout whose `zai/glm-5.3`
+route resolves to `openai/glm-5.3` at the recorded base URL. An environment built from an
+upstream release without that route passes the other tests but fails the 12 LM-construction
+tests with `maintained LM route mismatch` (observed 2026-09-26: 445 passed, 12 failed,
+against 457 passed in the maintained environment). That is an environment mismatch, not a
+jury regression.
+
 The owner environment supplies `markdown-it-py` 4.0.0 for the recorded CommonMark
 interpretation; it is not a new core-runtime dependency. The read-only reporter
 rebuilds frozen inputs, verifies exact full DSPy requests and scheduler replay,
