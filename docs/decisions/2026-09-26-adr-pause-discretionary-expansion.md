@@ -65,3 +65,4 @@ These are from the independent critique:
   *Update, later on 2026-09-26:* at the owner's instruction, the commits were published at `0526f34`. Releasing and archiving remain separate decisions.
 - The installed skill copies predated the 2026-09-26 reference correction in `decision-checks.md`.
   *Update, later on 2026-09-26:* at the owner's instruction, they were refreshed by managed replacement with the published skill at `0526f34` (AK 10672), with the old copies kept as backups. Refreshing existing installs is maintenance, not a new installation.
+  *Update, evening of 2026-09-26:* after the maintenance pass (AK 6007), the owner approved a second refresh, from the published head `0770f4e` (AK 10737).

@@ -88,6 +88,14 @@ active manual deferral 432; that is how `ak` shows a deferral. AK 5673 was done.
   the company ontology.
 - The jury's optional dependencies remain undeclared; that is paused evaluation
   infrastructure.
-- The installed skill copies are still from `0526f34`, and refreshing them needs a new
-  rights-holder permission record. Publication, CI readback and any refresh are recorded
-  in AK, not here.
+
+## After publication
+
+- **Published:** `0770f4e` went to public `main`. GitHub CI run 36263596040 passed 4/4,
+  and the new document-policy and live-MCP steps ran on Python 3.11 and 3.13. AK 6007
+  records the pass (evidence 10723).
+- **Installs refreshed:** asked explicitly, the owner approved refreshing the installed
+  skill copies. A new permission record, scoped to `0770f4e`, was written. Both physical
+  installs were then replaced by managed `--replace` from the verified public head, with
+  backups kept (AK 10737). Apart from the installer's receipt, all four paths are
+  identical to `skills/compass`.
