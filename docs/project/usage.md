@@ -169,6 +169,16 @@ current-schema migration is a no-op. Missing, newer, foreign, and malformed
 notebooks fail closed. Back up valuable notebooks using SQLite's backup API
 before upgrading; a failed migration rolls back atomically.
 
+## Notebook location
+
+Each surface falls back to its own default notebook. The CLI and portable script use
+`--db`, then `COMPASS_DB`, then `.compass/decisions.sqlite3` in the working directory.
+The MCP server uses `COMPASS_DB`, then `~/.compass/decisions.sqlite3` in the home
+directory. Without an explicit shared path, a CLI started elsewhere does not see
+decisions that MCP wrote, so `STORAGE_NOT_FOUND` or a missing ID can mean only
+"a different notebook". Pass the same absolute path to every surface in one task;
+`scripts/configure_mcp.py --db` writes it into the MCP configuration.
+
 ## Stable failure boundaries
 
 CLI success is `{"ok": true, "data": ...}` with exit 0. Domain/input errors

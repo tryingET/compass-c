@@ -19,6 +19,12 @@ Record explicit model/experiment provenance and assumptions. Do not manufacture
 probabilities to satisfy the schema. An empty candidate list, no informative
 candidate, or a cost exceeding the value of information can justify no test.
 
+The frozen parameters and the computed proposal must each serialize to at most
+1,000,000 characters of JSON. Larger models that `calculate experiment` accepts can
+therefore fail to save with `INPUT_TOO_LARGE`; keep those results in task-owned files.
+Every read recomputes and compares the saved proposal, so large plans also slow
+`experiment`, `experiments` and `brief`.
+
 Use an existing decision ID and its current revision. If a new notebook has been
 requested, create the decision first. In these examples, replace `DID`, `N`, and
 `PLAN_ID` with values returned by the actual commands; they are not fixed IDs.

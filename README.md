@@ -185,7 +185,10 @@ python -m pip install '.[mcp]'
 python scripts/configure_mcp.py --db "$PWD/.compass/decisions.sqlite3"
 ```
 
-The command prints configuration; it does not edit host settings. The installed
+The command prints configuration; it does not edit host settings. Without `COMPASS_DB`
+the server uses `~/.compass/decisions.sqlite3`, while the CLI and portable script use
+`.compass/decisions.sqlite3` in their working directory. Give every surface in one task
+the same explicit path. The installed
 `compass-c-mcp` entry point uses the pinned MCP SDK 2.1.1. Local stdio round-trips
 are executable acceptance tests; each vendor host still needs its own discovery
 and fresh-session verification. Keep the adapter local; shared hosting is out of scope.

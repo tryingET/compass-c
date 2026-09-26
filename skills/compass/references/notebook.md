@@ -27,7 +27,10 @@ Notebook commands are start, list, get, brief, record, review, revise, invalidat
 and migrate, plus explicit evidence batches through update-evidence. Calculate and
 evaluate are transient operations that do not use storage.
 Place the global --db argument before the command and use the same explicit path
-throughout a task. Construction, calculation, and reads are side-effect free. Only
+throughout a task. Defaults differ by surface: without --db or COMPASS_DB the script
+uses .compass/decisions.sqlite3 in the working directory, while the optional MCP server
+uses ~/.compass/decisions.sqlite3. A record missing from one surface may exist in the
+other surface's notebook. Construction, calculation, and reads are side-effect free. Only
 a validated `start` operation may initialize a new notebook. A wrong path is not a
 reason to create a replacement decision silently.
 
