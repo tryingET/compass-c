@@ -2,7 +2,7 @@
 summary: "Current versus target product maturity for COMPASS-C."
 as_of: "2026-09-26"
 last_validated: "2026-09-26"
-last_validated_commit: "022da50a3de62edbcb70290da746044f9e1d33cb"
+last_validated_commit: "8f6140e010de206262f9563624e1662e7a602617"
 evidence_paths:
   - "README.md"
   - "src/compass_c"
@@ -43,6 +43,8 @@ evidence_paths:
   - "docs/decisions/2026-09-26-adr-pause-discretionary-expansion.md"
   - "docs/decisions/2026-09-26-rethink-probe-report.md"
   - "diary/2026-09-26--decision-rethink-and-pause.md"
+  - "diary/2026-09-26--maintenance-pause-gates-and-guards.md"
+  - "docs/learnings"
   - "scripts/check-task-scope-snapshots.sh"
   - "scripts/lib/check-task-scope-snapshots.py"
 read_when:
@@ -80,28 +82,46 @@ documentation accuracy and the repository's required gates, including this postu
 instruction, AK 5673 was completed on its committed validation, keeping its recorded
 failures and advisory claim boundary.
 
+A later maintenance pass the same day stayed within that scope; see the
+[maintenance diary](../../diary/2026-09-26--maintenance-pause-gates-and-guards.md).
+
+- **Fix:** unknown-calculation errors now name every supported kind.
+- **Guards:**
+  - a frozen v0.6.0 saved-plan fixture now makes any unmigrated change to experiment
+    output fail the suite;
+  - tests pin the per-surface default notebooks;
+  - process-level races join the thread-level ones.
+- **GitHub CI** now also runs the document policy and the live stdio MCP test. The
+  hash-pinned jury code is excluded from Ruff, and a public test checks its digests.
+- **Docs:** the saved-plan size bound and the notebook defaults are documented. The
+  first three learnings are crystallized.
+
 ## Product maturity map
 
 | Area | Current posture | Target posture | Remaining proof boundary |
 |---|---|---|---|
-| Standalone runtime | Standard-library core, dependency-free wheel execution, CLI and portable-script journey tests. | Dependable local decision instrument. | Wider operating-system and long-lived deployment evidence. |
+| Standalone runtime | Standard-library core, dependency-free wheel execution, CLI and portable-script journey tests. Separate processes creating one notebook, revising one note or applying one event match the thread-level results (Linux). | Dependable local decision instrument. | Wider operating-system and long-lived deployment evidence. |
 | Briefs and sensitivity | Provenance-preserving briefs, explicit reversal-condition notes, exact probability-path preference intervals and ties. | Inspectable decisions and decision-changing uncertainty. | Recorded claims, model adequacy and conditions still require judgment. |
 | Living records | Atomic sourced evidence batches, read-only previews, dependency invalidation, history and outcome review. Frozen schema-1/2 operations remain supported; experiment storage requires explicit schema-3 migration. | Reconsider decisions without rewriting history. | No background monitoring, automatic source verification or protected audit log. |
 | Coordinated decisions | Bounded feasible portfolios, exact shared capacity, dependency layers, exclusions, explicit deferral values and preserved stakeholder optima/disagreement. | Coordinate choices while retaining each owner's authority. | Additive caller-supplied values are assumptions; dependency layers do not schedule work or reserve resources. |
-| Experimental decisions | Frozen bounded plans, cold resume, identified observation preview/apply, exact prior/posterior history and atomic note invalidation across CLI, portable skill and MCP. Duplicate event retries do not incorporate evidence again; changed evidence makes the retained model historical. | Identify decision-changing uncertainty and learn from informative observations. | One observation per plan; subsequent likelihoods and model adequacy remain caller-owned. Sources are unverified; the product does not execute experiments or detect relabeled duplicate evidence. |
+| Experimental decisions | Frozen bounded plans, cold resume, identified observation preview/apply, exact prior/posterior history and atomic note invalidation across CLI, portable skill and MCP. Duplicate event retries do not incorporate evidence again; changed evidence makes the retained model historical. A frozen notebook written by v0.6.0 must stay readable, so unmigrated output changes fail the suite. | Identify decision-changing uncertainty and learn from informative observations. | One observation per plan; subsequent likelihoods and model adequacy remain caller-owned. Sources are unverified; the product does not execute experiments or detect relabeled duplicate evidence. Saved plans are capped at 1,000,000 JSON characters, below the bounds of `calculate experiment`, and every read recomputes them. |
 | Skill behavior | Prior diagnostic plus 96 fresh Pi/GLM-5.3-flash trials: native acquisition observed, 48 A/A then 48 A/B captures, all failures retained. | Reliable selection and improved decisions in target hosts. | Historical A/B rubric counts are 19/24 versus 20/24, p=1.0. Forensic review found inconsistent grading of both apparent improvements and shared unsafe timeout reasoning. These are not accepted quality measurements. |
 | Installation and archives | Declared-source archives, public-head-verified v0.6.0 skill install, disposable managed upgrade with runnable backup, Pi/Codex discovery and withdrawal; personal Codex calculator and no-tool canaries observed (AK9197). Personal installs refreshed on 2026-09-26 by managed replacement from verified head `0526f34`, keeping backups (AK 10672). | Reproducible client-specific adoption and rollback. | ChatGPT browser plugin registration, installation and account-side readback remain external. Prompted read-only canaries do not prove spontaneous selection or write safety. |
-| MCP | SDK 2.1.1 pinned; seventeen tools; local wheel sessions and an actual GLM-driven Pi SDK workflow using six core operations observed. Missing-store errors now state their limited scope. | Directly verified supported client paths. | Custom Pi integration is not default host/account installation. One of three targeted recovery probes still offered unsafe retry assurance; no unattended-write approval or shared-service readiness. |
+| MCP | SDK 2.1.1 pinned; seventeen tools; local wheel sessions and an actual GLM-driven Pi SDK workflow using six core operations observed. Missing-store errors now state their limited scope. Without `COMPASS_DB` the server uses `~/.compass/decisions.sqlite3`, unlike the CLI's working-directory default; both defaults are documented and pinned by tests. | Directly verified supported client paths. | Custom Pi integration is not default host/account installation. One of three targeted recovery probes still offered unsafe retry assurance; no unattended-write approval or shared-service readiness. |
 | First consumer | Three prospective saved-workflow runs with fresh preparer/resumer pairs. Two failed effort gates exposed guidance and capture friction; the third passed all eight unchanged criteria with eight product attempts and no failures. | Useful self-correction during this repository's own work. | Small author-visible local exercise; full audit output is lengthy and generic briefs can still flag missing narrative categories. Capture ergonomics do not establish product benefit. |
 | Repo skill adoption | Repo-owned maintainer guidance remains separate from standalone skill/plugin archives. | Recipient-owned improvement based on verified learning. | KES acceptance, controlled behavioral improvement and cross-repo adoption remain with their owners. |
 | Evaluation program | Existing DSPx generated the COMPASS-owned DAG. Subscription continuation completed eighteen GLM-5.3 juror responses and six separate adjudications; verified readback preserved all 290 original capture/grade files. | Consistent, evidence-grounded adjudication under one shared rubric. | Original criteria match within all three disputed pairs; both timeout answers fail effect honesty. Adjudicator reasoning still contains an unsupported tool-availability inference and rubric ambiguity. Same-model agreement is not truth or efficacy proof. |
 
 ## Observed validation
 
-At the 2026-09-26 evidence baseline, the local suite passed **677 tests and 17 subtests**,
-with 385 explicit optional-dependency/private-evidence/installed-host skips. Required
-separate opt-in verification in the maintained LM owner environment passed **457 jury
-tests with zero skips**, including actual LM/DSPy/client execution with mocked HTTP,
+At the 2026-09-26 maintenance baseline, the local suite passed **686 tests and 17 subtests**,
+with 385 explicit optional-dependency/private-evidence/installed-host skips; bare `pytest`
+and `python -m pytest` now give the same result. The live stdio MCP suite passed 9 tests,
+ROCS validation and both task-scope snapshots passed, and strict docs listing passed.
+Required separate opt-in verification in the maintained LM owner environment again passed
+**457 jury tests with zero skips**. An environment built from an upstream `dspy-lm-auth`
+release fails 12 LM-construction tests on the route guard; the evaluation README now
+states this requirement. The earlier baseline run (AK 9370) also passed 457, including actual LM/DSPy/client execution with mocked HTTP,
 retained-response reconstruction and readback tamper checks. A source-only projection
 without private captures passed 277 jury tests with 180 explicitly skipped private tests. The earlier actual four-stage generated graph and two
 negative paths also passed through the existing DSPx environment with a stub provider. Acceptance includes compatibility,
