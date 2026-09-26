@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from calculations import calculate  # noqa: E402
+from calculations import CALCULATIONS, calculate  # noqa: E402
 from core import KINDS, STATUSES, VERSION, CompassError, Notebook  # noqa: E402
 from evaluation import evaluate  # noqa: E402
 from evidence import apply_updates, preview_updates  # noqa: E402
@@ -194,19 +194,7 @@ def parser() -> JsonArgumentParser:
     calculation = commands.add_parser("calculate")
     calculation.add_argument(
         "kind",
-        choices=[
-            "compare",
-            "sensitivity",
-            "portfolio",
-            "experiment",
-            "update_beliefs",
-            "committee",
-            "bundle",
-            "feedback",
-            "recovery",
-            "tail",
-            "brier",
-        ],
+        choices=CALCULATIONS,
     )
     calculation.add_argument("--parameters", required=True, help="JSON object")
     evaluation = commands.add_parser(

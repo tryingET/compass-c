@@ -36,7 +36,7 @@ def outputs() -> dict[Path, str]:
             "from . import VERSION, CompassError, Notebook, calculate",
             (
                 "sys.path.insert(0, str(Path(__file__).resolve().parent))\n"
-                "from calculations import calculate  # noqa: E402\n"
+                "from calculations import CALCULATIONS, calculate  # noqa: E402\n"
                 "from core import KINDS, STATUSES, VERSION, CompassError, Notebook  # noqa: E402"
             ),
         )
@@ -48,6 +48,7 @@ def outputs() -> dict[Path, str]:
             "from evidence import apply_updates, preview_updates  # noqa: E402",
         )
         .replace("from .lifecycle import (", "from lifecycle import (  # noqa: E402")
+        .replace("from .calculations import CALCULATIONS\n", "")
         .replace("from .core import KINDS, STATUSES\n", "")
     )
     result = {

@@ -133,6 +133,21 @@ def _sensitivity(p):
     }
 
 
+CALCULATIONS = (
+    "compare",
+    "sensitivity",
+    "portfolio",
+    "experiment",
+    "update_beliefs",
+    "committee",
+    "bundle",
+    "feedback",
+    "recovery",
+    "tail",
+    "brier",
+)
+
+
 def calculate(kind: str, p: dict) -> dict:
     if type(kind) is not str:
         raise CompassError("INVALID_INPUT", "kind must be a string")
@@ -351,7 +366,7 @@ def calculate(kind: str, p: dict) -> dict:
     else:
         raise CompassError(
             "UNKNOWN_CALCULATION",
-            "Choose compare, sensitivity, committee, bundle, feedback, recovery, tail, or brier",
+            f"Choose {', '.join(CALCULATIONS[:-1])}, or {CALCULATIONS[-1]}",
         )
     return {
         "calculation": kind,

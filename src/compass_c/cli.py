@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from . import VERSION, CompassError, Notebook, calculate
+from .calculations import CALCULATIONS
 from .core import KINDS, STATUSES
 from .evaluation import evaluate
 from .evidence import apply_updates, preview_updates
@@ -192,19 +193,7 @@ def parser() -> JsonArgumentParser:
     calculation = commands.add_parser("calculate")
     calculation.add_argument(
         "kind",
-        choices=[
-            "compare",
-            "sensitivity",
-            "portfolio",
-            "experiment",
-            "update_beliefs",
-            "committee",
-            "bundle",
-            "feedback",
-            "recovery",
-            "tail",
-            "brier",
-        ],
+        choices=CALCULATIONS,
     )
     calculation.add_argument("--parameters", required=True, help="JSON object")
     evaluation = commands.add_parser(
