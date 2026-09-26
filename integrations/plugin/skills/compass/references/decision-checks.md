@@ -19,8 +19,9 @@ artifacts and are not evidence that those capabilities exist here.
 
 The CLI is the source of truth for supported operations. Its local regression
 suite checks implementation behavior, not the skill's effectiveness on a model.
-The methodology used to engineer this version is pinned in the full toolkit's
-engineering/source_register.json. Core decision principles are recommendations;
+The methodology used to engineer this version is recorded in the COMPASS-C
+repository (tryingET/compass-c) at docs/project/source-provenance.md, not in this
+skill package. Core decision principles are recommendations;
 parameter values are supplied assumptions unless grounded in actual evidence.
 
 ## 2. Choosing a decision criterion

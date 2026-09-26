@@ -64,14 +64,14 @@ explicit; native host discovery was not measured.
 ## External boundaries
 
 `scripts/ci/full.sh` also checks repository governance. An empty task-scope directory
-now truthfully reports no snapshots to validate; actual snapshots still require AK.
-Live AK authority cannot be reconstructed from a source checkout. The canonical
-company ontology is consumed at `softwareco/ontology`; Softwareco's current real
-git submodule declares `tryingET/softwareco-ontology` as its backing repository.
-A 404 does not establish whether that source exists privately or was never published.
-An unavailable owner source cannot be replaced with a stub,
-copied projection or invented pass. These development gates do not become core
-runtime dependencies.
+reports no snapshots to validate. The checked-in AK-5641 and AK-5673 snapshots are
+compared with live AK exports and fail closed without AK. Live AK authority cannot
+be reconstructed from a source checkout. The canonical company ontology is consumed
+at `softwareco/ontology`. Earlier sessions could not retrieve it: its declared
+GitHub backing repository returned 404. On 2026-09-26 the workspace held a checkout
+backed by a local-network GitLab remote, and ROCS validation passed against it. An
+unavailable owner source must still never be replaced with a stub, copied projection
+or invented pass. These development gates do not become core runtime dependencies.
 
 The vision does not require a registry release, every vendor host, a shared service,
 background monitoring or fleet rollout. If pursued, those operations retain their

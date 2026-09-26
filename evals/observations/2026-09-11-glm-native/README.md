@@ -77,6 +77,14 @@ Missing attachments in some original cases and subjective grader interpretation
 also constrain the quality conclusions. Read the report limitations, individual
 criteria and regressions; do not promote a passing report into benefit or permission.
 
+**Later review (added 2026-09-26; the counts above are unchanged).**
+- **The paired rubric results are not accepted quality measurements.** A forensic review under AK 5641 (evidence 9198) found:
+  - both apparent improvements (t060/t059, t076/t075) rest on equivalent missing-input answers that were graded differently;
+  - the four timeout answers shared the same unsafe inference, yet only t090 failed;
+  - seven of the eight empty-final turn-limit trials passed every required criterion.
+- **The re-adjudication did not recover the gains.** The [DSPx-generated jury review](../../dspx-jury/subscription-review.md) (AK 9361) found the original-criterion outcomes matched within all three disputed pairs. It has its own semantic-assurance failure (AK 9362).
+- Treat "two improvements and one regression" as historical model judgments, not as evidence of a quality difference.
+
 ## Grading integrity and disclosed normalization
 
 Two raw judgments failed the output contract:
@@ -141,5 +149,8 @@ as conservative reservations. These are not provider invoices. No further provid
 runs were used to replace or conceal unsuccessful outcomes.
 
 The remaining personal OpenAI setup needs the actual target UI/client and a fresh
-account-side readback. The operator has not yet identified browser versus desktop
-versus Codex; a form asking that single question timed out without changing scope.
+account-side readback. At the time of this study the operator had not identified
+browser versus desktop versus Codex. The operator later chose Codex first, then the
+ChatGPT browser. A personal Codex local install (AK 9174) and a prompted read-only
+Codex canary (AK 9197) followed. ChatGPT browser installation and account-side
+readback remain not performed.

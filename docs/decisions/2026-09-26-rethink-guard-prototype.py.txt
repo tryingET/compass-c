@@ -1,0 +1,257 @@
+#!/usr/bin/env python3
+"""Flag claim documents whose cited evidence changed after they were last revised.
+
+Prototype of the "M2" claim guard from docs/decisions/2026-09-26-rethink-frame.md.
+It reads Git objects at one revision (no checkout) and never writes. Design:
+
+Scope (claim documents):
+  * tracked ``*.md`` files, plus ``release.json`` and ``docs/**/*.json``;
+  * excluded as dated or generated material: ``diary/**``, ``tests/**``, ``tools/**``,
+    ``docs/_core/**``, ``integrations/plugin/**``, everything under ``evals/``
+    except ``README.md`` files, Markdown with frontmatter ``type: "diary"``, and
+    JSON with a top-level dated key (verified_at, observed_at, exported_at,
+    captured_at, checked_at, as_of).
+
+Citations (extracted mechanically, never hand-annotated):
+  * Markdown links to repository paths, resolved relative to the document;
+  * backtick spans and plain-text tokens shaped like paths, resolved from the
+    repository root and then from the document's directory;
+  * posture-style ``evidence_paths`` frontmatter;
+  * JSON string values shaped like paths;
+  * AK references (``AK5641``, ``AK 9198``, ``evidence 9198``), mapped to AK tasks.
+
+A document is revalidated whenever a commit touches it. It is flagged when:
+  * ``missing_reference``: a cited path absent at the revision, if its first
+    segment is a top-level repository entry or it ends in a known source extension;
+  * ``evidence_changed``: a commit reachable from the revision, but not from the
+    document's last revising commit, touched a cited file or directory;
+  * ``ak_evidence_after``: AK evidence on a cited task was checked after the
+    document's last revising commit and no later than the revision time.
+
+Exit 1 when anything is flagged unless ``--report``. Flags are prompts to
+reconsider a claim, not proof that it is false.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import posixpath
+import re
+import subprocess
+import sys
+from datetime import datetime
+from pathlib import Path
+
+EXTENSIONS = ("md", "json", "py", "sh", "yaml", "yml", "toml", "txt", "feature", "mjs")
+DATED_KEYS = {"verified_at", "observed_at", "exported_at", "captured_at", "checked_at", "as_of"}
+EXCLUDED_PREFIXES = ("diary/", "tests/", "tools/", "docs/_core/", "integrations/plugin/")
+LINK_RE = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
+TICK_RE = re.compile(r"`([^`\s]+)`")
+PLAIN_RE = re.compile(
+    r"(?<![\w./-])((?:[\w.-]+/)+[\w.-]+\.(?:" + "|".join(EXTENSIONS) + r"))(?![\w/])"
+)
+AK_RE = re.compile(r"\b(?:AK[ -]?(?:evidence ?)?|evidence ?)(\d{4})\b", re.IGNORECASE)
+FENCE_RE = re.compile(r"```.*?```", re.DOTALL)
+
+
+def git(repo: Path, *args: str) -> str:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args], capture_output=True, text=True, check=True
+    ).stdout
+
+
+class Tree:
+    def __init__(self, repo: Path, revision: str):
+        self.repo = repo
+        self.revision = git(repo, "rev-parse", revision).strip()
+        self.time = int(git(repo, "show", "-s", "--format=%ct", self.revision))
+        self.files = set(git(repo, "ls-tree", "-r", "--name-only", self.revision).split("\n"))
+        self.files.discard("")
+        self.dirs = {posixpath.dirname(f) for f in self.files}
+        for directory in list(self.dirs):
+            while directory:
+                self.dirs.add(directory)
+                directory = posixpath.dirname(directory)
+        self.top = {f.split("/", 1)[0] for f in self.files}
+        self.reachable = set(git(repo, "rev-list", self.revision).split())
+        self.touches: dict[str, set[str]] = {}
+        commit = None
+        for line in git(repo, "log", "--format=@%H", "--name-only", self.revision).splitlines():
+            if line.startswith("@"):
+                commit = line[1:]
+            elif line:
+                self.touches.setdefault(commit, set()).add(line)
+        self._ancestors: dict[str, set[str]] = {}
+
+    def read(self, path: str) -> str:
+        return git(self.repo, "show", f"{self.revision}:{path}")
+
+    def last_commit(self, path: str) -> tuple[str, int]:
+        out = git(self.repo, "log", "-1", "--format=%H %ct", self.revision, "--", path).split()
+        return out[0], int(out[1])
+
+    def changed_after(self, commit: str, cited: str) -> list[str]:
+        if commit not in self._ancestors:
+            self._ancestors[commit] = set(git(self.repo, "rev-list", commit).split())
+        later = self.reachable - self._ancestors[commit]
+        prefix = cited.rstrip("/") + "/"
+        return sorted(
+            c
+            for c in later
+            if any(p == cited.rstrip("/") or p.startswith(prefix) for p in self.touches.get(c, ()))
+        )
+
+    def exists(self, path: str) -> bool:
+        path = path.rstrip("/")
+        return path in self.files or path in self.dirs
+
+
+def in_scope(tree: Tree, path: str) -> bool:
+    if path.startswith(EXCLUDED_PREFIXES):
+        return False
+    if path.startswith("evals/"):
+        return path.endswith("/README.md")
+    if path.endswith(".md"):
+        head = tree.read(path)[:2000]
+        return not re.search(r'^type:\s*"?diary"?\s*$', head, re.MULTILINE)
+    if path == "release.json" or (path.startswith("docs/") and path.endswith(".json")):
+        try:
+            data = json.loads(tree.read(path))
+        except ValueError:
+            return True
+        return not (isinstance(data, dict) and DATED_KEYS & set(data))
+    return False
+
+
+def resolve(tree: Tree, document: str, token: str, *, relative_first: bool) -> str | None:
+    token = token.split("#", 1)[0].strip().rstrip(".,;:)")
+    if (
+        not token
+        or "://" in token
+        or token.startswith(("/", "~", "-", "$", "mailto:"))
+        or any(ch in token for ch in "<>*{}$|\\")
+    ):
+        return None
+    base = posixpath.dirname(document)
+    candidates = [posixpath.normpath(posixpath.join(base, token)), posixpath.normpath(token)]
+    if not relative_first:
+        candidates.reverse()
+    for candidate in candidates:
+        if candidate.startswith(".."):
+            continue
+        if tree.exists(candidate):
+            return candidate
+    primary = candidates[0]
+    if primary.startswith(".."):
+        return None
+    shaped = primary.split("/", 1)[0] in tree.top or primary.endswith(
+        tuple("." + e for e in EXTENSIONS)
+    )
+    return "MISSING:" + primary if shaped and "/" in token else None
+
+
+def json_strings(value) -> list[str]:
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, dict):
+        return [s for v in value.values() for s in json_strings(v)]
+    if isinstance(value, list):
+        return [s for v in value for s in json_strings(v)]
+    return []
+
+
+def citations(tree: Tree, document: str) -> tuple[set[str], set[int]]:
+    text = tree.read(document)
+    paths: set[str] = set()
+    numbers = {int(n) for n in AK_RE.findall(text)}
+    if document.endswith(".json"):
+        try:
+            strings = json_strings(json.loads(text))
+        except ValueError:
+            strings = [text]
+        for s in strings:
+            for token in PLAIN_RE.findall(s):
+                paths.add(resolve(tree, document, token, relative_first=False))
+    else:
+        front = re.match(r"---\n(.*?)\n---\n", text, re.DOTALL)
+        if front:
+            for line in front.group(1).splitlines():
+                item = re.match(r'\s+-\s+"?([^"]+)"?\s*$', line)
+                if item and "evidence_paths" in front.group(1):
+                    paths.add(resolve(tree, document, item.group(1), relative_first=False))
+        prose = FENCE_RE.sub(" ", text)
+        for token in LINK_RE.findall(prose):
+            paths.add(resolve(tree, document, token, relative_first=True))
+        for token in TICK_RE.findall(prose):
+            if "/" in token:
+                paths.add(resolve(tree, document, token, relative_first=False))
+        stripped = LINK_RE.sub(" ", TICK_RE.sub(" ", prose))
+        for token in PLAIN_RE.findall(stripped):
+            paths.add(resolve(tree, document, token, relative_first=False))
+    paths.discard(None)
+    paths.discard(document)
+    return paths, numbers
+
+
+def load_ak(path: Path | None) -> tuple[dict[int, int], dict[int, list[float]]]:
+    """Return evidence->task and task->[checked_at epoch] from an exported JSON list."""
+    if path is None:
+        return {}, {}
+    evidence_task, task_times = {}, {}
+    for row in json.loads(path.read_text(encoding="utf-8")):
+        # AK stamps carry nanoseconds; keep microseconds and the explicit offset.
+        match = re.match(r"(.{19})(\.\d{1,6})?\d*(Z|[+-]\d\d:\d\d)$", row["checked_at"])
+        offset = "+00:00" if match.group(3) == "Z" else match.group(3)
+        stamp = datetime.fromisoformat(match.group(1) + (match.group(2) or "") + offset)
+        evidence_task[row["id"]] = row["task_id"]
+        task_times.setdefault(row["task_id"], []).append(stamp.timestamp())
+    return evidence_task, task_times
+
+
+def check(tree: Tree, ak_file: Path | None) -> list[dict]:
+    evidence_task, task_times = load_ak(ak_file)
+    flagged = []
+    for document in sorted(tree.files):
+        if not in_scope(tree, document):
+            continue
+        commit, when = tree.last_commit(document)
+        paths, numbers = citations(tree, document)
+        tasks = {n for n in numbers if n in task_times} | {
+            evidence_task[n] for n in numbers if n in evidence_task
+        }
+        reasons = []
+        for cited in sorted(paths):
+            if cited.startswith("MISSING:"):
+                reasons.append({"kind": "missing_reference", "path": cited[8:]})
+                continue
+            later = tree.changed_after(commit, cited)
+            if later:
+                reasons.append({"kind": "evidence_changed", "path": cited, "commits": later})
+        for task in sorted(tasks):
+            newer = [t for t in task_times.get(task, []) if when < t <= tree.time]
+            if newer:
+                reasons.append({"kind": "ak_evidence_after", "task": task, "records": len(newer)})
+        if reasons:
+            flagged.append({"document": document, "revised_in": commit[:12], "reasons": reasons})
+    return flagged
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__.split("\n", 1)[0])
+    parser.add_argument("--repo", type=Path, default=Path.cwd())
+    parser.add_argument("--rev", default="HEAD")
+    parser.add_argument("--ak-evidence", type=Path, help="JSON list of {id, task_id, checked_at}")
+    parser.add_argument("--now", type=float, help="upper time bound for AK evidence (epoch)")
+    parser.add_argument("--report", action="store_true", help="always exit 0")
+    arguments = parser.parse_args()
+    tree = Tree(arguments.repo, arguments.rev)
+    if arguments.now is not None:
+        tree.time = arguments.now
+    flagged = check(tree, arguments.ak_evidence)
+    print(json.dumps({"revision": tree.revision, "flagged": flagged}, indent=2))
+    return 0 if arguments.report or not flagged else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

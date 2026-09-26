@@ -14,21 +14,20 @@ Template for a delivery project repo (project context + code + tests).
 - No secrets in git.
 - Main-first workflow: commit directly to `main` for normal work; use a review branch/PR only when the operator requests a gate.
 - Treat `docs/_core/**` as immutable.
-- Track deferred work in Agent Kernel; keep `governance/work-items.json` as the exported projection via plain installed `ak` (avoid ad-hoc TODO comments and manual JSON authority confusion).
+- Track deferred work in Agent Kernel (`ak task ...`); no checked-in work-items projection exists — do not reintroduce one (avoid ad-hoc TODO comments).
 - When explicit task scope is in play, author it in AK and freeze repo-consumption snapshots via `ak task scope show|export ...`; treat `governance/task-scopes/AK-*.snapshot.json` as AK exports, not hand-authored truth.
 
 ## AK-native route guardrails
 - If this repo declares AK-native task, direction, or route authority, read the relevant AK task and route/open-frame status before inventing new work.
 - Generic operator input such as `proceed` continues the active execution task when one exists; it does not authorize lifecycle closeout, source-owner mutation, publication, or knowledge promotion.
 - Treat closeout/readiness rows as gate inputs, not lifecycle authorization.
-- Treat docs, work-items JSON, task-scope snapshots, and direction explorer exports as projections unless the repo declares otherwise; AK DB remains runtime authority for AK tasks, direction, evidence, and decisions.
+- Treat docs, task-scope snapshots, and direction explorer exports as projections unless the repo declares otherwise; AK DB remains runtime authority for AK tasks, direction, evidence, and decisions.
 - Handoff instead of editing by convenience when facts belong to Prompt Vault, ROCS, Pi/runtime, KES, steward/publication, template propagation, Oracle/DSPx, or another repo.
 - Treat `docs/project/vision.md` as the durable product direction path when present.
 - Treat `docs/project/product_posture.md` as a product-maturity bridge, not a queue, roadmap, changelog, or execution authority.
 - Do not revive SG/TG/OP markdown planning where AK-native direction authority is declared; legacy `strategic_goals.md`, `tactical_goals.md`, `operating_plan.md`, or `operational_plan.md` files are archive/projection only unless a repo-local owner decision explicitly says otherwise.
 
 ## Deterministic tooling policy (ROCS-first)
-- Prefer `ak work-items <import|export|check> ...` for repo-local work-items projection operations.
 - Prefer `./scripts/rocs.sh <args...>` before ad-hoc inline scripting.
 - Use `./scripts/preflight-repo-census.sh [scope]` for shallow multi-repo status checks.
 - For ontology/policy checks, use ROCS commands as the default execution path.

@@ -26,6 +26,12 @@ product outcomes**, not a claim that version 0.6.0 completes every outcome.
 The core is **standalone and standard-library only**. Agent Kernel and other development
 systems are not required to install or use it. MCP is an optional, separately installed extra.
 
+**Development is paused for discretionary expansion as of 2026-09-26.** Version 0.6.0
+remains supported, usable, and opt-in for persistence. Maintenance continues for
+correctness, security, compatibility and documentation accuracy. The
+[decision](docs/decisions/2026-09-26-adr-pause-discretionary-expansion.md) records
+the evidence behind the pause and the conditions that would reverse it.
+
 Executable acceptance tests cover the library, fresh-process CLI, portable skill, and
 local MCP SDK client/server path. The included 24-case skill corpus remains author-visible
 development material. Bounded Pi/Codex local discovery and a model-driven Pi/MCP workflow
@@ -40,8 +46,11 @@ sample and grading uncertainty do not establish general improvement. See the
 
 A later [96-trial Pi/GLM study](evals/observations/2026-09-11-glm-native/README.md)
 observed native skill acquisition and live MCP use, but did not establish reliable
-quality improvement (20/24 versus 19/24 answer-rubric passes; p=1.0). Failures and
-regressions remain visible. A missing-notebook error now states its limited scope;
+quality improvement. Its historical same-model grades (20/24 versus 19/24
+answer-rubric passes; p=1.0) are not accepted quality measurements: a later forensic
+review (AK 9198) found equivalent answers graded inconsistently, and a separate
+[jury re-adjudication](evals/dspx-jury/subscription-review.md) did not recover the
+apparent gains. Failures and regressions remain visible. A missing-notebook error now states its limited scope;
 model recovery assurances can still be wrong. **Do not treat this as approval for
 unattended writes or retries.**
 

@@ -76,6 +76,13 @@ preserved unchanged. The parent publication mapping identifies remote commit
 commit metadata changed the identifier. Neither identifier substitutes for the
 recorded wheel and skill hashes.
 
+**Erratum (2026-09-26):** that mapping is wrong. Remote `309fe48` is a version-0.4.0 tree
+without `portfolio.py` or `experiments.py`. According to
+`diary/2026-09-08--implementation-full-vision-dogfood.md`, it is the counterpart of the
+guidance-study checkpoint `cd09b516`, not of the v0.5.0 GREEN commit `b48ab35`. The
+public counterpart of `b48ab35` has not been verified. The retained manifest is left
+unchanged as captured. The recorded wheel and skill hashes remain the treatment identity.
+
 This is actual author-visible local installed-client use. It is not native
 vendor discovery, an independent holdout, comparative behavioral improvement,
 measured real-world usefulness, stakeholder authorization or completed product

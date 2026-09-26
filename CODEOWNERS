@@ -27,4 +27,3 @@ CODEOWNERS @tryingET
 Justfile @tryingET
 README.md @tryingET
 pyproject.toml @tryingET
-next_session_prompt.md @tryingET

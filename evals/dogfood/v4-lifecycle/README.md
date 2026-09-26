@@ -75,3 +75,12 @@ See each manifest for exact wheel, source, guidance, task, and check fingerprint
 each assessment for the fixed ordered checks; and each trace for actual execution
 evidence. No registry release, vendor account installation, external action
 permission, or universal decision-quality claim follows from these observations.
+
+**Continuing build record (added 2026-09-26).** The last retained readback of the
+repository's own build decision is `continuing-build-record.json`, at revision 19.
+It still lists the v0.5.0 acceptance as its current recommendation. The later v0.6.0
+outcomes were recorded without dependency links, so they invalidated nothing, and the
+run-2 effort failure was never recorded there. The notebook itself is not available
+in the current environment, so this readback cannot be updated honestly. It is left
+unchanged as captured: evidence that the product's own record was not kept current,
+not a current recommendation.
