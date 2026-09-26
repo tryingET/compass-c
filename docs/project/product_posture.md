@@ -1,8 +1,8 @@
 ---
 summary: "Current versus target product maturity for COMPASS-C."
-as_of: "2026-09-12"
-last_validated: "2026-09-12"
-last_validated_commit: "a9cd5fc4e12613583e8ee3f5615f3e6940c9191c"
+as_of: "2026-09-26"
+last_validated: "2026-09-26"
+last_validated_commit: "84a65c8ab5d1d2ed75f0a0e76d672b804dfd4b96"
 evidence_paths:
   - "README.md"
   - "src/compass_c"
@@ -40,7 +40,9 @@ evidence_paths:
   - "docs/project/usage.md"
   - "diary/2026-09-08--implementation-full-vision-dogfood.md"
   - "diary/2026-09-08--implementation-v4-experiment-lifecycle.md"
-  - "next_session_prompt.md"
+  - "docs/decisions/2026-09-26-adr-pause-discretionary-expansion.md"
+  - "docs/decisions/2026-09-26-rethink-probe-report.md"
+  - "diary/2026-09-26--decision-rethink-and-pause.md"
   - "scripts/check-task-scope-snapshots.sh"
   - "scripts/lib/check-task-scope-snapshots.py"
 read_when:
@@ -55,6 +57,25 @@ type: "reference"
 COMPASS-C v0.6.0 preserves the cumulative workflow and has observed Pi/GLM skill
 acquisition and live MCP use; reliable decision-quality improvement, unattended
 write/retry safety and actual ChatGPT browser installation remain unproved.
+Discretionary expansion is paused. v0.6.0 remains supported, and persistence stays opt-in.
+
+## Development posture
+
+On 2026-09-26 the owner accepted a reversible pause of discretionary expansion
+("E*"). It is recorded in the
+[decision](../decisions/2026-09-26-adr-pause-discretionary-expansion.md), with its
+evidence and reversal conditions. The evidence is a first-principles
+[rethink](../decisions/2026-09-26-rethink-probe-report.md), frozen before its probes
+and then independently critiqued. It found:
+
+- five model-initiated skill reads with no downstream use;
+- no natural notebook use;
+- a measured claim-freshness guard at 43–50% recall and 25% precision.
+
+Paused: new features, evaluation cycles, provider trials, the guard, skill-routing
+rewrites and further installations. Continuing: correctness, security, compatibility,
+documentation accuracy and the repository's required gates, including this posture's
+30-day revalidation. AK 5641 and AK 5673 are deferred (deferrals 432 and 433), not closed.
 
 ## Product maturity map
 
@@ -74,7 +95,7 @@ write/retry safety and actual ChatGPT browser installation remain unproved.
 
 ## Observed validation
 
-At the current evidence baseline, the local suite passed **677 tests and 17 subtests**,
+At the 2026-09-26 evidence baseline, the local suite passed **677 tests and 17 subtests**,
 with 385 explicit optional-dependency/private-evidence/installed-host skips. Required
 separate opt-in verification in the maintained LM owner environment passed **457 jury
 tests with zero skips**, including actual LM/DSPy/client execution with mocked HTTP,
@@ -84,9 +105,20 @@ negative paths also passed through the existing DSPx environment with a stub pro
 concurrency, exact arithmetic, portfolios, experiments, evidence transactions,
 paired reports, installation, archives and raw-to-grade transformation integrity.
 Formatting, lint and generated skill/plugin checks passed. Forty-three SDK/interface
-scenarios also passed against an isolated v0.6.0 wheel. Final committed-state CI and
-build readbacks for this slice belong to AK5673; these earlier passes do not substitute
-for that gate. AK5641 retains the historical host and model-study evidence.
+scenarios also passed against an isolated v0.6.0 wheel. AK 9370 records the jury slice's
+committed-state gate (full CI, build, strict docs and diff checks, exit 0). AK5641 retains
+the historical host and model-study evidence. The 2026-09-26 baseline repairs claims
+that later evidence had contradicted:
+
+- the README and GLM-study grading caveats;
+- the AK and ontology gate statements;
+- the installation status in `release.json`;
+- a missing reference in the portable skill;
+- a commit-mapping erratum.
+
+It also removes the retired work-items projection and the session-handoff file. These are
+documentation corrections, not new behavioral evidence. The installed skill copies predate
+the corrected reference.
 
 The [current GLM study](../../evals/observations/2026-09-11-glm-native/README.md)
 retains the actual protocol, reports, failures, normalization records and recovery
@@ -142,8 +174,10 @@ guarantee the outcome ambitions for every future decision.
 Live AK tasks, direction, evidence and decisions retain their existing owner.
 The earlier publication environment lacked AK and could not retrieve the company
 ontology source; those are historical observations, not current local gate claims.
-Current work uses AK5641/AK5673 and this checkout's declared validation contract. The
-empty-snapshot check remains a truthful no-op, while actual snapshots fail closed.
+AK5641 and AK5673 are deferred under the pause; their checked-in scope snapshots match
+live AK exports and fail closed without AK. An empty snapshot directory would remain a
+truthful no-op. The company ontology gate passed against the local
+`softwareco/ontology` checkout on 2026-09-26.
 
 The one-off model drivers were withdrawn from the reusable command surface after
 review found cross-process budget-custody gaps. Exact archival source remains for
