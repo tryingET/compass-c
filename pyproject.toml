@@ -57,9 +57,19 @@ packages = ["src/compass_c"]
 line-length = 100
 target-version = "py311"
 exclude = ["tools/rocs-cli"]
+# Exact bytes are pinned by the retained jury readback (evals/dspx-jury/subscription-result.json).
+extend-exclude = [
+    "evals/dspx-jury/program/*.py",
+    "scripts/compass_jury.py",
+    "scripts/compass_jury_budget.py",
+    "scripts/compass_jury_envelope.py",
+    "scripts/compass_jury_live.py",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# Repository-root helpers (install_skill, scripts.*) import under bare `pytest` too.
+pythonpath = ["."]
