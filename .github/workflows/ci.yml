@@ -18,6 +18,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # The document policy compares the posture baseline with later history.
+          fetch-depth: 0
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
@@ -39,6 +42,8 @@ jobs:
           uv run python scripts/build_archives.py --check-plugin
       - name: Run tests
         run: uv run python -m pytest tests/ -v --tb=short
+      - name: Check document freshness policy
+        run: ./scripts/check-document-policy.sh
       - name: Build distributions
         run: |
           uv run python -m build
@@ -80,3 +85,5 @@ jobs:
         env:
           COMPASS_MCP_PYTHON: ${{ runner.temp }}/compass-wheel/bin/python
         run: uv run --extra dev --extra mcp --locked python -m pytest tests/test_mcp_integration.py tests/test_horizon_interfaces.py tests/test_lifecycle_interfaces.py -v --tb=short
+      - name: Verify stdio transport through the generated host configuration
+        run: uv run --extra dev --extra mcp --locked python -m pytest tests/test_mcp_live.py -v --tb=short
