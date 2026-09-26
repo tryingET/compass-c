@@ -17,9 +17,9 @@
   "source_conversation": "https://chatgpt.com/share/6a9bcb2a-90dc-83eb-a629-34cae8f02623",
   "publication_status": "source_published_not_released",
   "prior_verified_public_commit": "218d9f3df0cae6073f126b5d571452b2ad024be5",
-  "public_head_verified_commit": "92f80c6b20e8cb82e144db96662e45873fac7add",
+  "skill_install_source_commit": "0526f349dd83fd063cb51a8cb72f97062b3e51b3",
   "host_installation": "personal_local_installs_from_verified_public_head_account_installation_not_performed",
-  "host_installation_evidence": ["AK 9174", "AK 9182", "AK 9183"],
+  "host_installation_evidence": ["AK 9174", "AK 9182", "AK 9183", "AK 10672"],
   "mcp_integration": "local_sdk_roundtrip_and_custom_pi_sdk_workflow_observed_vendor_hosts_unverified",
   "behavioral_evaluation": "local_diagnostics_only_glm_grades_invalidated_general_improvement_unestablished"
 }

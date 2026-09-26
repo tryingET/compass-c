@@ -25,6 +25,12 @@ type: "diary"
 - **Measured guard.** Building it for real gave 43–50% recall.
 - **Stale documents repaired** (listed in the posture), then E\* recorded in `docs/decisions/2026-09-26-adr-pause-discretionary-expansion.md`.
 
+**Later the same day:**
+- Critic outputs and the other evidence were retained in `evals/rethink-2026-09-26/`.
+- AK 5673 was completed.
+- Everything was published at `0526f34`; GitHub CI passed 4/4 and the publication readback passed.
+- The two physical skill installs were refreshed by managed replacement (AK 10672).
+
 ## What surprised me
 
 - The product's own build decision stopped being maintained after v0.5.0, while the operator kept rigorous COMPASS-style reasoning in AK evidence.

@@ -62,4 +62,6 @@ These are from the independent critique:
 - AK 5641 (host dogfood and behavior measurement) and AK 5673 (jury program) were deferred, not closed.
   *Update, later on 2026-09-26:* at the owner's instruction, AK 5673 was completed on its committed validation (AK 9370), keeping failures 9267 and 9362 and its advisory claim boundary. AK 5641 remains deferred.
 - Publishing the unpublished local commits, releasing, and archiving remain separate owner decisions.
-- The installed skill copies predate the 2026-09-26 reference correction in `decision-checks.md`. They remain usable.
+  *Update, later on 2026-09-26:* at the owner's instruction, the commits were published at `0526f34`. Releasing and archiving remain separate decisions.
+- The installed skill copies predated the 2026-09-26 reference correction in `decision-checks.md`.
+  *Update, later on 2026-09-26:* at the owner's instruction, they were refreshed by managed replacement with the published skill at `0526f34` (AK 10672), with the old copies kept as backups. Refreshing existing installs is maintenance, not a new installation.

@@ -84,7 +84,10 @@ uv run python install_skill.py \
   --permission-file /path/to/rights-holder-permission.txt
 ```
 
-The old skill moves to a unique `compass-backups/` directory outside skill discovery. A
+The old skill moves to a unique `compass-backups/` directory outside skill discovery.
+The installer refuses a root whose path contains a symlink; pass the resolved
+directory. For example, if `~/.claude/skills` links to `~/.pi/agent/skills`, replace
+the latter once and both hosts see the new copy. A
 cooperating-process lock prevents concurrent replacement. On a detected installation failure,
 the installer restores the prior version where safe and preserves the failed copy for review.
 
