@@ -47,3 +47,9 @@ Feature: A resumable experimental decision partner
     When the owner reads or uses an older supported operation
     Then the schema remains unchanged
     And lifecycle writes require an explicit transactional migration
+
+  Scenario: Separate processes apply the same identified event once
+    Given two operating-system processes hold the same identified observation for a saved plan
+    When both apply it simultaneously
+    Then exactly one application writes and the other returns the stored receipt as a replay
+    And the notebook contains one observation

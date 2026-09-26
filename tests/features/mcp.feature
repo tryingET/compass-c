@@ -43,3 +43,10 @@ Feature: Supported local MCP decision workflow
     When a client supplies true, 1.0, or "1" as the expected revision
     Then the request is rejected without converting the value to an integer
     And the decision and its revision are unchanged
+
+  Scenario: Use the documented default notebook when COMPASS_DB is absent
+    Given the server is launched without COMPASS_DB
+    When a client starts a decision
+    Then the notebook is created at .compass/decisions.sqlite3 in the home directory
+    And nothing is written under the server's working directory
+    But a CLI started in another directory without --db or COMPASS_DB uses a different notebook

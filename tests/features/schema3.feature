@@ -27,3 +27,10 @@ Feature: Explicit experiment storage upgrade without legacy regression
     When the owner reads or migrates the notebook
     Then the notebook fails with a stable invalid-storage error
     And no partial repair or migration is written
+
+  Scenario: Saved plans written by a released version remain readable
+    Given a frozen schema 3 notebook written by v0.6.0 with an observed and an unobserved saved plan
+    When the owner lists, resumes, previews and briefs those decisions with the current runtime
+    Then every saved plan loads without an invalid-storage error
+    And reading leaves the notebook byte-for-byte unchanged
+    But a change to experiment output that would reject these stored plans fails this check instead of shipping

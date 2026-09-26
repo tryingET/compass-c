@@ -52,3 +52,9 @@ Feature: Inspect and revise consequential decisions without acquiring authority
     When I list decisions with a limit and offset
     Then the most recently created decisions appear first in deterministic order
     And totals and pagination are explicit without creating or changing storage
+
+  Scenario: Separate processes share one notebook safely
+    Given several operating-system processes use the same notebook path
+    When they create the notebook simultaneously, or revise one note with the same expected revision
+    Then every started decision is kept in one intact notebook
+    And exactly one replacement succeeds while the others report revision conflicts
