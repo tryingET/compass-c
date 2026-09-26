@@ -2,7 +2,7 @@
 summary: "Current versus target product maturity for COMPASS-C."
 as_of: "2026-09-26"
 last_validated: "2026-09-26"
-last_validated_commit: "84a65c8ab5d1d2ed75f0a0e76d672b804dfd4b96"
+last_validated_commit: "0c76d015b8ed29b83808edb45eaf7ad008d1d187"
 evidence_paths:
   - "README.md"
   - "src/compass_c"
@@ -66,7 +66,8 @@ On 2026-09-26 the owner accepted a reversible pause of discretionary expansion
 [decision](../decisions/2026-09-26-adr-pause-discretionary-expansion.md), with its
 evidence and reversal conditions. The evidence is a first-principles
 [rethink](../decisions/2026-09-26-rethink-probe-report.md), frozen before its probes
-and then independently critiqued. It found:
+and then independently critiqued; its critic outputs, guard measurement and
+reproduction probes are retained in `evals/rethink-2026-09-26/`. It found:
 
 - five model-initiated skill reads with no downstream use;
 - no natural notebook use;
@@ -75,7 +76,9 @@ and then independently critiqued. It found:
 Paused: new features, evaluation cycles, provider trials, the guard, skill-routing
 rewrites and further installations. Continuing: correctness, security, compatibility,
 documentation accuracy and the repository's required gates, including this posture's
-30-day revalidation. AK 5641 and AK 5673 are deferred (deferrals 432 and 433), not closed.
+30-day revalidation. AK 5641 is deferred (deferral 432), not closed. At the owner's
+instruction, AK 5673 was completed on its committed validation, keeping its recorded
+failures and advisory claim boundary.
 
 ## Product maturity map
 
@@ -174,8 +177,8 @@ guarantee the outcome ambitions for every future decision.
 Live AK tasks, direction, evidence and decisions retain their existing owner.
 The earlier publication environment lacked AK and could not retrieve the company
 ontology source; those are historical observations, not current local gate claims.
-AK5641 and AK5673 are deferred under the pause; their checked-in scope snapshots match
-live AK exports and fail closed without AK. An empty snapshot directory would remain a
+AK5641 is deferred under the pause and AK5673 is complete; their checked-in scope
+snapshots match live AK exports and fail closed without AK. An empty snapshot directory would remain a
 truthful no-op. The company ontology gate passed against the local
 `softwareco/ontology` checkout on 2026-09-26.
 
