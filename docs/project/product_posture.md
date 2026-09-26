@@ -2,7 +2,7 @@
 summary: "Current versus target product maturity for COMPASS-C."
 as_of: "2026-09-26"
 last_validated: "2026-09-26"
-last_validated_commit: "8f6140e010de206262f9563624e1662e7a602617"
+last_validated_commit: "5514aae6d531cbee2ae87e04a193b24653628f2e"
 evidence_paths:
   - "README.md"
   - "src/compass_c"
@@ -96,6 +96,9 @@ A later maintenance pass the same day stayed within that scope; see the
 - **Docs:** the saved-plan size bound and the notebook defaults are documented. The
   first three learnings are crystallized.
 
+The pass was published at `0770f4e` (GitHub CI 4/4; AK 6007). With the owner's approval,
+the personal installs were then refreshed from that head (AK 10737).
+
 ## Product maturity map
 
 | Area | Current posture | Target posture | Remaining proof boundary |
@@ -106,7 +109,7 @@ A later maintenance pass the same day stayed within that scope; see the
 | Coordinated decisions | Bounded feasible portfolios, exact shared capacity, dependency layers, exclusions, explicit deferral values and preserved stakeholder optima/disagreement. | Coordinate choices while retaining each owner's authority. | Additive caller-supplied values are assumptions; dependency layers do not schedule work or reserve resources. |
 | Experimental decisions | Frozen bounded plans, cold resume, identified observation preview/apply, exact prior/posterior history and atomic note invalidation across CLI, portable skill and MCP. Duplicate event retries do not incorporate evidence again; changed evidence makes the retained model historical. A frozen notebook written by v0.6.0 must stay readable, so unmigrated output changes fail the suite. | Identify decision-changing uncertainty and learn from informative observations. | One observation per plan; subsequent likelihoods and model adequacy remain caller-owned. Sources are unverified; the product does not execute experiments or detect relabeled duplicate evidence. Saved plans are capped at 1,000,000 JSON characters, below the bounds of `calculate experiment`, and every read recomputes them. |
 | Skill behavior | Prior diagnostic plus 96 fresh Pi/GLM-5.3-flash trials: native acquisition observed, 48 A/A then 48 A/B captures, all failures retained. | Reliable selection and improved decisions in target hosts. | Historical A/B rubric counts are 19/24 versus 20/24, p=1.0. Forensic review found inconsistent grading of both apparent improvements and shared unsafe timeout reasoning. These are not accepted quality measurements. |
-| Installation and archives | Declared-source archives, public-head-verified v0.6.0 skill install, disposable managed upgrade with runnable backup, Pi/Codex discovery and withdrawal; personal Codex calculator and no-tool canaries observed (AK9197). Personal installs refreshed on 2026-09-26 by managed replacement from verified head `0526f34`, keeping backups (AK 10672). | Reproducible client-specific adoption and rollback. | ChatGPT browser plugin registration, installation and account-side readback remain external. Prompted read-only canaries do not prove spontaneous selection or write safety. |
+| Installation and archives | Declared-source archives, public-head-verified v0.6.0 skill install, disposable managed upgrade with runnable backup, Pi/Codex discovery and withdrawal; personal Codex calculator and no-tool canaries observed (AK9197). Personal installs refreshed on 2026-09-26 by managed replacement from verified head `0526f34` (AK 10672) and again from `0770f4e` after the maintenance pass (AK 10737), keeping backups. | Reproducible client-specific adoption and rollback. | ChatGPT browser plugin registration, installation and account-side readback remain external. Prompted read-only canaries do not prove spontaneous selection or write safety. |
 | MCP | SDK 2.1.1 pinned; seventeen tools; local wheel sessions and an actual GLM-driven Pi SDK workflow using six core operations observed. Missing-store errors now state their limited scope. Without `COMPASS_DB` the server uses `~/.compass/decisions.sqlite3`, unlike the CLI's working-directory default; both defaults are documented and pinned by tests. | Directly verified supported client paths. | Custom Pi integration is not default host/account installation. One of three targeted recovery probes still offered unsafe retry assurance; no unattended-write approval or shared-service readiness. |
 | First consumer | Three prospective saved-workflow runs with fresh preparer/resumer pairs. Two failed effort gates exposed guidance and capture friction; the third passed all eight unchanged criteria with eight product attempts and no failures. | Useful self-correction during this repository's own work. | Small author-visible local exercise; full audit output is lengthy and generic briefs can still flag missing narrative categories. Capture ergonomics do not establish product benefit. |
 | Repo skill adoption | Repo-owned maintainer guidance remains separate from standalone skill/plugin archives. | Recipient-owned improvement based on verified learning. | KES acceptance, controlled behavioral improvement and cross-repo adoption remain with their owners. |
